@@ -33,34 +33,37 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Api读写.h">
+    <ClInclude Include="ApiReadWrite.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="公用.h">
+    <ClInclude Include="Common.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="公告.h">
+    <ClInclude Include="GameBulletin.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="功能.h">
+    <ClInclude Include="GameFunction.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="自动.h">
+    <ClInclude Include="Automatic.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="读写.h">
+    <ClInclude Include="ReadWrite.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Call.h">
+    <ClInclude Include="GameCall.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="驱动.h">
+    <ClInclude Include="Driver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Vu驱动.h">
+    <ClInclude Include="VuDriver.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Ioc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Address.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -74,31 +77,31 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Api读写.cpp">
+    <ClCompile Include="ApiReadWrite.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="公用.cpp">
+    <ClCompile Include="Common.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="公告.cpp">
+    <ClCompile Include="GameBulletin.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="功能.cpp">
+    <ClCompile Include="GameFunction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="自动.cpp">
+    <ClCompile Include="Automatic.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="读写.cpp">
+    <ClCompile Include="ReadWrite.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Call.cpp">
+    <ClCompile Include="GameCall.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="驱动.cpp">
+    <ClCompile Include="Driver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Vu驱动.cpp">
+    <ClCompile Include="VuDriver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

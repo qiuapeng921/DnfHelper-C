@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "公告.h"
-#include "读写.h"
+#include "GameBulletin.h"
+#include "ReadWrite.h"
 
 VOID 系统公告(CString 公告内容) {
 	LPVOID static 空白地址;

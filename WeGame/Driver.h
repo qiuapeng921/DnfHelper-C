@@ -1,11 +1,11 @@
 #pragma once
 #include <winsvc.h>
 
-class 驱动
+class Driver
 {
 public:
-	驱动();
-	~驱动();
+	Driver();
+	~Driver();
 
 public:
 	DWORD dwLastError;   //最后的错误
@@ -15,15 +15,15 @@ public:
 
 public:
 
-	BOOL 加载驱动(LPCWSTR 驱动文件路径, LPCWSTR 服务名, LPCWSTR 服务显示名);
+	BOOL LoadDriver(LPCWSTR 驱动文件路径, LPCWSTR 服务名, LPCWSTR 服务显示名);
 
 	//example: \\\\.\\xxoo
-	BOOL Open驱动(LPCWSTR pLinkName);
+	BOOL OpenDriver(LPCWSTR pLinkName);
 
-	BOOL 卸载驱动(LPCWSTR 服务名);
+	BOOL UnLoadDriver(LPCWSTR 服务名);
 
 	// 驱动通讯
 	BOOL IoControl(DWORD dwIoCode, PVOID InBuff, DWORD InBuffLen, PVOID OutBuff, DWORD OutBuffLen, DWORD* RealRetBytes);
 };
 
-extern 驱动 drive;
+extern Driver drive;

@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "驱动.h"
+#include "Driver.h"
 
 
-驱动::驱动() //构造函数
+Driver::Driver() //构造函数
 {
 	//初始化变量
 	hSCManager = NULL;
@@ -12,7 +12,7 @@
 	dwLastError = 0;
 }
 
-驱动::~驱动() //析构函数
+Driver::~Driver() //析构函数
 {
 	//释放资源
 	CloseServiceHandle(hService);
@@ -21,7 +21,7 @@
 }
 
 
-BOOL 驱动::加载驱动(LPCWSTR 驱动文件路径, LPCWSTR 服务名, LPCWSTR 服务显示名) {
+BOOL Driver::LoadDriver(LPCWSTR 驱动文件路径, LPCWSTR 服务名, LPCWSTR 服务显示名) {
 
 	BOOL result = false;
 
@@ -66,7 +66,7 @@ BOOL 驱动::加载驱动(LPCWSTR 驱动文件路径, LPCWSTR 服务名, LPCWSTR 服务显示名) {
 }
 
 //example: \\\\.\\xxoo
-BOOL 驱动::Open驱动(LPCWSTR pLinkName)
+BOOL Driver::OpenDriver(LPCWSTR pLinkName)
 {
 	if (hDriver != INVALID_HANDLE_VALUE)
 	{
@@ -80,7 +80,7 @@ BOOL 驱动::Open驱动(LPCWSTR pLinkName)
 	return false;
 }
 
-BOOL 驱动::卸载驱动(LPCWSTR 服务名) {
+BOOL Driver::UnLoadDriver(LPCWSTR 服务名) {
 
 	BOOL result = false;
 
@@ -100,7 +100,7 @@ BOOL 驱动::卸载驱动(LPCWSTR 服务名) {
 	return result;
 }
 
-BOOL 驱动::IoControl(DWORD dwIoCode, PVOID InBuff, DWORD InBuffLen, PVOID OutBuff, DWORD OutBuffLen, DWORD* RealRetBytes)
+BOOL Driver::IoControl(DWORD dwIoCode, PVOID InBuff, DWORD InBuffLen, PVOID OutBuff, DWORD OutBuffLen, DWORD* RealRetBytes)
 {
 	return DeviceIoControl(hService, dwIoCode, InBuff, InBuffLen, OutBuff, OutBuffLen, RealRetBytes, NULL);
 }

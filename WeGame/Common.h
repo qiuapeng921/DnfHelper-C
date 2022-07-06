@@ -12,7 +12,7 @@ typedef float 小数型;
 typedef double 双精度浮点型;
 typedef bool 逻辑型;
 typedef char 文本型;
-typedef void(*子程序指针)();
+typedef PVOID 子程序指针;
 
 #define 注册热键 RegisterHotKey 
 // RegisterHotKey(NULL, 1, 0, VK_HOME);
@@ -27,16 +27,15 @@ typedef void(*子程序指针)();
 #define 创建线程 CreateThread
 // 创建线程(NULL, 0, (LPTHREAD_START_ROUTINE)函数名, NULL, 0, &线程id);
 
-
 #define 创建时钟 SetTimer
 // HWND hWnd = FindWindow(TEXT("地下城与勇士"), TEXT("地下城与勇士"));
 // SetTimer(hWnd, 1, 频率, (TIMERPROC)函数名);
 #define 销毁时钟 KillTimer
 // KillTimer(hWnd, 1);
 
-//#define 字节集 vector<int>
-#define 取数组成员数 sizeof
+#define 字节集 vector<int>
 #define 输出 printf
+#define debug OutputDebugString
 
 //#define 写配置 WritePrivateProfileStringW
 //#define 读配置 GetPrivateProfileIntA
@@ -44,24 +43,30 @@ typedef void(*子程序指针)();
 // 读配置("代码全屏", "代码", 0, "c:\\情歌.ini");
 
 
-DWORD 取进程ID(TCHAR 进程[]);
+DWORD _GetProcessId(LPCWSTR 进程);
 
-CString 整数到文本(int 值);
+CString _IntToCString(int value);
 
-char* AnsiToUnicode(char* str);
+char* _AnsiToUnicode(char* str);
 
-CString Unicode转Ansi(vector<byte> vby);
+CString _UnicodeToAnsi(vector<byte> vby);
 
-CString 取桌面目录();
+CString _GetDesktopPath();
 
-VOID 写配置项(CString 节, CString 项, CString 值);
+VOID _WriteConfig(CString 节, CString 项, CString 值);
 
-DWORD 读配置项(CString 节, CString 项);
+DWORD _ReadConfig(CString 节, CString 项);
 
-VOID 初始化配置();
+VOID _InitConfig();
 
-VOID long64ToBytes(DWORD64 i, BYTE* bytes);
+VOID _Long64ToBytes(DWORD64 i, BYTE* bytes);
 
-HANDLE 创建线程(PVOID 线程子程序);
+HANDLE _CreateThread(PVOID 线程子程序);
 
-BOOL 销毁线程(HANDLE 线程句柄);
+BOOL _DeleteThread(HANDLE 线程句柄);
+
+BYTE _ConvertHexChar(BYTE ch);
+
+INT _Rand(int min, int max);
+
+CString _GetCurrentTime();

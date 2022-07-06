@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "读写.h"
+#include "ReadWrite.h"
 
-#include "Api读写.h"
+#include "ApiReadWrite.h"
 
-Api读写 apiRw;
+ApiReadWrite apiRw;
 
 DWORD static 全_进程ID;
 
@@ -57,7 +57,7 @@ BYTE* 读字节集型(DWORD64 地址, INT32 长度) {
 	return result;
 }
 
-// 写字节集型(制裁基址, new BYTE[]{ 0xC3, 0x90 }, 2);
+// 写字节集型(制裁基址, new BYTE[]{ 0x48, 0xBE }, 2);
 BOOL 写字节集型(DWORD64 地址, PBYTE 写入值, INT32 长度) {
 	return 写字节集(地址, 写入值, 长度);
 }

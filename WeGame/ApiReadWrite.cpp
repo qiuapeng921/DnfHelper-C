@@ -1,17 +1,16 @@
 #include "pch.h"
 #include <winsvc.h>
 #include "tlhelp32.h"
-#include "Api读写.h"
+#include "ApiReadWrite.h"
 
-
-LPVOID Api读写::申请内存64(DWORD 进程ID, DWORD 申请长度) {
+LPVOID ApiReadWrite::申请内存64(DWORD 进程ID, DWORD 申请长度) {
 	HANDLE 进程句柄 = ::OpenProcess(PROCESS_ALL_ACCESS, 0, 进程ID);
 	LPVOID 内存地址 = VirtualAllocEx(进程句柄, 0, 申请长度, 4096, 64);
 	CloseHandle(进程句柄);
 	return 内存地址;
 }
 
-BOOL Api读写::进程_读字节集(DWORD 进程ID, DWORD64 地址, PVOID 返回值, INT32 写入长度) {
+BOOL ApiReadWrite::进程_读字节集(DWORD 进程ID, DWORD64 地址, PVOID 返回值, INT32 写入长度) {
 	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, 进程ID);
 	if (hProcess == NULL) {
 		return FALSE;
@@ -25,8 +24,7 @@ BOOL Api读写::进程_读字节集(DWORD 进程ID, DWORD64 地址, PVOID 返回值, INT32 写入
 	::CloseHandle(hProcess);
 	return result;
 }
-
-BOOL Api读写::进程_写字节集(DWORD 进程ID, DWORD64 地址, PVOID 写入值, INT32 写入长度) {
+BOOL ApiReadWrite::进程_写字节集(DWORD 进程ID, DWORD64 地址, PVOID 写入值, INT32 写入长度) {
 
 	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, 进程ID);
 	if (hProcess == NULL) {
@@ -42,39 +40,29 @@ BOOL Api读写::进程_写字节集(DWORD 进程ID, DWORD64 地址, PVOID 写入值, INT32 写入
 	return result;
 }
 
-DWORD Api读写::读整数型(DWORD 进程ID, DWORD64 地址)
+DWORD ApiReadWrite::读整数型(DWORD 进程ID, DWORD64 地址)
 {
 	DWORD result;
 	进程_读字节集(进程ID, 地址, &result, sizeof(result));
 	return result;
 }
+BOOL ApiReadWrite::写整数型(DWORD 进程ID, DWORD64 地址, DWORD 数据)
+{
+	return 进程_写字节集(进程ID, 地址, &数据, sizeof(数据));
+}
 
-DWORD64 Api读写::读长整数型(DWORD 进程ID, DWORD64 地址)
+DWORD64 ApiReadWrite::读长整数型(DWORD 进程ID, DWORD64 地址)
 {
 	DWORD64 result;
 	进程_读字节集(进程ID, 地址, &result, sizeof(result));
 	return result;
 }
-
-BOOL Api读写::写整数型(DWORD 进程ID, DWORD64 地址, DWORD 数据)
+BOOL ApiReadWrite::写长整数型(DWORD 进程ID, DWORD64 地址, DWORD64 数据)
 {
 	return 进程_写字节集(进程ID, 地址, &数据, sizeof(数据));
 }
 
-BOOL Api读写::写长整数型(DWORD 进程ID, DWORD64 地址, DWORD64 数据)
-{
-	return 进程_写字节集(进程ID, 地址, &数据, sizeof(数据));
-}
-
-BYTE* Api读写::读字节集型(DWORD 进程ID, DWORD64 地址, INT32 长度) {
-	BYTE * result = new BYTE[长度];
-
-	进程_读字节集(进程ID, 地址, result, 长度);
-
-	return result;
-}
-
-vector<BYTE> Api读写::API_读字节集(DWORD 进程ID, DWORD64 地址, INT32 长度)
+vector<BYTE> ApiReadWrite::API_读字节集(DWORD 进程ID, DWORD64 地址, INT32 长度)
 {
 	vector<BYTE> result;
 
@@ -83,7 +71,7 @@ vector<BYTE> Api读写::API_读字节集(DWORD 进程ID, DWORD64 地址, INT32 长度)
 		return result;
 	}
 
-	BYTE* tempResult = new BYTE[(DWORD64)长度 + 1];
+	BYTE* tempResult = new BYTE[(__int64)长度 + 1];
 
 	memset(tempResult, 0, 长度);
 	ReadProcessMemory(hProcess, (LPVOID)地址, tempResult, 长度, NULL);
@@ -96,9 +84,8 @@ vector<BYTE> Api读写::API_读字节集(DWORD 进程ID, DWORD64 地址, INT32 长度)
 	}
 	return result;
 }
-
 // API_写字节集(任务地址, { 0x90, 0x90, 0x90, 0x90, 0x90 });
-BOOL Api读写::API_写字节集(DWORD 进程ID, DWORD64 地址, vector<byte> 值)
+BOOL ApiReadWrite::API_写字节集(DWORD 进程ID, DWORD64 地址, vector<byte> 值)
 {
 	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, 进程ID);
 	if (hProcess == NULL) {

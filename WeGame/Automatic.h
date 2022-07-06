@@ -2,15 +2,15 @@
 
 using namespace std;
 
-class 自动
+class Automatic
 {
 protected:
 	// 自动开关
 	bool automaticSwitch;
 
 public:
-	VOID 自动开关();
-	VOID 自动线程();
+	VOID AutomaticSwitch();
+	VOID AutomaticThread();
 	VOID 进入城镇();
 	VOID 城镇处理();
 	VOID 进入选图();
@@ -20,4 +20,4 @@ public:
 	VOID 退出副本();
 };
 
-extern 自动 automatic;
+extern Automatic automatic;

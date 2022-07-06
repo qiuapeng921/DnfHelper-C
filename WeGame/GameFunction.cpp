@@ -1,20 +1,18 @@
 #include "pch.h"
 #include "framework.h"
 #include "Address.h"
-#include "功能.h"
-#include "读写.h"
-#include "公用.h"
+#include "Common.h"
+#include "GameFunction.h"
+#include "ReadWrite.h"
 
 VOID 武器冰冻() {
-	MessageBoxW(NULL, L"武器冰冻", L"功能", MB_OK);
+	//MessageBoxW(NULL, L"武器冰冻", L"功能", MB_OK);
 
 	BOOL static 冰冻开关 = FALSE;
 	DWORD64 空白地址 = 全局空白;
 	if (冰冻开关 == FALSE)
 	{
 		DWORD64 kb = 读长整数型(空白地址);
-		DWORD64 rw = 读长整数型(人物基址);
-		DWORD64 rwb = 读长整数型(人物基址B);
 
 		写长整数型(空白地址, 0);
 		写长整数型(空白地址 + 4, 2000);
@@ -64,20 +62,21 @@ VOID 武器冰冻() {
 VOID HOOK伤害() {
 	BOOL static HOOK开关 = false;
 
-	DWORD64 伤害地址, 伤害数值;
 	BYTE* 地址原数据;
 
-	伤害地址 = 全局基址;
-	伤害数值 = 999999999;
+	DWORD64 伤害地址 = 全局基址;
+	HOOK开关 = !HOOK开关;
 
 	if (HOOK开关)
 	{
 		地址原数据 = 读字节集型(伤害地址,10);
-		//写字节集型(伤害地址, { 72, 190 } + 到长字节集(伤害数值));
+
+		vector<byte> data = { 72,190,127,150,152,0 };
+		API_写字节集(伤害地址, data);
 	}
 	else
 	{
-		//写字节集型(伤害地址,(PBYTE)地址原数据,10);
+		//写字节集型(伤害地址,地址原数据,10);
 	}
 }
 

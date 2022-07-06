@@ -8,20 +8,20 @@
 #include "WeGameDlg.h"
 #include "afxdialogex.h"
 
-#include "驱动.h"
-#include "公用.h"
-#include "功能.h"
-#include "自动.h"
-#include "读写.h"
-#include "Vu驱动.h"
+#include "Driver.h"
+#include "Common.h"
+#include "GameFunction.h"
+#include "Automatic.h"
+#include "ReadWrite.h"
+#include "VuDriver.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
-驱动 drive;
-自动 automatic;
+Driver drive;
+Automatic automatic;
 
 // CWeGameDlg 对话框
 CWeGameDlg::CWeGameDlg(CWnd* pParent /*=nullptr*/)
@@ -117,7 +117,7 @@ void CWeGameDlg::日志公告(CString msg)
 
 BOOL CWeGameDlg::无忧驱动() {
 
-	if (!drive.Open驱动(L"\\\\.\\vuDrv")) {
+	if (!drive.OpenDriver(L"\\\\.\\vuDrv")) {
 		//MessageBoxW(L"Vu驱动文件打开异常");
 		return FALSE;
 	}
@@ -193,26 +193,25 @@ void CWeGameDlg::激活()
 		return;
 	}
 
-	BOOL 结果 = drive.加载驱动(szDrvPath, L"Drivecontrol", L"Drivecontrol");
+	BOOL 结果 = drive.LoadDriver(szDrvPath, L"Drivecontrol", L"Drivecontrol");
 	if (结果 == FALSE)
 	{
+		drive.UnLoadDriver(L"Drivecontrol");
 		MessageBoxW(L"加载驱动失败");
-		drive.卸载驱动(L"Drivecontrol");
-		//CDialogEx::OnCancel();
 		return;
 	}
 
-	DWORD 进程ID = 取进程ID(_T("dnf.exe"));
+	DWORD gameProcess = _GetProcessId(L"dnf.exe");
 
-	HWND 窗口句柄 = ::FindWindow(L"地下城与勇士", L"地下城与勇士");
+	HWND gameHandle = ::FindWindowW(L"地下城与勇士", L"地下城与勇士");
 
-	if (进程ID == 0)
+	if (gameProcess == 0)
 	{
 		日志公告(L"未启动游戏");
 		return;
 	}
 
-	设置进程ID(进程ID, 窗口句柄);
+	设置进程ID(gameProcess, gameHandle);
 
 	// 设置热键
 	RegisterHotKey(this->GetSafeHwnd(), 1000, 0, VK_F1);
@@ -223,7 +222,7 @@ void CWeGameDlg::激活()
 	日志公告(L"F1 - 武器冰冻");
 	日志公告(L"F2 - HOOK倍攻");
 
-	初始化配置();
+	_InitConfig();
 	// 禁用激活按钮
 	GetDlgItem(IDC_BUTTON2)->EnableWindow(false);
 }
@@ -231,14 +230,12 @@ void CWeGameDlg::激活()
 
 void CWeGameDlg::卸载()
 {
-	if (drive.卸载驱动(L"Drivecontrol") == FALSE) {
-		MessageBox(L"驱动服务卸载失败");
-	}
-	Sleep(200);
 	UnregisterHotKey(this->GetSafeHwnd(), 1000);
 	UnregisterHotKey(this->GetSafeHwnd(), 1001);
 	UnregisterHotKey(this->GetSafeHwnd(), 1010);
-
+	if (drive.UnLoadDriver(L"Drivecontrol") == FALSE) {
+		MessageBox(L"驱动服务卸载失败");
+	}
 	// 关闭窗口界面
 	AfxGetMainWnd()->SendMessage(WM_CLOSE);
 }
@@ -251,10 +248,10 @@ void CWeGameDlg::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		武器冰冻();
 		break;
 	case 1001:
-		MessageBox(L"F2-HOOK倍攻");
+		HOOK伤害();
 		break;
 	case 1010:
-		automatic.自动开关();
+		automatic.AutomaticSwitch();
 		break;
 	}
 	CDialogEx::OnHotKey(nHotKeyId, nKey1, nKey2);
