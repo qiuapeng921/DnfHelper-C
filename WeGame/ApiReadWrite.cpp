@@ -1,22 +1,22 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include <winsvc.h>
 #include "tlhelp32.h"
 #include "ApiReadWrite.h"
 
-LPVOID ApiReadWrite::ÉêÇëÄÚ´æ64(DWORD ½ø³ÌID, DWORD ÉêÇë³¤¶È) {
-	HANDLE ½ø³Ì¾ä±ú = ::OpenProcess(PROCESS_ALL_ACCESS, 0, ½ø³ÌID);
-	LPVOID ÄÚ´æµØÖ· = VirtualAllocEx(½ø³Ì¾ä±ú, 0, ÉêÇë³¤¶È, 4096, 64);
-	CloseHandle(½ø³Ì¾ä±ú);
-	return ÄÚ´æµØÖ·;
+LPVOID ApiReadWrite::ç”³è¯·å†…å­˜64(DWORD è¿›ç¨‹ID, DWORD ç”³è¯·é•¿åº¦) {
+	HANDLE è¿›ç¨‹å¥æŸ„ = ::OpenProcess(PROCESS_ALL_ACCESS, 0, è¿›ç¨‹ID);
+	LPVOID å†…å­˜åœ°å€ = VirtualAllocEx(è¿›ç¨‹å¥æŸ„, 0, ç”³è¯·é•¿åº¦, 4096, 64);
+	CloseHandle(è¿›ç¨‹å¥æŸ„);
+	return å†…å­˜åœ°å€;
 }
 
-BOOL ApiReadWrite::½ø³Ì_¶Á×Ö½Ú¼¯(DWORD ½ø³ÌID, DWORD64 µØÖ·, PVOID ·µ»ØÖµ, INT32 Ğ´Èë³¤¶È) {
-	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, ½ø³ÌID);
+BOOL ApiReadWrite::è¿›ç¨‹_è¯»å­—èŠ‚é›†(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€, PVOID è¿”å›å€¼, INT32 å†™å…¥é•¿åº¦) {
+	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, è¿›ç¨‹ID);
 	if (hProcess == NULL) {
 		return FALSE;
 	}
 
-	BOOL result = ::ReadProcessMemory(hProcess, (LPVOID)µØÖ·, ·µ»ØÖµ, Ğ´Èë³¤¶È, NULL);
+	BOOL result = ::ReadProcessMemory(hProcess, (LPVOID)åœ°å€, è¿”å›å€¼, å†™å…¥é•¿åº¦, NULL);
 	if (result == false)
 	{
 		return 0;
@@ -24,14 +24,14 @@ BOOL ApiReadWrite::½ø³Ì_¶Á×Ö½Ú¼¯(DWORD ½ø³ÌID, DWORD64 µØÖ·, PVOID ·µ»ØÖµ, INT32
 	::CloseHandle(hProcess);
 	return result;
 }
-BOOL ApiReadWrite::½ø³Ì_Ğ´×Ö½Ú¼¯(DWORD ½ø³ÌID, DWORD64 µØÖ·, PVOID Ğ´ÈëÖµ, INT32 Ğ´Èë³¤¶È) {
+BOOL ApiReadWrite::è¿›ç¨‹_å†™å­—èŠ‚é›†(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€, PVOID å†™å…¥å€¼, INT32 å†™å…¥é•¿åº¦) {
 
-	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, ½ø³ÌID);
+	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, è¿›ç¨‹ID);
 	if (hProcess == NULL) {
 		return FALSE;
 	}
 
-	BOOL result = ::WriteProcessMemory(hProcess, (LPVOID)µØÖ·, Ğ´ÈëÖµ, Ğ´Èë³¤¶È, NULL);
+	BOOL result = ::WriteProcessMemory(hProcess, (LPVOID)åœ°å€, å†™å…¥å€¼, å†™å…¥é•¿åº¦, NULL);
 	if (result == false)
 	{
 		return 0;
@@ -40,66 +40,66 @@ BOOL ApiReadWrite::½ø³Ì_Ğ´×Ö½Ú¼¯(DWORD ½ø³ÌID, DWORD64 µØÖ·, PVOID Ğ´ÈëÖµ, INT32
 	return result;
 }
 
-DWORD ApiReadWrite::¶ÁÕûÊıĞÍ(DWORD ½ø³ÌID, DWORD64 µØÖ·)
+DWORD ApiReadWrite::è¯»æ•´æ•°å‹(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€)
 {
 	DWORD result;
-	½ø³Ì_¶Á×Ö½Ú¼¯(½ø³ÌID, µØÖ·, &result, sizeof(result));
+	è¿›ç¨‹_è¯»å­—èŠ‚é›†(è¿›ç¨‹ID, åœ°å€, &result, sizeof(result));
 	return result;
 }
-BOOL ApiReadWrite::Ğ´ÕûÊıĞÍ(DWORD ½ø³ÌID, DWORD64 µØÖ·, DWORD Êı¾İ)
+BOOL ApiReadWrite::å†™æ•´æ•°å‹(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€, DWORD æ•°æ®)
 {
-	return ½ø³Ì_Ğ´×Ö½Ú¼¯(½ø³ÌID, µØÖ·, &Êı¾İ, sizeof(Êı¾İ));
+	return è¿›ç¨‹_å†™å­—èŠ‚é›†(è¿›ç¨‹ID, åœ°å€, &æ•°æ®, sizeof(æ•°æ®));
 }
 
-DWORD64 ApiReadWrite::¶Á³¤ÕûÊıĞÍ(DWORD ½ø³ÌID, DWORD64 µØÖ·)
+DWORD64 ApiReadWrite::è¯»é•¿æ•´æ•°å‹(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€)
 {
 	DWORD64 result;
-	½ø³Ì_¶Á×Ö½Ú¼¯(½ø³ÌID, µØÖ·, &result, sizeof(result));
+	è¿›ç¨‹_è¯»å­—èŠ‚é›†(è¿›ç¨‹ID, åœ°å€, &result, sizeof(result));
 	return result;
 }
-BOOL ApiReadWrite::Ğ´³¤ÕûÊıĞÍ(DWORD ½ø³ÌID, DWORD64 µØÖ·, DWORD64 Êı¾İ)
+BOOL ApiReadWrite::å†™é•¿æ•´æ•°å‹(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€, DWORD64 æ•°æ®)
 {
-	return ½ø³Ì_Ğ´×Ö½Ú¼¯(½ø³ÌID, µØÖ·, &Êı¾İ, sizeof(Êı¾İ));
+	return è¿›ç¨‹_å†™å­—èŠ‚é›†(è¿›ç¨‹ID, åœ°å€, &æ•°æ®, sizeof(æ•°æ®));
 }
 
-vector<BYTE> ApiReadWrite::API_¶Á×Ö½Ú¼¯(DWORD ½ø³ÌID, DWORD64 µØÖ·, INT32 ³¤¶È)
+vector<BYTE> ApiReadWrite::API_è¯»å­—èŠ‚é›†(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€, INT32 é•¿åº¦)
 {
 	vector<BYTE> result;
 
-	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, ½ø³ÌID);
+	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, è¿›ç¨‹ID);
 	if (hProcess == NULL) {
 		return result;
 	}
 
-	BYTE* tempResult = new BYTE[(__int64)³¤¶È + 1];
+	BYTE* tempResult = new BYTE[(__int64)é•¿åº¦ + 1];
 
-	memset(tempResult, 0, ³¤¶È);
-	ReadProcessMemory(hProcess, (LPVOID)µØÖ·, tempResult, ³¤¶È, NULL);
+	memset(tempResult, 0, é•¿åº¦);
+	ReadProcessMemory(hProcess, (LPVOID)åœ°å€, tempResult, é•¿åº¦, NULL);
 	CloseHandle(hProcess);
 
-	result.resize(³¤¶È);
-	for (int i = 0; i < ³¤¶È; i++)
+	result.resize(é•¿åº¦);
+	for (int i = 0; i < é•¿åº¦; i++)
 	{
 		result[i] = tempResult[i];
 	}
 	return result;
 }
-// API_Ğ´×Ö½Ú¼¯(ÈÎÎñµØÖ·, { 0x90, 0x90, 0x90, 0x90, 0x90 });
-BOOL ApiReadWrite::API_Ğ´×Ö½Ú¼¯(DWORD ½ø³ÌID, DWORD64 µØÖ·, vector<byte> Öµ)
+// API_å†™å­—èŠ‚é›†(ä»»åŠ¡åœ°å€, { 0x90, 0x90, 0x90, 0x90, 0x90 });
+BOOL ApiReadWrite::API_å†™å­—èŠ‚é›†(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€, vector<byte> å€¼)
 {
-	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, ½ø³ÌID);
+	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, è¿›ç¨‹ID);
 	if (hProcess == NULL) {
 		return FALSE;
 	}
 
 	int length;
-	length = (int)Öµ.size();
+	length = (int)å€¼.size();
 	byte* val = new byte[length]();
 	for (int i = 0; i < length; i++)
 	{
-		val[i] = Öµ[i];
+		val[i] = å€¼[i];
 	}
-	WriteProcessMemory(hProcess, (LPVOID)µØÖ·, (LPCVOID)val, length, 0);
+	WriteProcessMemory(hProcess, (LPVOID)åœ°å€, (LPCVOID)val, length, 0);
 	CloseHandle(hProcess);
 	return TRUE;
 }
