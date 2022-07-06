@@ -1,54 +1,54 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "GameCall.h"
 
-VOID  Call::ÎïÆ·Call(INT64 ÎïÆ·´úÂë)
+VOID  Call::ç‰©å“Call(INT64 ç‰©å“ä»£ç )
 {
 
 }
 
-VOID  Call::ÌØÐ§Call(INT type)
+VOID  Call::ç‰¹æ•ˆCall(INT type)
 {
 
 }
 
-VOID  Call::Í¸Ã÷Call(INT64 ¶ÔÏóÖ¸Õë)
-{
-
-}
-
-
-VOID Call::±¼ÅÜCall(INT x, INT y, INT Speed)
-{
-
-}
-
-VOID Call::ÊÍ·ÅCall(INT64 ´¥·¢Ö¸Õë, INT ¼¼ÄÜ´úÂë, INT ¼¼ÄÜÉËº¦, INT x, INT y, INT z)
-{
-
-}
-
-VOID Call::ÆÀ·ÖCall(INT Value)
-{
-
-}
-
-VOID Call::¹ýÍ¼Call(INT ·½Ïò)
+VOID  Call::é€æ˜ŽCall(INT64 å¯¹è±¡æŒ‡é’ˆ)
 {
 
 }
 
 
-INT64 ÉêÇëÊôÐÔÄÚ´æCall(INT ÊôÐÔÀàÐÍ)
+VOID Call::å¥”è·‘Call(INT x, INT y, INT Speed)
+{
+
+}
+
+VOID Call::é‡Šæ”¾Call(INT64 è§¦å‘æŒ‡é’ˆ, INT æŠ€èƒ½ä»£ç , INT æŠ€èƒ½ä¼¤å®³, INT x, INT y, INT z)
+{
+
+}
+
+VOID Call::è¯„åˆ†Call(INT Value)
+{
+
+}
+
+VOID Call::è¿‡å›¾Call(INT æ–¹å‘)
+{
+
+}
+
+
+INT64 ç”³è¯·å±žæ€§å†…å­˜Call(INT å±žæ€§ç±»åž‹)
 {
 	return 0;
 }
 
-VOID Ð´Èë¹â»··¶Î§Call(INT64 ¹â»·Ö¸Õë, INT ·¶Î§ÊýÖµ, INT x, INT y)
+VOID å†™å…¥å…‰çŽ¯èŒƒå›´Call(INT64 å…‰çŽ¯æŒ‡é’ˆ, INT èŒƒå›´æ•°å€¼, INT x, INT y)
 {
 
 }
 
-VOID ÉúÐ§ÊôÐÔÄÚ´æCall(INT64 ÈËÎïÖ¸Õë, INT64 ¹â»·Ö¸Õë)
+VOID ç”Ÿæ•ˆå±žæ€§å†…å­˜Call(INT64 äººç‰©æŒ‡é’ˆ, INT64 å…‰çŽ¯æŒ‡é’ˆ)
 {
 
 }

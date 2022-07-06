@@ -1,57 +1,57 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "framework.h"
 #include "Address.h"
 #include "Common.h"
 #include "GameFunction.h"
 #include "ReadWrite.h"
 
-VOID ÎäÆ÷±ù¶³() {
-	//MessageBoxW(NULL, L"ÎäÆ÷±ù¶³", L"¹¦ÄÜ", MB_OK);
+VOID æ­¦å™¨å†°å†»() {
+	//MessageBoxW(NULL, L"æ­¦å™¨å†°å†»", L"åŠŸèƒ½", MB_OK);
 
-	BOOL static ±ù¶³¿ª¹Ø = FALSE;
-	DWORD64 ¿Õ°×µØÖ· = È«¾Ö¿Õ°×;
-	if (±ù¶³¿ª¹Ø == FALSE)
+	BOOL static å†°å†»å¼€å…³ = FALSE;
+	DWORD64 ç©ºç™½åœ°å€ = å…¨å±€ç©ºç™½;
+	if (å†°å†»å¼€å…³ == FALSE)
 	{
-		DWORD64 kb = ¶Á³¤ÕûÊýÐÍ(¿Õ°×µØÖ·);
+		DWORD64 kb = è¯»é•¿æ•´æ•°åž‹(ç©ºç™½åœ°å€);
 
-		Ð´³¤ÕûÊýÐÍ(¿Õ°×µØÖ·, 0);
-		Ð´³¤ÕûÊýÐÍ(¿Õ°×µØÖ· + 4, 2000);
-		Ð´³¤ÕûÊýÐÍ(¿Õ°×µØÖ· + 8, 2000);
-		Ð´³¤ÕûÊýÐÍ(¿Õ°×µØÖ· + 12, 0);
-		Ð´³¤ÕûÊýÐÍ(¿Õ°×µØÖ· + 16, 0);
-		Ð´³¤ÕûÊýÐÍ(¿Õ°×µØÖ· + 20, 0);
-		Ð´³¤ÕûÊýÐÍ(¿Õ°×µØÖ· + 24, 0);
-		Ð´³¤ÕûÊýÐÍ(¿Õ°×µØÖ· + 28, 0);
-		DWORD64 ÎäÆ÷ = ¶Á³¤ÕûÊýÐÍ(¶Á³¤ÕûÊýÐÍ(ÈËÎï»ùÖ·) + ÎäÆ÷Æ«ÒÆ);
-		Ð´³¤ÕûÊýÐÍ(ÎäÆ÷ + ±ù¶³¿ªÊ¼, ¿Õ°×µØÖ·);
-		Ð´³¤ÕûÊýÐÍ(ÎäÆ÷ + ±ù¶³½áÊø, ¿Õ°×µØÖ· + 32);
-		±ù¶³¿ª¹Ø = TRUE;
+		å†™é•¿æ•´æ•°åž‹(ç©ºç™½åœ°å€, 0);
+		å†™é•¿æ•´æ•°åž‹(ç©ºç™½åœ°å€ + 4, 2000);
+		å†™é•¿æ•´æ•°åž‹(ç©ºç™½åœ°å€ + 8, 2000);
+		å†™é•¿æ•´æ•°åž‹(ç©ºç™½åœ°å€ + 12, 0);
+		å†™é•¿æ•´æ•°åž‹(ç©ºç™½åœ°å€ + 16, 0);
+		å†™é•¿æ•´æ•°åž‹(ç©ºç™½åœ°å€ + 20, 0);
+		å†™é•¿æ•´æ•°åž‹(ç©ºç™½åœ°å€ + 24, 0);
+		å†™é•¿æ•´æ•°åž‹(ç©ºç™½åœ°å€ + 28, 0);
+		DWORD64 æ­¦å™¨ = è¯»é•¿æ•´æ•°åž‹(è¯»é•¿æ•´æ•°åž‹(äººç‰©åŸºå€) + æ­¦å™¨åç§»);
+		å†™é•¿æ•´æ•°åž‹(æ­¦å™¨ + å†°å†»å¼€å§‹, ç©ºç™½åœ°å€);
+		å†™é•¿æ•´æ•°åž‹(æ­¦å™¨ + å†°å†»ç»“æŸ, ç©ºç™½åœ°å€ + 32);
+		å†°å†»å¼€å…³ = TRUE;
 		return;
 	}
-	DWORD64 ÎäÆ÷ = ¶Á³¤ÕûÊýÐÍ(¶Á³¤ÕûÊýÐÍ(ÈËÎï»ùÖ·) + ÎäÆ÷Æ«ÒÆ);
-	Ð´³¤ÕûÊýÐÍ(ÎäÆ÷ + ±ù¶³¿ªÊ¼, 0);
-	Ð´³¤ÕûÊýÐÍ(ÎäÆ÷ + ±ù¶³½áÊø, 0);
+	DWORD64 æ­¦å™¨ = è¯»é•¿æ•´æ•°åž‹(è¯»é•¿æ•´æ•°åž‹(äººç‰©åŸºå€) + æ­¦å™¨åç§»);
+	å†™é•¿æ•´æ•°åž‹(æ­¦å™¨ + å†°å†»å¼€å§‹, 0);
+	å†™é•¿æ•´æ•°åž‹(æ­¦å™¨ + å†°å†»ç»“æŸ, 0);
 	for (int i = 0; i >= 7; i++)
 	{
-		Ð´ÕûÊýÐÍ(¿Õ°×µØÖ·, 0);
-		¿Õ°×µØÖ· = ¿Õ°×µØÖ· + 4;
+		å†™æ•´æ•°åž‹(ç©ºç™½åœ°å€, 0);
+		ç©ºç™½åœ°å€ = ç©ºç™½åœ°å€ + 4;
 	}
-	±ù¶³¿ª¹Ø = FALSE;
+	å†°å†»å¼€å…³ = FALSE;
 }
 
-//void ¼¼ÄÜ¿ª¹Ø() {
+//void æŠ€èƒ½å¼€å…³() {
 //
-//	HWND hWnd = FindWindow(TEXT("µØÏÂ³ÇÓëÓÂÊ¿"), TEXT("µØÏÂ³ÇÓëÓÂÊ¿"));
+//	HWND hWnd = FindWindow(TEXT("åœ°ä¸‹åŸŽä¸Žå‹‡å£«"), TEXT("åœ°ä¸‹åŸŽä¸Žå‹‡å£«"));
 //	static bool _switch = false;
 //	if (_switch == false)
 //	{
-//		SetTimer(hWnd, 1, ÆµÂÊ, (TIMERPROC)±éÀúÈ«ÆÁ¼¼ÄÜ);
-//		¹«¸æ("¼¼ÄÜÈ«ÆÁ - ¿ªÆô");
+//		SetTimer(hWnd, 1, é¢‘çŽ‡, (TIMERPROC)éåŽ†å…¨å±æŠ€èƒ½);
+//		å…¬å‘Š("æŠ€èƒ½å…¨å± - å¼€å¯");
 //	}
 //	else
 //	{
 //		KillTimer(hWnd, 1);
-//		¹«¸æ("¼¼ÄÜÈ«ÆÁ - ¹Ø±Õ");
+//		å…¬å‘Š("æŠ€èƒ½å…¨å± - å…³é—­");
 //	}
 //	_switch = !_switch;
 //
@@ -59,24 +59,24 @@ VOID ÎäÆ÷±ù¶³() {
 
 
 
-VOID HOOKÉËº¦() {
-	BOOL static HOOK¿ª¹Ø = false;
+VOID HOOKä¼¤å®³() {
+	BOOL static HOOKå¼€å…³ = false;
 
-	BYTE* µØÖ·Ô­Êý¾Ý;
+	BYTE* åœ°å€åŽŸæ•°æ®;
 
-	DWORD64 ÉËº¦µØÖ· = È«¾Ö»ùÖ·;
-	HOOK¿ª¹Ø = !HOOK¿ª¹Ø;
+	DWORD64 ä¼¤å®³åœ°å€ = å…¨å±€åŸºå€;
+	HOOKå¼€å…³ = !HOOKå¼€å…³;
 
-	if (HOOK¿ª¹Ø)
+	if (HOOKå¼€å…³)
 	{
-		µØÖ·Ô­Êý¾Ý = ¶Á×Ö½Ú¼¯ÐÍ(ÉËº¦µØÖ·,10);
+		åœ°å€åŽŸæ•°æ® = è¯»å­—èŠ‚é›†åž‹(ä¼¤å®³åœ°å€,10);
 
 		vector<byte> data = { 72,190,127,150,152,0 };
-		API_Ð´×Ö½Ú¼¯(ÉËº¦µØÖ·, data);
+		API_å†™å­—èŠ‚é›†(ä¼¤å®³åœ°å€, data);
 	}
 	else
 	{
-		//Ð´×Ö½Ú¼¯ÐÍ(ÉËº¦µØÖ·,µØÖ·Ô­Êý¾Ý,10);
+		//å†™å­—èŠ‚é›†åž‹(ä¼¤å®³åœ°å€,åœ°å€åŽŸæ•°æ®,10);
 	}
 }
 

@@ -1,54 +1,54 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "VuDriver.h"
 
 static HANDLE g_hDrv = INVALID_HANDLE_VALUE;
 
-VOID VuÇý¶¯::ÉèÖÃÇý¶¯¾ä±ú(HANDLE hDrv)
+VOID Vué©±åŠ¨::è®¾ç½®é©±åŠ¨å¥æŸ„(HANDLE hDrv)
 {
 	g_hDrv = hDrv;
 	return;
 }
 
-ULONG64 VuÇý¶¯::Ð§ÑéÓÐÐ§ÐÔ(const char* key)
+ULONG64 Vué©±åŠ¨::æ•ˆéªŒæœ‰æ•ˆæ€§(const char* key)
 {
 	IOCTL_BUFFER		pInfo = { 0 };
 	pInfo.Buf = (ULONG64)key;
-	ULONG64 ·µ»ØÊý¾Ý = 0;
+	ULONG64 è¿”å›žæ•°æ® = 0;
 	DWORD				returnLegth = 0;
 
-	DeviceIoControl(g_hDrv, IOCTL_IO_FILE_CHECK, &pInfo, sizeof(pInfo), &·µ»ØÊý¾Ý, sizeof(·µ»ØÊý¾Ý), &returnLegth, NULL);
+	DeviceIoControl(g_hDrv, IOCTL_IO_FILE_CHECK, &pInfo, sizeof(pInfo), &è¿”å›žæ•°æ®, sizeof(è¿”å›žæ•°æ®), &returnLegth, NULL);
 
-	return ·µ»ØÊý¾Ý;
+	return è¿”å›žæ•°æ®;
 
 	/*
-	·µ»ØÊý¾Ý > 0 = (¡°ÔØÈëÇý¶¯³É¹¦!¡±)
-	0 = (¡°²ÎÊý´íÎó - Çë¼ì²éDLLÂ·¾¶ÊÇ·ñÕæÊµ´æÔÚÒÔ¼°ÄúµÄ¼¤»îÂëÊÇ·ñÕýÈ·¡±)
-	-1= (¡°¼¤»îÂë²»´æÔÚ¡±)
-	-2=(¡°ÕË»§Óà¶î²»×ã¡±)
-	-3=(¡°¿Û·ÑÊ§°Ü¡±)
-	-4=(¡°ÍøÂç´íÎó¡±)
-	-5=(¡°Çý¶¯°²×°Ê§°Ü¡±)
-	-6=(¡°ÓÐÐ§ÐÔÐ§ÑéÊ§°Ü¡±)
-	ÆäËû(¡°Î´Öª´íÎó¡±)
+	è¿”å›žæ•°æ® > 0 = (â€œè½½å…¥é©±åŠ¨æˆåŠŸ!â€)
+	0 = (â€œå‚æ•°é”™è¯¯ - è¯·æ£€æŸ¥DLLè·¯å¾„æ˜¯å¦çœŸå®žå­˜åœ¨ä»¥åŠæ‚¨çš„æ¿€æ´»ç æ˜¯å¦æ­£ç¡®â€)
+	-1= (â€œæ¿€æ´»ç ä¸å­˜åœ¨â€)
+	-2=(â€œè´¦æˆ·ä½™é¢ä¸è¶³â€)
+	-3=(â€œæ‰£è´¹å¤±è´¥â€)
+	-4=(â€œç½‘ç»œé”™è¯¯â€)
+	-5=(â€œé©±åŠ¨å®‰è£…å¤±è´¥â€)
+	-6=(â€œæœ‰æ•ˆæ€§æ•ˆéªŒå¤±è´¥â€)
+	å…¶ä»–(â€œæœªçŸ¥é”™è¯¯â€)
 	*/
 
 }
 
 
-ULONG64 VuÇý¶¯::VU_ÄÚ´æ_ÖÃ¶ÁÐ´Ä£Ê½(DWORD Ä£Ê½, DWORD ÀàÐÍ)
+ULONG64 Vué©±åŠ¨::VU_å†…å­˜_ç½®è¯»å†™æ¨¡å¼(DWORD æ¨¡å¼, DWORD ç±»åž‹)
 {
 	BOOL				bResult = FALSE;
 	ULONG64             returnCode = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER		pInfo = { 0 };
-	pInfo.Addr = Ä£Ê½;
-	pInfo.Size = ÀàÐÍ;
+	pInfo.Addr = æ¨¡å¼;
+	pInfo.Size = ç±»åž‹;
 	bResult = DeviceIoControl(g_hDrv, IOCTL_IO_MEMORY_MOD, &pInfo, sizeof(pInfo), &returnCode, sizeof(returnCode), &returnLegth, NULL);
 	return returnCode;
 }
 
-//Ã¶¾ÙÖ¸¶¨½ø³ÌÄ£¿é 
-DWORD64	VuÇý¶¯::VU_ÄÚ´æ_È¡Ä£¿é»ùÖ·(DWORD pid, const char* moduleName)
+//æžšä¸¾æŒ‡å®šè¿›ç¨‹æ¨¡å— 
+DWORD64	Vué©±åŠ¨::VU_å†…å­˜_å–æ¨¡å—åŸºå€(DWORD pid, const char* moduleName)
 {
 	BOOL				bResult = FALSE;
 	DWORD				returnLegth = 0;
@@ -66,8 +66,8 @@ DWORD64	VuÇý¶¯::VU_ÄÚ´æ_È¡Ä£¿é»ùÖ·(DWORD pid, const char* moduleName)
 }
 
 
-//¶ÁÄÚ´æº¯Êý£¬×Ô¼º·â×°
-BOOL VuÇý¶¯::VU_ÄÚ´æ_¶Á×Ö½Ú¼¯(DWORD pid, PVOID addr, PVOID pBuf, INT32 size)
+//è¯»å†…å­˜å‡½æ•°ï¼Œè‡ªå·±å°è£…
+BOOL Vué©±åŠ¨::VU_å†…å­˜_è¯»å­—èŠ‚é›†(DWORD pid, PVOID addr, PVOID pBuf, INT32 size)
 {
 	BOOL				bResult = FALSE;
 	DWORD				returnLegth = 0;
@@ -82,8 +82,8 @@ BOOL VuÇý¶¯::VU_ÄÚ´æ_¶Á×Ö½Ú¼¯(DWORD pid, PVOID addr, PVOID pBuf, INT32 size)
 	return bResult;
 }
 
-//Ð´ÄÚ´æº¯Êý£¬×Ô¼º·â×°
-BOOL VuÇý¶¯::VU_ÄÚ´æ_Ð´×Ö½Ú¼¯(DWORD pid, PVOID addr, PVOID pBuf, INT32 size)
+//å†™å†…å­˜å‡½æ•°ï¼Œè‡ªå·±å°è£…
+BOOL Vué©±åŠ¨::VU_å†…å­˜_å†™å­—èŠ‚é›†(DWORD pid, PVOID addr, PVOID pBuf, INT32 size)
 {
 
 	BOOL				bResult = FALSE;
@@ -110,19 +110,19 @@ BOOL VuÇý¶¯::VU_ÄÚ´æ_Ð´×Ö½Ú¼¯(DWORD pid, PVOID addr, PVOID pBuf, INT32 size)
 }
 
 
-DWORD64 VuÇý¶¯::VU_ÄÚ´æ_ÉêÇë(DWORD ½ø³ÌID, DWORD64 ½ø³ÌµØÖ·, DWORD64 ÉêÇë³¤¶È, DWORD64 ÄÚ´æÊôÐÔ, BOOL ÊÇ·ñÎïÀí)
+DWORD64 Vué©±åŠ¨::VU_å†…å­˜_ç”³è¯·(DWORD è¿›ç¨‹ID, DWORD64 è¿›ç¨‹åœ°å€, DWORD64 ç”³è¯·é•¿åº¦, DWORD64 å†…å­˜å±žæ€§, BOOL æ˜¯å¦ç‰©ç†)
 {
 
 
 	DWORD					returnLegth = 0;
 	ALLOCATE_FREE_MEMORY	msgInfo = { 0 };
 	ALLOCATE_FREE_MEMORY_RESULT result = { 0 };
-	msgInfo.pid = ½ø³ÌID;
-	msgInfo.base = ½ø³ÌµØÖ·;
-	msgInfo.size = ÉêÇë³¤¶È;
-	msgInfo.protection = ÄÚ´æÊôÐÔ;
+	msgInfo.pid = è¿›ç¨‹ID;
+	msgInfo.base = è¿›ç¨‹åœ°å€;
+	msgInfo.size = ç”³è¯·é•¿åº¦;
+	msgInfo.protection = å†…å­˜å±žæ€§;
 	msgInfo.allocate = TRUE;
-	msgInfo.physical = ÊÇ·ñÎïÀí;
+	msgInfo.physical = æ˜¯å¦ç‰©ç†;
 	msgInfo.type = MEM_COMMIT;
 
 	DeviceIoControl(g_hDrv, IOCTL_IO_MEMORY_ALLOC, &msgInfo, sizeof(msgInfo), &result, sizeof(result), &returnLegth, NULL);
@@ -130,19 +130,19 @@ DWORD64 VuÇý¶¯::VU_ÄÚ´æ_ÉêÇë(DWORD ½ø³ÌID, DWORD64 ½ø³ÌµØÖ·, DWORD64 ÉêÇë³¤¶È, D
 }
 
 
-DWORD64 VuÇý¶¯::VU_ÄÚ´æ_ÊÍ·Å(DWORD ½ø³ÌID, DWORD64 ½ø³ÌµØÖ·, DWORD64 ÄÚ´æ³¤¶È, BOOL ÊÇ·ñÎïÀí)
+DWORD64 Vué©±åŠ¨::VU_å†…å­˜_é‡Šæ”¾(DWORD è¿›ç¨‹ID, DWORD64 è¿›ç¨‹åœ°å€, DWORD64 å†…å­˜é•¿åº¦, BOOL æ˜¯å¦ç‰©ç†)
 {
 
 
 	DWORD					returnLegth = 0;
 	ALLOCATE_FREE_MEMORY	msgInfo = { 0 };
 	ALLOCATE_FREE_MEMORY_RESULT result = { 0 };
-	msgInfo.pid = ½ø³ÌID;
-	msgInfo.base = ½ø³ÌµØÖ·;
-	msgInfo.size = ÄÚ´æ³¤¶È;
+	msgInfo.pid = è¿›ç¨‹ID;
+	msgInfo.base = è¿›ç¨‹åœ°å€;
+	msgInfo.size = å†…å­˜é•¿åº¦;
 	msgInfo.protection = 0;
 	msgInfo.allocate = FALSE;
-	msgInfo.physical = ÊÇ·ñÎïÀí;
+	msgInfo.physical = æ˜¯å¦ç‰©ç†;
 	msgInfo.type = MEM_RELEASE;
 
 	DeviceIoControl(g_hDrv, IOCTL_IO_MEMORY_ALLOC, &msgInfo, sizeof(msgInfo), &result, sizeof(result), &returnLegth, NULL);
@@ -150,16 +150,16 @@ DWORD64 VuÇý¶¯::VU_ÄÚ´æ_ÊÍ·Å(DWORD ½ø³ÌID, DWORD64 ½ø³ÌµØÖ·, DWORD64 ÄÚ´æ³¤¶È, B
 }
 
 
-DWORD64 VuÇý¶¯::VU_ÄÚ´æ_ÐÞ¸ÄÊôÐÔ(DWORD ½ø³ÌID, DWORD64 µØÖ·, DWORD64 ³¤¶È, DWORD64 ÄÚ´æÊôÐÔ)
+DWORD64 Vué©±åŠ¨::VU_å†…å­˜_ä¿®æ”¹å±žæ€§(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€, DWORD64 é•¿åº¦, DWORD64 å†…å­˜å±žæ€§)
 {
 	DWORD64 pAddr = 0;
 
 	DWORD					returnLegth = 0;
 	ALLOCATE_FREE_MEMORY	msgInfo = { 0 };
-	msgInfo.pid = ½ø³ÌID;
-	msgInfo.base = µØÖ·;
-	msgInfo.size = ³¤¶È;
-	msgInfo.protection = ÄÚ´æÊôÐÔ;
+	msgInfo.pid = è¿›ç¨‹ID;
+	msgInfo.base = åœ°å€;
+	msgInfo.size = é•¿åº¦;
+	msgInfo.protection = å†…å­˜å±žæ€§;
 	msgInfo.allocate = TRUE;
 	msgInfo.physical = 1;
 	msgInfo.type = MEM_RELEASE;
@@ -169,14 +169,14 @@ DWORD64 VuÇý¶¯::VU_ÄÚ´æ_ÐÞ¸ÄÊôÐÔ(DWORD ½ø³ÌID, DWORD64 µØÖ·, DWORD64 ³¤¶È, DWORD
 }
 
 
-DWORD64 VuÇý¶¯::VU_ÄÚ´æ_²éÑ¯ÊôÐÔ(DWORD ½ø³ÌID, DWORD64 µØÖ·)
+DWORD64 Vué©±åŠ¨::VU_å†…å­˜_æŸ¥è¯¢å±žæ€§(DWORD è¿›ç¨‹ID, DWORD64 åœ°å€)
 {
 	DWORD64 pAddr = 0;
 
 	DWORD					returnLegth = 0;
 	ALLOCATE_FREE_MEMORY	msgInfo = { 0 };
-	msgInfo.pid = ½ø³ÌID;
-	msgInfo.base = µØÖ·;
+	msgInfo.pid = è¿›ç¨‹ID;
+	msgInfo.base = åœ°å€;
 	msgInfo.size = 4096;
 	msgInfo.protection = 64;
 	msgInfo.allocate = FALSE;
@@ -188,31 +188,31 @@ DWORD64 VuÇý¶¯::VU_ÄÚ´æ_²éÑ¯ÊôÐÔ(DWORD ½ø³ÌID, DWORD64 µØÖ·)
 }
 
 
-DWORD64 VuÇý¶¯::VU_³¬¼¶×¢ÈëCALL_ÖÃÖ÷Ïß³Ì»ñÈ¡Ä£Ê½(DWORD64 Ä£Ê½)
+DWORD64 Vué©±åŠ¨::VU_è¶…çº§æ³¨å…¥CALL_ç½®ä¸»çº¿ç¨‹èŽ·å–æ¨¡å¼(DWORD64 æ¨¡å¼)
 {
 
 	BOOL				bResult = FALSE;
 	DWORD64				pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.Addr = Ä£Ê½;
+	msgInfo.Addr = æ¨¡å¼;
 
 	DeviceIoControl(g_hDrv, IOCTL_IO_INJECT_SET_THREADMOD, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 	return pAddr;
 }
 
-DWORD64 VuÇý¶¯::VU_Ô¶³Ì×¢ÈëCALL(DWORD ½ø³ÌID, PBYTE CALL´úÂë, DWORD CALL´úÂë³¤¶È, BOOL Ó²¼þÎïÀíÖ´ÐÐ)
+DWORD64 Vué©±åŠ¨::VU_è¿œç¨‹æ³¨å…¥CALL(DWORD è¿›ç¨‹ID, PBYTE CALLä»£ç , DWORD CALLä»£ç é•¿åº¦, BOOL ç¡¬ä»¶ç‰©ç†æ‰§è¡Œ)
 {
-	DWORD len = sizeof(IOCTL_BUFFER_InjectCode) + CALL´úÂë³¤¶È;
+	DWORD len = sizeof(IOCTL_BUFFER_InjectCode) + CALLä»£ç é•¿åº¦;
 	IOCTL_BUFFER_InjectCode* pInfo = (IOCTL_BUFFER_InjectCode*)malloc(len);
 	if (!pInfo)
 		return FALSE;
 	ZeroMemory(pInfo, len);
-	pInfo->PID = ½ø³ÌID;
-	pInfo->isPhyMem = Ó²¼þÎïÀíÖ´ÐÐ;
-	pInfo->Size = CALL´úÂë³¤¶È;
+	pInfo->PID = è¿›ç¨‹ID;
+	pInfo->isPhyMem = ç¡¬ä»¶ç‰©ç†æ‰§è¡Œ;
+	pInfo->Size = CALLä»£ç é•¿åº¦;
 
-	memcpy(pInfo->Buf, CALL´úÂë, CALL´úÂë³¤¶È);
+	memcpy(pInfo->Buf, CALLä»£ç , CALLä»£ç é•¿åº¦);
 
 	DWORD64 pAddr = 0;
 	DWORD	returnLegth = 0;
@@ -224,33 +224,33 @@ DWORD64 VuÇý¶¯::VU_Ô¶³Ì×¢ÈëCALL(DWORD ½ø³ÌID, PBYTE CALL´úÂë, DWORD CALL´úÂë³¤¶È
 }
 
 
-DWORD64 VuÇý¶¯::VU_Ô¶³ÌÖ´ÐÐCALL(DWORD ½ø³ÌID, DWORD64 Ä¿±êµØÖ·, DWORD64 ²ÎÊýµØÖ·)
+DWORD64 Vué©±åŠ¨::VU_è¿œç¨‹æ‰§è¡ŒCALL(DWORD è¿›ç¨‹ID, DWORD64 ç›®æ ‡åœ°å€, DWORD64 å‚æ•°åœ°å€)
 {
 	DWORD64 pAddr = 0;
 	DWORD	returnLegth = 0;
 	IOCTL_BUFFER_InjectCode	msgInfo = { 0 };
-	msgInfo.PID = ½ø³ÌID;
-	msgInfo.Size = ²ÎÊýµØÖ·;
-	msgInfo.Addr = Ä¿±êµØÖ·;
+	msgInfo.PID = è¿›ç¨‹ID;
+	msgInfo.Size = å‚æ•°åœ°å€;
+	msgInfo.Addr = ç›®æ ‡åœ°å€;
 
 	DeviceIoControl(g_hDrv, IOCTL_IO_INJECT_REMOTE_CALLEX, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 	return pAddr;
 }
 
-DWORD64 VuÇý¶¯::VU_³¬¼¶×¢ÈëCALL(DWORD ½ø³ÌID, PBYTE CALL´úÂë, DWORD CALL´úÂë³¤¶È, DWORD Ïß³ÌID, BOOL Ó²¼þÎïÀíÖ´ÐÐ)
+DWORD64 Vué©±åŠ¨::VU_è¶…çº§æ³¨å…¥CALL(DWORD è¿›ç¨‹ID, PBYTE CALLä»£ç , DWORD CALLä»£ç é•¿åº¦, DWORD çº¿ç¨‹ID, BOOL ç¡¬ä»¶ç‰©ç†æ‰§è¡Œ)
 {
-	DWORD len = sizeof(IOCTL_BUFFER_InjectCode) + CALL´úÂë³¤¶È;
+	DWORD len = sizeof(IOCTL_BUFFER_InjectCode) + CALLä»£ç é•¿åº¦;
 	IOCTL_BUFFER_InjectCode* pInfo = (IOCTL_BUFFER_InjectCode*)malloc(len);
 	if (!pInfo)
 		return FALSE;
 	ZeroMemory(pInfo, len);
 
-	pInfo->PID = ½ø³ÌID;
-	pInfo->isPhyMem = Ó²¼þÎïÀíÖ´ÐÐ;
-	pInfo->Size = CALL´úÂë³¤¶È;
+	pInfo->PID = è¿›ç¨‹ID;
+	pInfo->isPhyMem = ç¡¬ä»¶ç‰©ç†æ‰§è¡Œ;
+	pInfo->Size = CALLä»£ç é•¿åº¦;
 
-	memcpy(pInfo->Buf, CALL´úÂë, CALL´úÂë³¤¶È);
-	pInfo->Addr = Ïß³ÌID;
+	memcpy(pInfo->Buf, CALLä»£ç , CALLä»£ç é•¿åº¦);
+	pInfo->Addr = çº¿ç¨‹ID;
 
 
 	DWORD64 pAddr = 0;
@@ -264,15 +264,15 @@ DWORD64 VuÇý¶¯::VU_³¬¼¶×¢ÈëCALL(DWORD ½ø³ÌID, PBYTE CALL´úÂë, DWORD CALL´úÂë³¤¶È
 }
 
 
-DWORD64 VuÇý¶¯::VU_³¬¼¶Ö´ÐÐCALL(DWORD ½ø³ÌID, DWORD64 Ä¿±êµØÖ·, DWORD64 ²ÎÊýµØÖ·, DWORD Ïß³ÌID)
+DWORD64 Vué©±åŠ¨::VU_è¶…çº§æ‰§è¡ŒCALL(DWORD è¿›ç¨‹ID, DWORD64 ç›®æ ‡åœ°å€, DWORD64 å‚æ•°åœ°å€, DWORD çº¿ç¨‹ID)
 {
 	DWORD64 pAddr = 0;
 	DWORD	returnLegth = 0;
 	IOCTL_BUFFER_InjectCode	msgInfo = { 0 };
-	msgInfo.PID = ½ø³ÌID;
-	msgInfo.Addr = Ä¿±êµØÖ·;
-	msgInfo.Size = ²ÎÊýµØÖ·;
-	msgInfo.isPhyMem = Ïß³ÌID;
+	msgInfo.PID = è¿›ç¨‹ID;
+	msgInfo.Addr = ç›®æ ‡åœ°å€;
+	msgInfo.Size = å‚æ•°åœ°å€;
+	msgInfo.isPhyMem = çº¿ç¨‹ID;
 
 
 	DeviceIoControl(g_hDrv, IOCTL_IO_INJECT_SUPER_CALLEX, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
@@ -280,7 +280,7 @@ DWORD64 VuÇý¶¯::VU_³¬¼¶Ö´ÐÐCALL(DWORD ½ø³ÌID, DWORD64 Ä¿±êµØÖ·, DWORD64 ²ÎÊýµØÖ·
 }
 
 
-BOOL VuÇý¶¯::VU_¼üÊó_°²×°()
+BOOL Vué©±åŠ¨::VU_é”®é¼ _å®‰è£…()
 {
 	BOOL				bResult = FALSE;
 	DWORD				returnLegth = 0;
@@ -289,14 +289,14 @@ BOOL VuÇý¶¯::VU_¼üÊó_°²×°()
 
 }
 
-BOOL VuÇý¶¯::VU_Òþ²ØÎÄ¼þ_°²×°()
+BOOL Vué©±åŠ¨::VU_éšè—æ–‡ä»¶_å®‰è£…()
 {
 	DWORD				returnLegth = 0;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_FILTER_INIT, 0, 0, 0, 0, &returnLegth, NULL);
 }
 
-BOOL VuÇý¶¯::VU_Òþ²ØÎÄ¼þ_Ð¶ÔØ()
+BOOL Vué©±åŠ¨::VU_éšè—æ–‡ä»¶_å¸è½½()
 {
 	DWORD				returnLegth = 0;
 
@@ -304,26 +304,26 @@ BOOL VuÇý¶¯::VU_Òþ²ØÎÄ¼þ_Ð¶ÔØ()
 }
 
 
-DWORD64 VuÇý¶¯::VU_Òþ²ØÎÄ¼þ_ÎÄ¼þ(CHAR* ÎÄ¼þÂ·¾¶)
+DWORD64 Vué©±åŠ¨::VU_éšè—æ–‡ä»¶_æ–‡ä»¶(CHAR* æ–‡ä»¶è·¯å¾„)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
 	CHAR strPath[MAX_PATH] = { 0 };
-	sprintf_s(strPath, "\\??\\%s", ÎÄ¼þÂ·¾¶);
+	sprintf_s(strPath, "\\??\\%s", æ–‡ä»¶è·¯å¾„);
 	msgInfo.Buf = (DWORD64)&strPath;
 	DeviceIoControl(g_hDrv, IOCTL_IO_FILTER_FILE, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 	return pAddr;
 }
 
-DWORD64 VuÇý¶¯::VU_Òþ²ØÎÄ¼þ_Ä¿Â¼(CHAR* Ä¿Â¼Â·¾¶)
+DWORD64 Vué©±åŠ¨::VU_éšè—æ–‡ä»¶_ç›®å½•(CHAR* ç›®å½•è·¯å¾„)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
 
 	CHAR strPath[MAX_PATH] = { 0 };
-	sprintf_s(strPath, "\\??\\%s", Ä¿Â¼Â·¾¶);
+	sprintf_s(strPath, "\\??\\%s", ç›®å½•è·¯å¾„);
 	msgInfo.Buf = (DWORD64)&strPath;
 	DeviceIoControl(g_hDrv, IOCTL_IO_FILTER_DIR, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 	return pAddr;
@@ -333,7 +333,7 @@ DWORD64 VuÇý¶¯::VU_Òþ²ØÎÄ¼þ_Ä¿Â¼(CHAR* Ä¿Â¼Â·¾¶)
 
 
 
-BOOL VuÇý¶¯::VU_±£»¤_°²×°()
+BOOL Vué©±åŠ¨::VU_ä¿æŠ¤_å®‰è£…()
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
@@ -343,7 +343,7 @@ BOOL VuÇý¶¯::VU_±£»¤_°²×°()
 	return DeviceIoControl(g_hDrv, IOCTL_IO_PROTECT_BEGIN_OR_END, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
-BOOL VuÇý¶¯::VU_±£»¤_Ð¶ÔØ()
+BOOL Vué©±åŠ¨::VU_ä¿æŠ¤_å¸è½½()
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
@@ -353,130 +353,130 @@ BOOL VuÇý¶¯::VU_±£»¤_Ð¶ÔØ()
 	return DeviceIoControl(g_hDrv, IOCTL_IO_PROTECT_BEGIN_OR_END, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
-BOOL VuÇý¶¯::VU_±£»¤_½ø³Ì_¿ªÊ¼(DWORD64 ½ø³ÌID, BOOL ÊÇ·ñ±£»¤Çý¶¯)
+BOOL Vué©±åŠ¨::VU_ä¿æŠ¤_è¿›ç¨‹_å¼€å§‹(DWORD64 è¿›ç¨‹ID, BOOL æ˜¯å¦ä¿æŠ¤é©±åŠ¨)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.PID = ½ø³ÌID;
-	if (ÊÇ·ñ±£»¤Çý¶¯)
+	msgInfo.PID = è¿›ç¨‹ID;
+	if (æ˜¯å¦ä¿æŠ¤é©±åŠ¨)
 		msgInfo.Size = 100;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_PROTECT_PROCESS_BEGIN, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
-BOOL VuÇý¶¯::VU_±£»¤_½ø³Ì_½áÊø(DWORD64 ½ø³ÌID)
+BOOL Vué©±åŠ¨::VU_ä¿æŠ¤_è¿›ç¨‹_ç»“æŸ(DWORD64 è¿›ç¨‹ID)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.PID = ½ø³ÌID;
+	msgInfo.PID = è¿›ç¨‹ID;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_PROTECT_PROCESS_END, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
 
-BOOL VuÇý¶¯::VU_±£»¤_´°¿Ú_¿ªÊ¼(DWORD64 ´°¿Ú¾ä±ú, DWORD64 ½ø³ÌID)
+BOOL Vué©±åŠ¨::VU_ä¿æŠ¤_çª—å£_å¼€å§‹(DWORD64 çª—å£å¥æŸ„, DWORD64 è¿›ç¨‹ID)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.Buf = ´°¿Ú¾ä±ú;
-	msgInfo.PID = ½ø³ÌID;
+	msgInfo.Buf = çª—å£å¥æŸ„;
+	msgInfo.PID = è¿›ç¨‹ID;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_PROTECT_WINDOW_BEGIN, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
-BOOL VuÇý¶¯::VU_±£»¤_´°¿Ú_½áÊø(DWORD64 ´°¿Ú¾ä±ú, DWORD64 ½ø³ÌID)
+BOOL Vué©±åŠ¨::VU_ä¿æŠ¤_çª—å£_ç»“æŸ(DWORD64 çª—å£å¥æŸ„, DWORD64 è¿›ç¨‹ID)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.Buf = ´°¿Ú¾ä±ú;
-	msgInfo.PID = ½ø³ÌID;
+	msgInfo.Buf = çª—å£å¥æŸ„;
+	msgInfo.PID = è¿›ç¨‹ID;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_PROTECT_WINDOW_END, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
-BOOL VuÇý¶¯::VU_±£»¤_ÓÎÏ·_¿ªÊ¼(DWORD64 ´°¿Ú¾ä±ú, DWORD64 ½ø³ÌID)
+BOOL Vué©±åŠ¨::VU_ä¿æŠ¤_æ¸¸æˆ_å¼€å§‹(DWORD64 çª—å£å¥æŸ„, DWORD64 è¿›ç¨‹ID)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.Buf = ´°¿Ú¾ä±ú;
-	msgInfo.PID = ½ø³ÌID;
+	msgInfo.Buf = çª—å£å¥æŸ„;
+	msgInfo.PID = è¿›ç¨‹ID;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_PROTECT_GAME_BEGIN, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
-BOOL VuÇý¶¯::VU_±£»¤_ÓÎÏ·_½áÊø(DWORD64 ´°¿Ú¾ä±ú, DWORD64 ½ø³ÌID)
+BOOL Vué©±åŠ¨::VU_ä¿æŠ¤_æ¸¸æˆ_ç»“æŸ(DWORD64 çª—å£å¥æŸ„, DWORD64 è¿›ç¨‹ID)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.Buf = ´°¿Ú¾ä±ú;
-	msgInfo.PID = ½ø³ÌID;
+	msgInfo.Buf = çª—å£å¥æŸ„;
+	msgInfo.PID = è¿›ç¨‹ID;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_PROTECT_GAME_END, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
 
 
-BOOL VuÇý¶¯::VU_Ó²¼þ_ÐÞ¸ÄÓ²ÅÌÐòºÅ(CHAR* ÐòºÅ, DWORD64 ÎÄ±¾³¤¶È)
+BOOL Vué©±åŠ¨::VU_ç¡¬ä»¶_ä¿®æ”¹ç¡¬ç›˜åºå·(CHAR* åºå·, DWORD64 æ–‡æœ¬é•¿åº¦)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.Buf = (DWORD64)ÐòºÅ;
-	msgInfo.Size = ÎÄ±¾³¤¶È;
+	msgInfo.Buf = (DWORD64)åºå·;
+	msgInfo.Size = æ–‡æœ¬é•¿åº¦;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_HARDWARE_DISK, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
 
-BOOL VuÇý¶¯::VU_Ó²¼þ_ÐÞ¸ÄÉù¿¨ÐòºÅ(CHAR* ÐòºÅ, DWORD64 ÎÄ±¾³¤¶È)
+BOOL Vué©±åŠ¨::VU_ç¡¬ä»¶_ä¿®æ”¹å£°å¡åºå·(CHAR* åºå·, DWORD64 æ–‡æœ¬é•¿åº¦)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.Buf = (DWORD64)ÐòºÅ;
-	msgInfo.Size = ÎÄ±¾³¤¶È;
+	msgInfo.Buf = (DWORD64)åºå·;
+	msgInfo.Size = æ–‡æœ¬é•¿åº¦;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_HARDWARE_VOLUMES, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
 
-BOOL VuÇý¶¯::VU_Ó²¼þ_ÐÞ¸ÄÍø¿¨ÐòºÅ(CHAR* ÐòºÅ, DWORD64 ÎÄ±¾³¤¶È)
+BOOL Vué©±åŠ¨::VU_ç¡¬ä»¶_ä¿®æ”¹ç½‘å¡åºå·(CHAR* åºå·, DWORD64 æ–‡æœ¬é•¿åº¦)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.Buf = (DWORD64)ÐòºÅ;
-	msgInfo.Size = ÎÄ±¾³¤¶È;
+	msgInfo.Buf = (DWORD64)åºå·;
+	msgInfo.Size = æ–‡æœ¬é•¿åº¦;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_HARDWARE_MAC, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
 
-BOOL VuÇý¶¯::VU_Ó²¼þ_ÐÞ¸ÄÖ÷°åÐòºÅ(CHAR* ÐòºÅ, DWORD64 ÎÄ±¾³¤¶È)
+BOOL Vué©±åŠ¨::VU_ç¡¬ä»¶_ä¿®æ”¹ä¸»æ¿åºå·(CHAR* åºå·, DWORD64 æ–‡æœ¬é•¿åº¦)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER				msgInfo = { 0 };
-	msgInfo.Buf = (DWORD64)ÐòºÅ;
-	msgInfo.Size = ÎÄ±¾³¤¶È;
+	msgInfo.Buf = (DWORD64)åºå·;
+	msgInfo.Size = æ–‡æœ¬é•¿åº¦;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_HARDWARE_SMBOIS, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }
 
 
-BOOL VuÇý¶¯::VU_Ó²¼þ_ÐÞ¸ÄÏÔ¿¨ÐòºÅ(CHAR* ÐòºÅ, DWORD64 ÎÄ±¾³¤¶È)
+BOOL Vué©±åŠ¨::VU_ç¡¬ä»¶_ä¿®æ”¹æ˜¾å¡åºå·(CHAR* åºå·, DWORD64 æ–‡æœ¬é•¿åº¦)
 {
 	DWORD64 pAddr = 0;
 	DWORD				returnLegth = 0;
 	IOCTL_BUFFER		msgInfo = { 0 };
-	msgInfo.Buf = (DWORD64)ÐòºÅ;
-	msgInfo.Size = ÎÄ±¾³¤¶È;
+	msgInfo.Buf = (DWORD64)åºå·;
+	msgInfo.Size = æ–‡æœ¬é•¿åº¦;
 
 	return DeviceIoControl(g_hDrv, IOCTL_IO_HARDWARE_GPU, &msgInfo, sizeof(msgInfo), &pAddr, sizeof(pAddr), &returnLegth, NULL);
 }

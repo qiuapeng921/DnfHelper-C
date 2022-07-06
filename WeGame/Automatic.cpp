@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 
 #include <thread>
 #include "Automatic.h"
@@ -6,34 +6,34 @@
 
 
 VOID Automatic::AutomaticSwitch() {
-	MessageBoxW(NULL, L"AutomaticÏß³Ì", L"Automatic", MB_OK);
+	MessageBoxW(NULL, L"Automaticçº¿ç¨‹", L"Automatic", MB_OK);
 }
 
 VOID Automatic::AutomaticThread() {
 	while (true)
 	{
 		Sleep(1000);
-		MessageBoxW(NULL, L"AutomaticÏß³Ì", L"Automatic", MB_OK);
+		MessageBoxW(NULL, L"Automaticçº¿ç¨‹", L"Automatic", MB_OK);
 	}
 }
 
-VOID Automatic::½øÈë³ÇÕò() {
+VOID Automatic::è¿›å…¥åŸé•‡() {
 }
 
-VOID Automatic::³ÇÕò´¦Àí() {
+VOID Automatic::åŸé•‡å¤„ç†() {
 }
 
-VOID Automatic::½øÈëÑ¡Í¼() {
+VOID Automatic::è¿›å…¥é€‰å›¾() {
 }
 
-VOID Automatic::·µ»Ø½ÇÉ«() {
+VOID Automatic::è¿”å›è§’è‰²() {
 }
 
-VOID Automatic::½øÈë¸±±¾() {
+VOID Automatic::è¿›å…¥å‰¯æœ¬() {
 }
 
-VOID Automatic::Ä£ÄâË³Í¼() {
+VOID Automatic::æ¨¡æ‹Ÿé¡ºå›¾() {
 }
 
-VOID Automatic::ÍË³ö¸±±¾() {
+VOID Automatic::é€€å‡ºå‰¯æœ¬() {
 }

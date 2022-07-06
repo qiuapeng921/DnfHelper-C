@@ -1,10 +1,10 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Driver.h"
 
 
-Driver::Driver() //¹¹Ôìº¯Êı
+Driver::Driver() //æ„é€ å‡½æ•°
 {
-	//³õÊ¼»¯±äÁ¿
+	//åˆå§‹åŒ–å˜é‡
 	hSCManager = NULL;
 	hService = NULL;
 	hDriver = INVALID_HANDLE_VALUE;
@@ -12,16 +12,16 @@ Driver::Driver() //¹¹Ôìº¯Êı
 	dwLastError = 0;
 }
 
-Driver::~Driver() //Îö¹¹º¯Êı
+Driver::~Driver() //ææ„å‡½æ•°
 {
-	//ÊÍ·Å×ÊÔ´
+	//é‡Šæ”¾èµ„æº
 	CloseServiceHandle(hService);
 	CloseServiceHandle(hSCManager);
 	CloseHandle(hDriver);
 }
 
 
-BOOL Driver::LoadDriver(LPCWSTR Çı¶¯ÎÄ¼şÂ·¾¶, LPCWSTR ·şÎñÃû, LPCWSTR ·şÎñÏÔÊ¾Ãû) {
+BOOL Driver::LoadDriver(LPCWSTR é©±åŠ¨æ–‡ä»¶è·¯å¾„, LPCWSTR æœåŠ¡å, LPCWSTR æœåŠ¡æ˜¾ç¤ºå) {
 
 	BOOL result = false;
 
@@ -30,24 +30,24 @@ BOOL Driver::LoadDriver(LPCWSTR Çı¶¯ÎÄ¼şÂ·¾¶, LPCWSTR ·şÎñÃû, LPCWSTR ·şÎñÏÔÊ¾Ãû
 
 		hService = CreateService(
 			hSCManager,
-			·şÎñÃû,//Çı¶¯³ÌĞòÔÚ×¢²á±íÖĞµÄÃû×Ö
-			·şÎñÏÔÊ¾Ãû,// ×¢²á±íÇı¶¯³ÌĞòµÄ DisplayName Öµ
-			SERVICE_ALL_ACCESS,// ¼ÓÔØÇı¶¯³ÌĞòµÄ·ÃÎÊÈ¨ÏŞ
-			SERVICE_KERNEL_DRIVER,// ±íÊ¾¼ÓÔØµÄ·şÎñÊÇÇı¶¯³ÌĞò
-			SERVICE_DEMAND_START,// ×¢²á±íÇı¶¯³ÌĞòµÄ Start Öµ
-			SERVICE_ERROR_IGNORE,// ×¢²á±íÇı¶¯³ÌĞòµÄ ErrorControl Öµ
-			Çı¶¯ÎÄ¼şÂ·¾¶,// ×¢²á±íÇı¶¯³ÌĞòµÄ ImagePath Öµ
+			æœåŠ¡å,//é©±åŠ¨ç¨‹åºåœ¨æ³¨å†Œè¡¨ä¸­çš„åå­—
+			æœåŠ¡æ˜¾ç¤ºå,// æ³¨å†Œè¡¨é©±åŠ¨ç¨‹åºçš„ DisplayName å€¼
+			SERVICE_ALL_ACCESS,// åŠ è½½é©±åŠ¨ç¨‹åºçš„è®¿é—®æƒé™
+			SERVICE_KERNEL_DRIVER,// è¡¨ç¤ºåŠ è½½çš„æœåŠ¡æ˜¯é©±åŠ¨ç¨‹åº
+			SERVICE_DEMAND_START,// æ³¨å†Œè¡¨é©±åŠ¨ç¨‹åºçš„ Start å€¼
+			SERVICE_ERROR_IGNORE,// æ³¨å†Œè¡¨é©±åŠ¨ç¨‹åºçš„ ErrorControl å€¼
+			é©±åŠ¨æ–‡ä»¶è·¯å¾„,// æ³¨å†Œè¡¨é©±åŠ¨ç¨‹åºçš„ ImagePath å€¼
 			NULL, NULL, NULL, NULL, NULL);
 
-		if (hService == NULL && GetLastError() == ERROR_SERVICE_EXISTS)  // ·şÎñÒÑ¾­´æÔÚ
+		if (hService == NULL && GetLastError() == ERROR_SERVICE_EXISTS)  // æœåŠ¡å·²ç»å­˜åœ¨
 		{
-			hService = OpenService(hSCManager, ·şÎñÃû, SERVICE_ALL_ACCESS);
+			hService = OpenService(hSCManager, æœåŠ¡å, SERVICE_ALL_ACCESS);
 		}
 		if (hService != NULL)
 		{
-			BOOL Æô¶¯·şÎñ = StartService(hService, NULL, NULL);
+			BOOL å¯åŠ¨æœåŠ¡ = StartService(hService, NULL, NULL);
 			dwLastError = GetLastError();
-			if (Æô¶¯·şÎñ || dwLastError == ERROR_SERVICE_ALREADY_RUNNING)
+			if (å¯åŠ¨æœåŠ¡ || dwLastError == ERROR_SERVICE_ALREADY_RUNNING)
 			{
 				result = true;
 			}
@@ -80,14 +80,14 @@ BOOL Driver::OpenDriver(LPCWSTR pLinkName)
 	return false;
 }
 
-BOOL Driver::UnLoadDriver(LPCWSTR ·şÎñÃû) {
+BOOL Driver::UnLoadDriver(LPCWSTR æœåŠ¡å) {
 
 	BOOL result = false;
 
 	if (hSCManager != NULL) {
 		if (hService != NULL) {
 			SERVICE_STATUS ss;
-			if (ControlService(hService, SERVICE_CONTROL_STOP, &ss))  // Í£Ö¹ÔËĞĞ
+			if (ControlService(hService, SERVICE_CONTROL_STOP, &ss))  // åœæ­¢è¿è¡Œ
 			{
 				DeleteService(hService);
 				CloseServiceHandle(hService);

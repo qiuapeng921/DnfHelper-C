@@ -1,7 +1,7 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Common.h"
 
-DWORD _GetProcessId(LPCWSTR ½ø³Ì) {
+DWORD _GetProcessId(LPCWSTR è¿›ç¨‹) {
 	PROCESSENTRY32 pe;
 	pe.dwSize = sizeof(PROCESSENTRY32);
 
@@ -13,7 +13,7 @@ DWORD _GetProcessId(LPCWSTR ½ø³Ì) {
 	if (Process32First(hSnap, &pe))
 	{
 		while (Process32Next(hSnap, &pe)) {
-			if (lstrcmpi(½ø³Ì, pe.szExeFile) == 0) {
+			if (lstrcmpi(è¿›ç¨‹, pe.szExeFile) == 0) {
 				return pe.th32ProcessID;
 			}
 		}
@@ -61,36 +61,36 @@ CString _GetDesktopPath()
 	CString path(desktop);
 	return path + L"\\";
 }
-VOID _WriteConfig(CString ½Ú, CString Ïî, CString Öµ)
+VOID _WriteConfig(CString èŠ‚, CString é¡¹, CString å€¼)
 {
-	::WritePrivateProfileString(½Ú, Ïî, Öµ, _GetDesktopPath() + L"WeGame.ini");
+	::WritePrivateProfileString(èŠ‚, é¡¹, å€¼, _GetDesktopPath() + L"WeGame.ini");
 }
-DWORD _ReadConfig(CString ½Ú, CString Ïî)
+DWORD _ReadConfig(CString èŠ‚, CString é¡¹)
 {
 	DWORD  result;
-	result = GetPrivateProfileIntW(½Ú, Ïî, 0, _GetDesktopPath() + L"WeGame.ini");
+	result = GetPrivateProfileIntW(èŠ‚, é¡¹, 0, _GetDesktopPath() + L"WeGame.ini");
 	return result;
 }
 
 VOID _InitConfig()
 {
-	_WriteConfig(L"×Ô¶¯ÅäÖÃ", L"Ë¢Í¼·½Ê½", L"1");
-	_WriteConfig(L"×Ô¶¯ÅäÖÃ", L"½ÇÉ«ÊýÁ¿", L"1");
-	_WriteConfig(L"×Ô¶¯ÅäÖÃ", L"¸±±¾±àºÅ", L"104");
-	_WriteConfig(L"×Ô¶¯ÅäÖÃ", L"¸±±¾µÈ¼¶", L"4");
-	_WriteConfig(L"×Ô¶¯ÅäÖÃ", L"Ë³Í¼·½Ê½", L"1");
+	_WriteConfig(L"è‡ªåŠ¨é…ç½®", L"åˆ·å›¾æ–¹å¼", L"1");
+	_WriteConfig(L"è‡ªåŠ¨é…ç½®", L"è§’è‰²æ•°é‡", L"1");
+	_WriteConfig(L"è‡ªåŠ¨é…ç½®", L"å‰¯æœ¬ç¼–å·", L"104");
+	_WriteConfig(L"è‡ªåŠ¨é…ç½®", L"å‰¯æœ¬ç­‰çº§", L"4");
+	_WriteConfig(L"è‡ªåŠ¨é…ç½®", L"é¡ºå›¾æ–¹å¼", L"1");
 
 
-	_WriteConfig(L"È«ÆÁÅäÖÃ", L"¼¼ÄÜ´úÂë", L"70231");
-	_WriteConfig(L"È«ÆÁÅäÖÃ", L"¼¼ÄÜÉËº¦", L"5201314");
-	_WriteConfig(L"È«ÆÁÅäÖÃ", L"¼¼ÄÜÆµÂÊ", L"500");
-	_WriteConfig(L"È«ÆÁÅäÖÃ", L"¼¼ÄÜ¸öÊý", L"3");
+	_WriteConfig(L"å…¨å±é…ç½®", L"æŠ€èƒ½ä»£ç ", L"70231");
+	_WriteConfig(L"å…¨å±é…ç½®", L"æŠ€èƒ½ä¼¤å®³", L"5201314");
+	_WriteConfig(L"å…¨å±é…ç½®", L"æŠ€èƒ½é¢‘çŽ‡", L"500");
+	_WriteConfig(L"å…¨å±é…ç½®", L"æŠ€èƒ½ä¸ªæ•°", L"3");
 }
 
 void _IntToByte(int i, byte* bytes)
 {
 	size_t length = sizeof(int);
-	// ³õÊ¼»¯Êý×é
+	// åˆå§‹åŒ–æ•°ç»„
 	memset(bytes, 0, sizeof(byte) * length);
 	bytes[0] = (byte)(0xff & i);
 	bytes[1] = (byte)((0xff00 & i) >> 8);
@@ -113,20 +113,20 @@ VOID _Long64ToBytes(DWORD64 i, BYTE *bytes)
 	bytes[7] = (BYTE)((0xff00000000000000 & i) >> 56);
 }
 
-HANDLE _CreateThread(PVOID Ïß³Ì×Ó³ÌÐò)
+HANDLE _CreateThread(PVOID çº¿ç¨‹å­ç¨‹åº)
 {
-	HANDLE handle = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)Ïß³Ì×Ó³ÌÐò, NULL, 0, 0);
+	HANDLE handle = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)çº¿ç¨‹å­ç¨‹åº, NULL, 0, 0);
 	return handle;
 }
-BOOL _DeleteThread(HANDLE Ïß³Ì¾ä±ú)
+BOOL _DeleteThread(HANDLE çº¿ç¨‹å¥æŸ„)
 {
-	if (CloseHandle(Ïß³Ì¾ä±ú)) {
-		::TerminateThread(Ïß³Ì¾ä±ú, 0);
+	if (CloseHandle(çº¿ç¨‹å¥æŸ„)) {
+		::TerminateThread(çº¿ç¨‹å¥æŸ„, 0);
 	}
 	return true;
 }
 
-//×ª»»16½øÖÆ
+//è½¬æ¢16è¿›åˆ¶
 BYTE _ConvertHexChar(BYTE ch)
 {
 	if ((ch >= '0') && (ch <= '9'))
@@ -139,7 +139,7 @@ BYTE _ConvertHexChar(BYTE ch)
 		return -1;
 }
 
-//Ëæ»úÊý£¬×îÐ¡Öµ-×î´óÖµ
+//éšæœºæ•°ï¼Œæœ€å°å€¼-æœ€å¤§å€¼
 INT _Rand(int min, int max)
 {
 	int m;
@@ -148,10 +148,10 @@ INT _Rand(int min, int max)
 	return m;
 }
 
-// »ñÈ¡µ±Ç°Ê±¼ä
+// èŽ·å–å½“å‰æ—¶é—´
 CString _GetCurrentTime() 
 {
 	CString str;
 	CTime tm(CTime::GetCurrentTime());
-	return tm.Format(L"WeGame£º%YÄê%mÔÂ%dÈÕ %X");
+	return tm.Format(L"WeGameï¼š%Yå¹´%mæœˆ%dæ—¥ %X");
 }

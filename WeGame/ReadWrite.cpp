@@ -1,85 +1,85 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "ReadWrite.h"
 
 #include "ApiReadWrite.h"
 
 ApiReadWrite apiRw;
 
-DWORD static ȫ_����ID;
+DWORD static 全_进程ID;
 
-HWND static ȫ_���̾��;
+HWND static 全_进程句柄;
 
-VOID ���ý���ID(DWORD ����ID, HWND ���ھ��) {
-	ȫ_����ID = ����ID;
-	ȫ_���̾�� = ���ھ��;
+VOID 设置进程ID(DWORD 进程ID, HWND 窗口句柄) {
+	全_进程ID = 进程ID;
+	全_进程句柄 = 窗口句柄;
 }
 
-LPVOID ����_�ڴ�(DWORD ���볤��) {
-	return apiRw.�����ڴ�64(ȫ_����ID, ���볤��);
+LPVOID 申请_内存(DWORD 申请长度) {
+	return apiRw.申请内存64(全_进程ID, 申请长度);
 }
 
-BOOL ���ֽڼ�(DWORD64 ��ַ, PVOID ����ֵ, INT32 д�볤��) {
-	return apiRw.����_���ֽڼ�(ȫ_����ID, ��ַ, ����ֵ, д�볤��);
+BOOL 读字节集(DWORD64 地址, PVOID 返回值, INT32 写入长度) {
+	return apiRw.进程_读字节集(全_进程ID, 地址, 返回值, 写入长度);
 }
 
-BOOL д�ֽڼ�(DWORD64 ��ַ, PVOID д��ֵ, INT32 д�볤��) {
-	return apiRw.����_д�ֽڼ�(ȫ_����ID, ��ַ, д��ֵ, д�볤��);
+BOOL 写字节集(DWORD64 地址, PVOID 写入值, INT32 写入长度) {
+	return apiRw.进程_写字节集(全_进程ID, 地址, 写入值, 写入长度);
 }
 
-DWORD ��������(DWORD64 ��ַ)
+DWORD 读整数型(DWORD64 地址)
 {
 	DWORD result;
-	���ֽڼ�(��ַ, &result, sizeof(result));
+	读字节集(地址, &result, sizeof(result));
 	return result;
 }
 
-DWORD64 ����������(DWORD64 ��ַ)
+DWORD64 读长整数型(DWORD64 地址)
 {
 	DWORD64 result;
-	���ֽڼ�(��ַ, &result, sizeof(result));
+	读字节集(地址, &result, sizeof(result));
 	return result;
 }
 
-BOOL д������(DWORD64 ��ַ, DWORD ����)
+BOOL 写整数型(DWORD64 地址, DWORD 数据)
 {
-	return д�ֽڼ�(��ַ, &����, sizeof(����));
+	return 写字节集(地址, &数据, sizeof(数据));
 }
 
-BOOL д��������(DWORD64 ��ַ, DWORD64 ����)
+BOOL 写长整数型(DWORD64 地址, DWORD64 数据)
 {
-	return д�ֽڼ�(��ַ, &����, sizeof(����));
+	return 写字节集(地址, &数据, sizeof(数据));
 }
 
-// BYTE* ԭ�ֽڼ� = ���ֽڼ���(�Ʋû�ַ, 2);
-BYTE* ���ֽڼ���(DWORD64 ��ַ, INT32 ����) {
-	BYTE* result = new BYTE[����];
-	���ֽڼ�(��ַ, result, ����);
+// BYTE* 原字节集 = 读字节集型(制裁基址, 2);
+BYTE* 读字节集型(DWORD64 地址, INT32 长度) {
+	BYTE* result = new BYTE[长度];
+	读字节集(地址, result, 长度);
 	return result;
 }
 
-// д�ֽڼ���(�Ʋû�ַ, new BYTE[]{ 0x48, 0xBE }, 2);
-BOOL д�ֽڼ���(DWORD64 ��ַ, PBYTE д��ֵ, INT32 ����) {
-	return д�ֽڼ�(��ַ, д��ֵ, ����);
+// 写字节集型(制裁基址, new BYTE[]{ 0x48, 0xBE }, 2);
+BOOL 写字节集型(DWORD64 地址, PBYTE 写入值, INT32 长度) {
+	return 写字节集(地址, 写入值, 长度);
 }
 
-vector<BYTE> API_���ֽڼ�(DWORD64 ��ַ, INT32 ����) {
-	return apiRw.API_���ֽڼ�(ȫ_����ID, ��ַ, ����);
+vector<BYTE> API_读字节集(DWORD64 地址, INT32 长度) {
+	return apiRw.API_读字节集(全_进程ID, 地址, 长度);
 }
 
-BOOL API_д�ֽڼ�(DWORD64 ��ַ, vector<BYTE> ֵ) {
-	return apiRw.API_д�ֽڼ�(ȫ_����ID, ��ַ, ֵ);
+BOOL API_写字节集(DWORD64 地址, vector<BYTE> 值) {
+	return apiRw.API_写字节集(全_进程ID, 地址, 值);
 }
 
 
-VOID ���ִ��(BYTE* ������) {
+VOID 汇编执行(BYTE* 汇编代码) {
 
-	DWORD64 static �հ׵�ַ, �����ת, Hook��ַ, Hook����, �жϵ�ַ = 0;
-	BYTE* Hook����[] = { 0 };
-	if (�հ׵�ַ == 0)
+	DWORD64 static 空白地址, 汇编中转, Hook地址, Hook跳回, 判断地址 = 0;
+	BYTE* Hook数据[] = { 0 };
+	if (空白地址 == 0)
 	{
 
-		�հ׵�ַ = (DWORD64)����_�ڴ�(1024);
-		�����ת = (DWORD64)����_�ڴ�(1024) + 100;
-		�жϵ�ַ = �����ת - 100;
+		空白地址 = (DWORD64)申请_内存(1024);
+		汇编中转 = (DWORD64)申请_内存(1024) + 100;
+		判断地址 = 汇编中转 - 100;
 	}
 }

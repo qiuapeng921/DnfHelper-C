@@ -1,16 +1,16 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "GameBulletin.h"
 #include "ReadWrite.h"
 
-VOID ϵͳ����(CString ��������) {
-	LPVOID static �հ׵�ַ;
+VOID 系统公告(CString 公告内容) {
+	LPVOID static 空白地址;
 
-	if (�հ׵�ַ == 0)
+	if (空白地址 == 0)
 	{
-		�հ׵�ַ = ����_�ڴ�(400);
+		空白地址 = 申请_内存(400);
 	}
 }
 
-VOID �񻰹���(CString ��������) {
+VOID 神话公告(CString 公告内容) {
 
 }
