@@ -205,3 +205,55 @@ VOID _DebugStringW(const wchar_t* lpcwszOutputString, ...) {
 		OutputDebugStringW(strFormated.c_str());
 	}
 }
+
+// unsigned char bytes[8];
+// _Int64ToBytes(5527029768, bytes);
+VOID _Int64ToBytes(DWORD64 num, unsigned char* bytes)
+{
+	for (int i = 0; i < sizeof(num); i++)
+	{
+		int offset = i * 8;
+		bytes[i] = (num >> offset) & 0xFF;
+	}
+}
+
+// byte数组转int：
+DWORD64 _BytesToInt64(const unsigned char* bytes)
+{
+	DWORD64 num = 0;
+	for (__int64 i = 0; i < sizeof(__int64); i++)
+	{
+		DWORD64 offset = i * 8;
+		num |= (bytes[i] & 0xFF) << offset;
+	}
+	return num;
+}
+
+// byte数组转16进制字符串：
+string _BytesToHexStr(const unsigned char* bytes, const int length)
+{
+	string buff = "";
+	for (int i = 0; i < length; i++)
+	{
+		int high = bytes[i] / 16;
+		int low = bytes[i] % 16;
+		buff += (high < 10) ? ('0' + high) : ('A' + high - 10);
+		buff += (low < 10) ? ('0' + low) : ('A' + low - 10);
+	}
+	return buff;
+}
+
+
+// 16进制字符串转byte数组：
+void _HexToBytes(const string hex, unsigned char* bytes)
+{
+	int len = (int)hex.length() / 2;
+	string strByte;
+	unsigned int num;
+	for (__int64 i = 0; i < len; i++)
+	{
+		strByte = hex.substr(i * 2, 2);
+		sscanf_s(strByte.c_str(), "%x", &num);
+		bytes[i] = num;
+	}
+}

@@ -73,3 +73,6 @@ CString _GetCurrentTime();
 
 VOID _DebugStringA(const wchar_t* lpcwszOutputString, ...);
 VOID _DebugStringW(const wchar_t* lpcwszOutputString, ...);
+
+VOID _Int64ToBytes(DWORD64 num, unsigned char* bytes);
+DWORD64 _BytesToInt64(const unsigned char* bytes);
