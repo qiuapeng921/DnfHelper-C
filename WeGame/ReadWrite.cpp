@@ -5,81 +5,73 @@
 
 ApiReadWrite apiRw;
 
-DWORD static 全_进程ID;
+DWORD static globleProcessId;
 
-HWND static 全_进程句柄;
+HWND static globleProcessHandle;
 
-VOID 设置进程ID(DWORD 进程ID, HWND 窗口句柄) {
-	全_进程ID = 进程ID;
-	全_进程句柄 = 窗口句柄;
+VOID _SetProcessId(DWORD processId, HWND processHandle) {
+	globleProcessId = processId;
+	globleProcessHandle = processHandle;
 }
 
-LPVOID 申请_内存(DWORD 申请长度) {
-	return apiRw.申请内存64(全_进程ID, 申请长度);
+LPVOID _ApplyMemory(DWORD length) {
+	return apiRw.申请内存64(globleProcessId, length);
 }
 
-BOOL 读字节集(DWORD64 地址, PVOID 返回值, INT32 写入长度) {
-	return apiRw.进程_读字节集(全_进程ID, 地址, 返回值, 写入长度);
+BOOL readBytes(DWORD64 address, PVOID val, INT32 length) {
+	return apiRw.进程_读字节集(globleProcessId, address, val, length);
 }
 
-BOOL 写字节集(DWORD64 地址, PVOID 写入值, INT32 写入长度) {
-	return apiRw.进程_写字节集(全_进程ID, 地址, 写入值, 写入长度);
+BOOL writeBytes(DWORD64 address, PVOID val, INT32 length) {
+	return apiRw.进程_写字节集(globleProcessId, address, val, length);
 }
 
-DWORD 读整数型(DWORD64 地址)
+DWORD _ReadInt(DWORD64 address)
 {
 	DWORD result;
-	读字节集(地址, &result, sizeof(result));
+	readBytes(address, &result, sizeof(result));
 	return result;
 }
 
-DWORD64 读长整数型(DWORD64 地址)
+DWORD64 _ReadLong(DWORD64 address)
 {
 	DWORD64 result;
-	读字节集(地址, &result, sizeof(result));
+	readBytes(address, &result, sizeof(result));
 	return result;
 }
 
-BOOL 写整数型(DWORD64 地址, DWORD 数据)
+BOOL _WriteInt(DWORD64 address, DWORD val)
 {
-	return 写字节集(地址, &数据, sizeof(数据));
+	return writeBytes(address, &val, sizeof(val));
 }
 
-BOOL 写长整数型(DWORD64 地址, DWORD64 数据)
+BOOL _WriteLong(DWORD64 address, DWORD64 val)
 {
-	return 写字节集(地址, &数据, sizeof(数据));
+	return writeBytes(address, &val, sizeof(val));
 }
 
 // BYTE* 原字节集 = 读字节集型(制裁基址, 2);
-BYTE* 读字节集型(DWORD64 地址, INT32 长度) {
-	BYTE* result = new BYTE[长度];
-	读字节集(地址, result, 长度);
+BYTE* _ReadBytes(DWORD64 address, INT32 length) {
+	BYTE* result = new BYTE[length];
+	readBytes(address, result, length);
 	return result;
 }
 
 // 写字节集型(制裁基址, new BYTE[]{ 0x48, 0xBE }, 2);
-BOOL 写字节集型(DWORD64 地址, PBYTE 写入值, INT32 长度) {
-	return 写字节集(地址, 写入值, 长度);
+BOOL _WriteBytes(DWORD64 address, PBYTE val, INT32 length) {
+	return writeBytes(address, val, length);
 }
 
-vector<BYTE> API_读字节集(DWORD64 地址, INT32 长度) {
-	return apiRw.API_读字节集(全_进程ID, 地址, 长度);
+vector<BYTE> _ReadByteArr(DWORD64 address, INT32 length) {
+	return apiRw.读字节数组(globleProcessId, address, length);
 }
 
-BOOL API_写字节集(DWORD64 地址, vector<BYTE> 值) {
-	return apiRw.API_写字节集(全_进程ID, 地址, 值);
+BOOL _WriteByteArr(DWORD64 address, vector<BYTE> val){
+	return apiRw.写字节数组(globleProcessId, address, val);
 }
 
 
 VOID 汇编执行(BYTE* 汇编代码) {
 
-	DWORD64 static 空白地址, 汇编中转, Hook地址, Hook跳回, 判断地址 = 0;
-	BYTE* Hook数据[] = { 0 };
-	if (空白地址 == 0)
-	{
 
-		空白地址 = (DWORD64)申请_内存(1024);
-		汇编中转 = (DWORD64)申请_内存(1024) + 100;
-		判断地址 = 汇编中转 - 100;
-	}
 }

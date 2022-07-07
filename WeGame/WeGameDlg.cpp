@@ -55,11 +55,8 @@ BOOL CWeGameDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	CString str;
-	CTime tm(CTime::GetCurrentTime());
-	str = tm.Format(L"WeGame：%Y年%m月%d日 %X");
 	// 设置窗口标题
-	SetWindowText(str);
+	SetWindowText(_GetCurrentTime());
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -193,8 +190,8 @@ void CWeGameDlg::激活()
 		return;
 	}
 
-	BOOL 结果 = drive.LoadDriver(szDrvPath, L"Drivecontrol", L"Drivecontrol");
-	if (结果 == FALSE)
+	BOOL result = drive.LoadDriver(szDrvPath, L"Drivecontrol", L"Drivecontrol");
+	if (!result)
 	{
 		drive.UnLoadDriver(L"Drivecontrol");
 		MessageBoxW(L"加载驱动失败");
@@ -202,7 +199,7 @@ void CWeGameDlg::激活()
 	}
 
 	DWORD gameProcess = _GetProcessId(L"dnf.exe");
-
+	
 	HWND gameHandle = ::FindWindowW(L"地下城与勇士", L"地下城与勇士");
 
 	if (gameProcess == 0)
@@ -211,7 +208,9 @@ void CWeGameDlg::激活()
 		return;
 	}
 
-	设置进程ID(gameProcess, gameHandle);
+	_DebugStringW(L"gameProcess = %d gameHandle = %d  %s", gameProcess, gameHandle);
+
+	_SetProcessId(gameProcess, gameHandle);
 
 	// 设置热键
 	RegisterHotKey(this->GetSafeHwnd(), 1000, 0, VK_F1);
@@ -236,6 +235,7 @@ void CWeGameDlg::卸载()
 	if (drive.UnLoadDriver(L"Drivecontrol") == FALSE) {
 		MessageBox(L"驱动服务卸载失败");
 	}
+	_DebugStringW(L"驱动服务卸载完成");
 	// 关闭窗口界面
 	AfxGetMainWnd()->SendMessage(WM_CLOSE);
 }

@@ -18,8 +18,8 @@ public:
 	DWORD64 读长整数型(DWORD 进程ID, DWORD64 地址);
 	BOOL 写长整数型(DWORD 进程ID, DWORD64 地址, DWORD64 数据);
 
-	vector<byte> API_读字节集(DWORD 进程ID, DWORD64 地址, INT32 长度);
-	BOOL API_写字节集(DWORD 进程ID, DWORD64 地址, vector<byte> 值);
+	vector<byte> 读字节数组(DWORD 进程ID, DWORD64 地址, INT32 长度);
+	BOOL 写字节数组(DWORD 进程ID, DWORD64 地址, vector<byte> 值);
 };
 
 extern ApiReadWrite apiRw;

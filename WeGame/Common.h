@@ -70,3 +70,6 @@ BYTE _ConvertHexChar(BYTE ch);
 INT _Rand(int min, int max);
 
 CString _GetCurrentTime();
+
+VOID _DebugStringA(const wchar_t* lpcwszOutputString, ...);
+VOID _DebugStringW(const wchar_t* lpcwszOutputString, ...);

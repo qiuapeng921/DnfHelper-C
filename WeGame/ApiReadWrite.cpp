@@ -62,7 +62,7 @@ BOOL ApiReadWrite::写长整数型(DWORD 进程ID, DWORD64 地址, DWORD64 数�
 	return 进程_写字节集(进程ID, 地址, &数据, sizeof(数据));
 }
 
-vector<BYTE> ApiReadWrite::API_读字节集(DWORD 进程ID, DWORD64 地址, INT32 长度)
+vector<BYTE> ApiReadWrite::读字节数组(DWORD 进程ID, DWORD64 地址, INT32 长度)
 {
 	vector<BYTE> result;
 
@@ -85,7 +85,7 @@ vector<BYTE> ApiReadWrite::API_读字节集(DWORD 进程ID, DWORD64 地址, INT3
 	return result;
 }
 // API_写字节集(任务地址, { 0x90, 0x90, 0x90, 0x90, 0x90 });
-BOOL ApiReadWrite::API_写字节集(DWORD 进程ID, DWORD64 地址, vector<byte> 值)
+BOOL ApiReadWrite::写字节数组(DWORD 进程ID, DWORD64 地址, vector<byte> 值)
 {
 	HANDLE hProcess = ::OpenProcess(PROCESS_ALL_ACCESS, NULL, 进程ID);
 	if (hProcess == NULL) {

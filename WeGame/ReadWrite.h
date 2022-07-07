@@ -3,28 +3,28 @@
 #include <vector>
 using namespace std;
 
-VOID 设置进程ID(DWORD 进程ID, HWND 窗口句柄);
+VOID _SetProcessId(DWORD processId, HWND processHandle);
 
-LPVOID 申请_内存(DWORD 申请长度);
+LPVOID _ApplyMemory(DWORD length);
 
-BOOL 读字节集(DWORD64 地址, PVOID 返回值, INT32 写入长度);
+BOOL readBytes(DWORD64 address, PVOID val, INT32 length);
 
-BOOL 写字节集(DWORD64 地址, PVOID 写入值, INT32 写入长度);
+BOOL writeBytes(DWORD64 address, PVOID val, INT32 length);
 
-DWORD 读整数型(DWORD64 地址);
+DWORD _ReadInt(DWORD64 address);
 
-DWORD64 读长整数型(DWORD64 地址);
+DWORD64 _ReadLong(DWORD64 address);
 
-BOOL 写整数型(DWORD64 地址, DWORD 数据);
+BOOL _WriteInt(DWORD64 address, DWORD val);
 
-BOOL 写长整数型(DWORD64 地址, DWORD64 数据);
+BOOL _WriteLong(DWORD64 address, DWORD64 val);
 
-BYTE* 读字节集型(DWORD64 地址, INT32 长度);
+BYTE* _ReadBytes(DWORD64 address, INT32 length);
 
-BOOL 写字节集型(DWORD64 地址, PBYTE 写入值, INT32 长度);
+BOOL _WriteBytes(DWORD64 address, PBYTE val, INT32 length);
 
-vector<BYTE> API_读字节集(DWORD64 地址, INT32 长度);
+vector<BYTE> _ReadByteArr(DWORD64 address, INT32 length);
 
-BOOL API_写字节集(DWORD64 地址, vector<byte> 值);
+BOOL _WriteByteArr(DWORD64 address, vector<BYTE> val);
 
 VOID 汇编执行(BYTE *bytes);
