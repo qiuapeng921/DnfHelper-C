@@ -33,7 +33,7 @@ typedef PVOID 子程序指针;
 #define 销毁时钟 KillTimer
 // KillTimer(hWnd, 1);
 
-#define 字节集 vector<int>
+#define ByteArr vector<byte>
 #define 输出 printf
 #define debug OutputDebugString
 
@@ -59,8 +59,6 @@ DWORD _ReadConfig(CString 节, CString 项);
 
 VOID _InitConfig();
 
-VOID _Long64ToBytes(DWORD64 i, BYTE* bytes);
-
 HANDLE _CreateThread(PVOID 线程子程序);
 
 BOOL _DeleteThread(HANDLE 线程句柄);
@@ -71,8 +69,9 @@ INT _Rand(int min, int max);
 
 CString _GetCurrentTime();
 
-VOID _DebugStringA(const wchar_t* lpcwszOutputString, ...);
+VOID _DebugStringA(const char* lpcszOutputString, ...);
 VOID _DebugStringW(const wchar_t* lpcwszOutputString, ...);
 
-VOID _Int64ToBytes(DWORD64 num, unsigned char* bytes);
-DWORD64 _BytesToInt64(const unsigned char* bytes);
+ByteArr _IntToBytes(DWORD64 num, int lenght);
+
+ByteArr _AppendToBytes(ByteArr oldBytes, ByteArr newBytes);

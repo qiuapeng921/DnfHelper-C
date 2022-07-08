@@ -8,7 +8,7 @@
 VOID 武器冰冻() {
 	static bool _switch = false;
 
-	__int64 空白地址 = 全局空白;
+	__int64 空白地址 = (__int64)_ApplyMemory(100);
 	__int64 冰冻伤害 = 99999;
 	__int64 kb = _ReadLong(空白地址);
 
@@ -43,7 +43,6 @@ VOID 武器冰冻() {
 
 	_switch = !_switch;
 
-
 }
 
 //void 技能开关() {
@@ -72,24 +71,13 @@ VOID HOOK伤害() {
 	_ReadConfig(L"倍攻", L"伤害");
 
 	__int64 倍攻伤害 = 99999;
-	vector<byte> 地址原数据;
+	const vector<byte> 地址原数据 = _ReadByteArr(伤害地址, 10);
 
 	static bool _switch = false;
 
 	if (_switch)
 	{
-		地址原数据 = _ReadByteArr(伤害地址, 10);
-		vector<byte> data = { 72, 190 };
-
-		byte bytes[8];
-		_Int64ToBytes(倍攻伤害 * 10000, bytes);
-		for (size_t i = 0; i < 8; i++)
-		{
-			data.push_back(bytes[i]);
-		}
-
-		_DebugStringW(L"data ; %s", data);
-
+		vector<byte> data = _AppendToBytes(vector<byte>{72, 190}, _IntToBytes(倍攻伤害 * 10000, 8));
 		_WriteByteArr(伤害地址, data);
 		_DebugStringW(L"HOOK伤害 - 启动");
 	}
@@ -101,4 +89,65 @@ VOID HOOK伤害() {
 	_switch = !_switch;
 }
 
+ByteArr 取空白ByteArr(int num) {
+	ByteArr res;
+	for (size_t i = 0; i < num; i++)
+	{
+		res.push_back(0);
+	}
+	return res;
+}
 
+VOID 汇编执行(vector<byte> 汇编代码) {
+	__int64 汇编中转, 空白地址, Hook汇编, Hook跳回, 判断地址;
+
+	static bool 异步执行;
+
+	汇编中转 = 全局空白 + 300;
+	空白地址 = 全局空白 + 500;
+	判断地址 = 空白地址 - 100;
+	if (异步执行) {
+		return;
+	}
+
+	异步执行 = true;
+
+	Hook汇编 = 汇编CALL;
+	Hook汇编 = Hook汇编 + 144;
+	Hook跳回 = Hook汇编 + 19;
+	ByteArr Hook数据 = _ReadByteArr(Hook汇编, 19);
+	ByteArr Hook原数据 = Hook数据;
+
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 184 }),
+	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(判断地址,8));
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 131, 56, 1, 117, 42, 72, 129, 236, 0, 3, 0, 0 });
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 187 });
+	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(空白地址,8));
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 255, 211 });
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 184 });
+	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(判断地址,8));
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 199, 0, 3, 0, 0, 0 });
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 129, 196, 0, 3, 0, 0 });
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 255, 37, 0, 0, 0, 0 });
+	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(Hook跳回,8));
+
+	if(_ReadLong(汇编中转) == 0) {
+		_WriteByteArr(汇编中转, Hook数据);
+	}
+
+	_WriteByteArr(空白地址, _AppendToBytes(汇编代码, ByteArr{ 195 }));
+	_WriteByteArr(Hook汇编, _AppendToBytes(_AppendToBytes(ByteArr{ 255, 37, 0, 0, 0, 0 }, _IntToBytes(汇编中转, 8)), ByteArr{ 144, 144, 144, 144, 144 }));
+	_WriteLong( 判断地址, 1);
+	while (_ReadLong(判断地址) == 1)
+	{
+		Sleep(10);
+	}
+
+	_WriteByteArr(Hook汇编, Hook原数据);
+	_WriteByteArr(空白地址, 取空白ByteArr(sizeof(汇编代码) + 16));
+	异步执行 = false;
+}

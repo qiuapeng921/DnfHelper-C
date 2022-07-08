@@ -87,32 +87,6 @@ VOID _InitConfig()
 	_WriteConfig(L"全屏配置", L"技能个数", L"3");
 }
 
-void _IntToByte(int i, byte* bytes)
-{
-	size_t length = sizeof(int);
-	// 初始化数组
-	memset(bytes, 0, sizeof(byte) * length);
-	bytes[0] = (byte)(0xff & i);
-	bytes[1] = (byte)((0xff00 & i) >> 8);
-	bytes[2] = (byte)((0xff0000 & i) >> 16);
-	bytes[3] = (byte)((0xff000000 & i) >> 24);
-	return;
-}
-
-VOID _Long64ToBytes(DWORD64 i, BYTE *bytes)
-{
-	size_t length = sizeof(DWORD64);
-	memset(bytes, 0, sizeof(BYTE) * length);
-	bytes[0] = (BYTE)(0xff & i);
-	bytes[1] = (BYTE)((0xff00 & i) >> 8);
-	bytes[2] = (BYTE)((0xff0000 & i) >> 16);
-	bytes[3] = (BYTE)((0xff000000 & i) >> 24);
-	bytes[4] = (BYTE)((0xff00000000 & i) >> 32);
-	bytes[5] = (BYTE)((0xff0000000000 & i) >> 40);
-	bytes[6] = (BYTE)((0xff000000000000 & i) >> 48);
-	bytes[7] = (BYTE)((0xff00000000000000 & i) >> 56);
-}
-
 HANDLE _CreateThread(PVOID 线程子程序)
 {
 	HANDLE handle = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)线程子程序, NULL, 0, 0);
@@ -206,22 +180,24 @@ VOID _DebugStringW(const wchar_t* lpcwszOutputString, ...) {
 	}
 }
 
-// unsigned char bytes[8];
-// _Int64ToBytes(5527029768, bytes);
-VOID _Int64ToBytes(DWORD64 num, unsigned char* bytes)
+// _IntToBytes(5527029768);
+vector<byte> _IntToBytes(DWORD64 num,int lenght)
 {
-	for (int i = 0; i < sizeof(num); i++)
+	vector<byte>bytes;
+	for (int i = 0; i < lenght; i++)
 	{
 		int offset = i * 8;
-		bytes[i] = (num >> offset) & 0xFF;
+		byte byteTmp = (num >> offset) & 0xFF;
+		bytes.push_back(byteTmp);
 	}
+	return bytes;
 }
 
 // byte数组转int：
-DWORD64 _BytesToInt64(const unsigned char* bytes)
+DWORD64 _BytesToInt64(const BYTE* bytes, int lenght)
 {
 	DWORD64 num = 0;
-	for (__int64 i = 0; i < sizeof(__int64); i++)
+	for (int i = 0; i < lenght; i++)
 	{
 		DWORD64 offset = i * 8;
 		num |= (bytes[i] & 0xFF) << offset;
@@ -256,4 +232,29 @@ void _HexToBytes(const string hex, unsigned char* bytes)
 		sscanf_s(strByte.c_str(), "%x", &num);
 		bytes[i] = num;
 	}
+}
+
+// 追加字节集 
+// vector<byte> oldBytes = { 255, 37, 0, 0, 0, 0 };
+// vector<byte> newBytes = { 144, 144, 144, 144, 144 };
+// vector<byte> Bytes = _AppendToBytes(oldBytes, newBytes);
+// vector<byte> Bytes1 = _AppendToBytes(Bytes, _IntToBytes(1111111111111, 4));
+ByteArr _AppendToBytes(ByteArr oldBytes, ByteArr newBytes)
+{
+	ByteArr bytes = oldBytes;
+	if (oldBytes.size() == 0)
+	{
+		return bytes;
+	}
+	if (newBytes.size() == 0)
+	{
+		return bytes;
+	}
+
+	for (int i = 1; i <= newBytes.size(); i++)
+	{
+		bytes.push_back(newBytes[(_int64)(i - 1)]);
+	}
+
+	return bytes;
 }

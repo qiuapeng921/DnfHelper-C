@@ -208,9 +208,9 @@ void CWeGameDlg::激活()
 		return;
 	}
 
-	_DebugStringW(L"gameProcess = %d gameHandle = %d  %s", gameProcess, gameHandle);
+	_DebugStringW(L"gameProcess = %d gameHandle = %d  %s", gameProcess, NULL);
 
-	_SetProcessId(gameProcess, gameHandle);
+	_SetProcessId(gameProcess, NULL);
 
 	// 设置热键
 	RegisterHotKey(this->GetSafeHwnd(), 1000, 0, VK_F1);
