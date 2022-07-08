@@ -253,7 +253,7 @@ ByteArr _AppendToBytes(ByteArr oldBytes, ByteArr newBytes)
 
 	for (int i = 1; i <= newBytes.size(); i++)
 	{
-		bytes.push_back(newBytes[(_int64)(i - 1)]);
+		bytes.push_back(newBytes[i - 1]);
 	}
 
 	return bytes;

@@ -1,4 +1,5 @@
 #pragma once
+#include "Common.h"
 
 #include <vector>
 using namespace std;
@@ -23,8 +24,6 @@ BYTE* _ReadBytes(DWORD64 address, INT32 length);
 
 BOOL _WriteBytes(DWORD64 address, PBYTE val, INT32 length);
 
-vector<BYTE> _ReadByteArr(DWORD64 address, INT32 length);
+ByteArr _ReadByteArr(DWORD64 address, INT32 length);
 
-BOOL _WriteByteArr(DWORD64 address, vector<BYTE> val);
-
-VOID ª„±‡÷¥––(BYTE *bytes);
+BOOL _WriteByteArr(DWORD64 address, ByteArr val);

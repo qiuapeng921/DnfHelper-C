@@ -1,9 +1,9 @@
 ﻿#include "pch.h"
 #include "framework.h"
-#include "Address.h"
 #include "Common.h"
 #include "GameFunction.h"
 #include "ReadWrite.h"
+#include "Address.h"
 
 VOID 武器冰冻() {
 	static bool _switch = false;
@@ -71,13 +71,13 @@ VOID HOOK伤害() {
 	_ReadConfig(L"倍攻", L"伤害");
 
 	__int64 倍攻伤害 = 99999;
-	const vector<byte> 地址原数据 = _ReadByteArr(伤害地址, 10);
+	const ByteArr 地址原数据 = _ReadByteArr(伤害地址, 10);
 
 	static bool _switch = false;
 
 	if (_switch)
 	{
-		vector<byte> data = _AppendToBytes(vector<byte>{72, 190}, _IntToBytes(倍攻伤害 * 10000, 8));
+		vector<byte> data = _AppendToBytes(ByteArr{72, 190}, _IntToBytes(倍攻伤害 * 10000, 8));
 		_WriteByteArr(伤害地址, data);
 		_DebugStringW(L"HOOK伤害 - 启动");
 	}
