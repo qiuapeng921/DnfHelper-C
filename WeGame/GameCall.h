@@ -1,4 +1,5 @@
 #pragma once
+#include "Common.h"
 
 class Call
 {
@@ -19,3 +20,15 @@ public:
 
 	VOID 过图Call(INT 方向);
 };
+
+VOID 汇编执行(ByteArr 汇编代码);
+
+__int64 取人物指针Call(__int64 globleRwAddr);
+
+VOID SetPerson(__int64 pAddr, __int64 pPointer);
+
+__int64 GetPersonAddr();
+
+__int64 GetPersonPointer();
+
+VOID 取人物指针线程();

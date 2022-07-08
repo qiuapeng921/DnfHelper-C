@@ -4,6 +4,8 @@
 #include "GameFunction.h"
 #include "ReadWrite.h"
 #include "Address.h"
+#include "GameCall.h"
+#include "GameBulletin.h"
 
 VOID 武器冰冻() {
 	static bool _switch = false;
@@ -22,14 +24,14 @@ VOID 武器冰冻() {
 		_WriteLong(空白地址 + 20, 99);
 		_WriteLong(空白地址 + 24, 130);
 		_WriteLong(空白地址 + 28, 冰冻伤害 * 100000);
-		__int64 武器 = _ReadLong(_ReadLong(人物基址) + 武器偏移);
+		__int64 武器 = _ReadLong(_ReadLong(GetPersonAddr()) + 武器偏移);
 		_WriteLong(武器 + 冰冻开始, 空白地址);
 		_WriteLong(武器 + 冰冻结束, 空白地址 + 32);
-		_DebugStringW(L"武器冰冻 - 启动");
+		Message("武器冰冻 - 启动", 1);
 	}
 	else
 	{
-		__int64 武器 = _ReadLong(_ReadLong(人物基址) + 武器偏移);
+		__int64 武器 = _ReadLong(_ReadLong(GetPersonAddr()) + 武器偏移);
 		_WriteLong(武器 + 冰冻开始, 0);
 		_WriteLong(武器 + 冰冻结束, 0);
 
@@ -38,11 +40,9 @@ VOID 武器冰冻() {
 			_WriteLong(空白地址, 0);
 			空白地址 = 空白地址 + 4;
 		}
-		_DebugStringW(L"武器冰冻 - 关闭");
+		Message("武器冰冻 - 关闭", 1);
 	}
-
 	_switch = !_switch;
-
 }
 
 //void 技能开关() {
@@ -66,25 +66,20 @@ VOID 武器冰冻() {
 
 
 VOID HOOK伤害() {
-	DWORD64 伤害地址 = 全局基址;
-
-	_ReadConfig(L"倍攻", L"伤害");
-
-	__int64 倍攻伤害 = 99999;
-	const ByteArr 地址原数据 = _ReadByteArr(伤害地址, 10);
-
+	__int64 倍攻伤害 = 9999999;
+	ByteArr 地址原数据;
 	static bool _switch = false;
-
-	if (_switch)
+	if (!_switch)
 	{
-		vector<byte> data = _AppendToBytes(ByteArr{72, 190}, _IntToBytes(倍攻伤害 * 10000, 8));
-		_WriteByteArr(伤害地址, data);
-		_DebugStringW(L"HOOK伤害 - 启动");
+		地址原数据 = _ReadByteArr(全局基址, 10);
+		ByteArr data = _AppendToBytes(ByteArr{ 72, 190 }, _IntToBytes(倍攻伤害, 8));
+		_WriteByteArr(全局基址, data);
+		Message("HOOK伤害 - 启动", 1);
 	}
 	else
 	{
-		_WriteByteArr(伤害地址, 地址原数据);
-		_DebugStringW(L"HOOK伤害 - 关闭");
+		_WriteByteArr(全局基址, 地址原数据);
+		Message("HOOK伤害 - 关闭", 1);
 	}
 	_switch = !_switch;
 }

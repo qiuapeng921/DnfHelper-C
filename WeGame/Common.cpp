@@ -127,7 +127,7 @@ CString _GetCurrentTime()
 {
 	CString str;
 	CTime tm(CTime::GetCurrentTime());
-	return tm.Format(L"WeGame：%Y年%m月%d日 %X");
+	return tm.Format(L"情歌：%Y年%m月%d日 %X");
 }
 
 
@@ -197,9 +197,9 @@ vector<byte> _IntToBytes(DWORD64 num,int lenght)
 DWORD64 _BytesToInt64(const BYTE* bytes, int lenght)
 {
 	DWORD64 num = 0;
-	for (int i = 0; i < lenght; i++)
+	for (__int64 i = 0; i < lenght; i++)
 	{
-		DWORD64 offset = i * 8;
+		DWORD64 offset = i * (__int64)8;
 		num |= (bytes[i] & 0xFF) << offset;
 	}
 	return num;
@@ -251,10 +251,37 @@ ByteArr _AppendToBytes(ByteArr oldBytes, ByteArr newBytes)
 		return bytes;
 	}
 
-	for (int i = 1; i <= newBytes.size(); i++)
+	for (u_int64 i = 1; i <= newBytes.size(); i++)
 	{
-		bytes.push_back(newBytes[i - 1]);
+		bytes.push_back(newBytes[i - (u_int64)1]);
 	}
 
 	return bytes;
+}
+
+ByteArr 取空白ByteArr(int num)
+{
+	ByteArr res;
+	for (size_t i = 0; i < num; i++)
+	{
+		res.push_back(0);
+	}
+	return res;
+}
+
+ByteArr AnsiToUnicode(string str)
+{
+	ByteArr Ret;
+	DWORD dwNum = MultiByteToWideChar(936, 0, str.c_str(), -1, NULL, 0);
+	byte* pwText;
+	pwText = new  byte[dwNum * (__int64)2];
+	MultiByteToWideChar(936, 0, str.c_str(), -1, (LPWSTR)pwText, dwNum * 2);
+
+	for (size_t i = 0; i < dwNum * 2; i++)
+	{
+		Ret.push_back(pwText[i]);
+	}
+	Ret.push_back(0);
+	Ret.push_back(0);
+	return Ret;
 }

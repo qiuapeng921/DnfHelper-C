@@ -14,11 +14,12 @@
 #include "Automatic.h"
 #include "ReadWrite.h"
 #include "VuDriver.h"
+#include "GameBulletin.h"
+#include "GameCall.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 Driver drive;
 Automatic automatic;
@@ -178,6 +179,7 @@ BOOL CWeGameDlg::无忧驱动() {
 
 void CWeGameDlg::激活()
 {
+
 	TCHAR szDrvPath[MAX_PATH];
 	GetModuleFileName(NULL, szDrvPath, MAX_PATH);
 	*(_tcsrchr(szDrvPath, _T('\\')) + 1) = _T('\0');
@@ -189,7 +191,7 @@ void CWeGameDlg::激活()
 		//CDialogEx::OnCancel();
 		return;
 	}
-
+	
 	BOOL result = drive.LoadDriver(szDrvPath, L"Drivecontrol", L"Drivecontrol");
 	if (!result)
 	{
@@ -212,20 +214,25 @@ void CWeGameDlg::激活()
 
 	_SetProcessId(gameProcess, NULL);
 
+
+
 	// 设置热键
 	RegisterHotKey(this->GetSafeHwnd(), 1000, 0, VK_F1);
 	RegisterHotKey(this->GetSafeHwnd(), 1001, 0, VK_F2);
 	RegisterHotKey(this->GetSafeHwnd(), 1010, 0, VK_END);
 
-	日志公告(L"激活成功，欢迎使用WeGame");
+	Message("激活成功，欢迎使用",1);
+	
 	日志公告(L"F1 - 武器冰冻");
 	日志公告(L"F2 - HOOK倍攻");
+
+	// 全局获取人物地址
+	// _CreateThread(&取人物指针线程);
 
 	_InitConfig();
 	// 禁用激活按钮
 	GetDlgItem(IDC_BUTTON2)->EnableWindow(false);
 }
-
 
 void CWeGameDlg::卸载()
 {

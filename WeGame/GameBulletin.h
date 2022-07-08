@@ -1,4 +1,6 @@
 #pragma once
+#include<string>
+using namespace std;
 
-VOID 公告(CString 公告内容, INT 类型);
-VOID 神话公告(CString 公告内容, INT 类型);
+VOID SystemMessage(string message);
+VOID Message(string message, int type);

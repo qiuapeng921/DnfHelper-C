@@ -20,9 +20,9 @@ BOOL _WriteInt(DWORD64 address, DWORD val);
 
 BOOL _WriteLong(DWORD64 address, DWORD64 val);
 
-BYTE* _ReadBytes(DWORD64 address, INT32 length);
-
-BOOL _WriteBytes(DWORD64 address, PBYTE val, INT32 length);
+//BYTE* _ReadBytes(DWORD64 address, INT32 length);
+//
+//BOOL _WriteBytes(DWORD64 address, PBYTE val, INT32 length);
 
 ByteArr _ReadByteArr(DWORD64 address, INT32 length);
 

@@ -53,3 +53,7 @@ VOID _DebugStringW(const wchar_t* lpcwszOutputString, ...);
 ByteArr _IntToBytes(DWORD64 num, int lenght);
 
 ByteArr _AppendToBytes(ByteArr oldBytes, ByteArr newBytes);
+
+ByteArr È¡¿Õ°×ByteArr(int num);
+
+ByteArr AnsiToUnicode(string str);

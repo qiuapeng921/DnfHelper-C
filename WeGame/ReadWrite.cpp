@@ -51,16 +51,16 @@ BOOL _WriteLong(DWORD64 address, DWORD64 val)
 }
 
 // BYTE* 原字节集 = 读字节集型(制裁基址, 2);
-BYTE* _ReadBytes(DWORD64 address, INT32 length) {
-	BYTE* result = new BYTE[length];
-	readBytes(address, result, length);
-	return result;
-}
+//BYTE* _ReadBytes(DWORD64 address, INT32 length) {
+//	BYTE* result = new BYTE[length];
+//	readBytes(address, result, length);
+//	return result;
+//}
 
 // 写字节集型(制裁基址, new BYTE[]{ 0x48, 0xBE }, 2);
-BOOL _WriteBytes(DWORD64 address, PBYTE val, INT32 length) {
-	return writeBytes(address, val, length);
-}
+//BOOL _WriteBytes(DWORD64 address, PBYTE val, INT32 length) {
+//	return writeBytes(address, val, length);
+//}
 
 vector<BYTE> _ReadByteArr(DWORD64 address, INT32 length) {
 	return apiRw.读字节数组(globleProcessId, address, length);
