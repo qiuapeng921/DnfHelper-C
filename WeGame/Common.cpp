@@ -94,10 +94,9 @@ HANDLE _CreateThread(PVOID 线程子程序)
 }
 BOOL _DeleteThread(HANDLE 线程句柄)
 {
-	if (CloseHandle(线程句柄)) {
-		::TerminateThread(线程句柄, 0);
-	}
-	return true;
+	DWORD dwExitCode;
+	GetExitCodeThread(线程句柄, &dwExitCode);
+	return ::TerminateThread(线程句柄, dwExitCode);
 }
 
 //转换16进制
@@ -272,7 +271,7 @@ ByteArr AnsiToUnicode(string str)
 	ByteArr Ret;
 	DWORD dwNum = MultiByteToWideChar(936, 0, str.c_str(), -1, NULL, 0);
 	byte* pwText;
-	pwText = new  byte[dwNum * (__int64)2];
+	pwText = new  byte[dwNum * 2];
 	MultiByteToWideChar(936, 0, str.c_str(), -1, (LPWSTR)pwText, dwNum * 2);
 
 	for (size_t i = 0; i < dwNum * 2; i++)

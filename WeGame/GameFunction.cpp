@@ -6,13 +6,21 @@
 #include "GameCall.h"
 #include "GameBulletin.h"
 
+VOID 无形秒杀() 
+{
+	技能Call(0, 39002, 0, 0, 0, 0,0);
+	Message("无形秒杀 - 完毕",2);
+}
+
 VOID 武器冰冻() {
-	static bool _switch = false;
+	static bool _switch;
 
 	__int64 空白地址 = 全局空白 + 2600;
 	int 冰冻伤害 = 99999;
 
-	if (!_switch)
+	_switch = !_switch;
+
+	if (_switch == true)
 	{
 		_WriteInt(空白地址, 0);
 		_WriteInt(空白地址 + 4, 2000);
@@ -25,7 +33,7 @@ VOID 武器冰冻() {
 		__int64 武器 = _ReadLong(_ReadLong(GetPersonAddr()) + 武器偏移);
 		_WriteLong(武器 + 冰冻开始, 空白地址);
 		_WriteLong(武器 + 冰冻结束, 空白地址 + 32);
-		Message("武器冰冻 - 启动", 1);
+		Message("武器冰冻 - 启动", 2);
 	}
 	else
 	{
@@ -38,46 +46,48 @@ VOID 武器冰冻() {
 			_WriteLong(空白地址, 0);
 			空白地址 = 空白地址 + 4;
 		}
-		Message("武器冰冻 - 关闭", 1);
+		Message("武器冰冻 - 关闭", 2);
+	}
+}
+
+VOID 技能开关() {
+	HWND hWnd = FindWindow(TEXT("地下城与勇士"), TEXT("地下城与勇士"));
+	static bool _switch;
+	_switch = !_switch;
+
+	if (_switch == true)
+	{
+		SetTimer(hWnd, 1, 300, (TIMERPROC)遍历全屏技能);
+		Message("技能全屏 - 开启",2);
+	}
+	else
+	{
+		KillTimer(hWnd, 1);
+		Message("技能全屏 - 关闭",2);
 	}
 	_switch = !_switch;
 }
 
-//void 技能开关() {
-//
-//	HWND hWnd = FindWindow(TEXT("地下城与勇士"), TEXT("地下城与勇士"));
-//	static bool _switch = false;
-//	if (_switch == false)
-//	{
-//		SetTimer(hWnd, 1, 频率, (TIMERPROC)遍历全屏技能);
-//		公告("技能全屏 - 开启");
-//	}
-//	else
-//	{
-//		KillTimer(hWnd, 1);
-//		公告("技能全屏 - 关闭");
-//	}
-//	_switch = !_switch;
-//
-//}
-
+VOID 遍历全屏技能() {
+	Message("遍历全屏技能", 2);
+}
 
 
 VOID HOOK伤害() {
+	static bool _switch;
 	__int64 倍攻伤害 = 9999999;
-	ByteArr 地址原数据;
-	static bool _switch = false;
-	if (!_switch)
+	static ByteArr 地址原数据;
+	_switch = !_switch;
+	if (_switch == true)
 	{
 		地址原数据 = _ReadByteArr(全局基址, 10);
 		ByteArr data = _AppendToBytes(ByteArr{ 72, 190 }, _IntToBytes(倍攻伤害, 8));
 		_WriteByteArr(全局基址, data);
-		Message("HOOK伤害 - 启动", 1);
+		Message("HOOK伤害 - 启动", 2);
 	}
 	else
 	{
 		_WriteByteArr(全局基址, 地址原数据);
-		Message("HOOK伤害 - 关闭", 1);
+		Message("HOOK伤害 - 关闭", 2);
 	}
-	_switch = !_switch;
 }

@@ -1,6 +1,5 @@
 ﻿
 // WeGameDlg.cpp: 实现文件
-//
 
 #include "pch.h"
 #include "framework.h"
@@ -22,11 +21,18 @@
 #endif
 
 Driver drive;
-Automatic automatic;
 
 // CWeGameDlg 对话框
 CWeGameDlg::CWeGameDlg(CWnd* pParent /*=nullptr*/)
-	: CDialogEx(IDD_WEGAME_DIALOG, pParent)
+: CDialogEx(IDD_WEGAME_DIALOG, pParent)
+	, 自动模式(0)
+	, 刷图功能(0)
+	, 过图方式(0)
+	, 技能代码(0)
+	, 跟随(TRUE)
+	, 打怪(TRUE)
+	, 角色数量(10)
+	, 副本ID(192)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -34,6 +40,14 @@ CWeGameDlg::CWeGameDlg(CWnd* pParent /*=nullptr*/)
 void CWeGameDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_CBIndex(pDX, IDC_COMBO1, 自动模式);
+	DDX_CBIndex(pDX, IDC_COMBO2, 刷图功能);
+	DDX_CBIndex(pDX, IDC_COMBO3, 过图方式);
+	DDX_Text(pDX, IDC_EDIT2, 技能代码);
+	DDX_Check(pDX, IDC_CHECK1, 跟随);
+	DDX_Check(pDX, IDC_CHECK2, 打怪);
+	DDX_Text(pDX, IDC_EDIT3, 角色数量);
+	DDX_Text(pDX, IDC_EDIT1, 副本ID);
 }
 
 BEGIN_MESSAGE_MAP(CWeGameDlg, CDialogEx)
@@ -99,14 +113,13 @@ HCURSOR CWeGameDlg::OnQueryDragIcon()
 
 void CWeGameDlg::日志公告(CString msg)
 {
-	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_NOTICE);
+	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_EDIT4);
 	int nLength = pEdit->GetWindowTextLength();
 
 	//选定当前文本的末端
 	pEdit->SetSel(nLength, nLength);
 	//l追加文本
 	CString data;
-
 	data = data + "\r\n" + msg;
 	pEdit->ReplaceSel(data);
 }
@@ -177,7 +190,6 @@ BOOL CWeGameDlg::无忧驱动() {
 
 void CWeGameDlg::激活()
 {
-
 	TCHAR szDrvPath[MAX_PATH];
 	GetModuleFileName(NULL, szDrvPath, MAX_PATH);
 	*(_tcsrchr(szDrvPath, _T('\\')) + 1) = _T('\0');
@@ -217,10 +229,16 @@ void CWeGameDlg::激活()
 	RegisterHotKey(this->GetSafeHwnd(), 1001, 0, VK_F2);
 	RegisterHotKey(this->GetSafeHwnd(), 1010, 0, VK_END);
 
-	Message("激活成功，欢迎使用",1);
+	RegisterHotKey(this->GetSafeHwnd(), 192, 0, VK_OEM_3);
+
+
+	Message("激活成功-欢迎使用",1);
 	
-	日志公告(L"F1 - 武器冰冻");
-	日志公告(L"F2 - HOOK倍攻");
+	日志公告(L"F1 - 技能全屏");
+	日志公告(L"F2 - 武器冰冻");
+	日志公告(L"F3 - HOOK倍攻");
+	日志公告(L"波浪 - 无形秒杀");
+	日志公告(L"End - 自动刷图");
 
 	// 全局获取人物地址
 	 _CreateThread(&取人物指针线程);
@@ -235,10 +253,15 @@ void CWeGameDlg::卸载()
 	UnregisterHotKey(this->GetSafeHwnd(), 1000);
 	UnregisterHotKey(this->GetSafeHwnd(), 1001);
 	UnregisterHotKey(this->GetSafeHwnd(), 1010);
+	UnregisterHotKey(this->GetSafeHwnd(), 192);
+
 	if (drive.UnLoadDriver(L"Drivecontrol") == FALSE) {
-		MessageBox(L"驱动服务卸载失败");
+		_DebugStringW(L"驱动服务卸载失败");
 	}
 	_DebugStringW(L"驱动服务卸载完成");
+
+	MessageBoxW(L"助手以安全卸载");
+
 	// 关闭窗口界面
 	AfxGetMainWnd()->SendMessage(WM_CLOSE);
 }
@@ -254,8 +277,33 @@ void CWeGameDlg::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		HOOK伤害();
 		break;
 	case 1010:
-		automatic.AutomaticSwitch();
+		自动开关();
+		break;
+	case 192:
+		无形秒杀();
 		break;
 	}
 	CDialogEx::OnHotKey(nHotKeyId, nKey1, nKey2);
+}
+
+/*
+屏蔽Esc和Enter 退出对话框
+*/
+BOOL CWeGameDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_RETURN))
+	{
+		return TRUE;
+	}
+	if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_ESCAPE))
+	{
+		return TRUE;
+	}
+	if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_TAB))
+	{
+		return TRUE;
+	}
+
+	return CDialogEx::PreTranslateMessage(pMsg);
 }

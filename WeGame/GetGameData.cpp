@@ -2,44 +2,62 @@
 #include "GetGameData.h"
 #include "ReadWrite.h"
 
-int GetGameData::解密(__int64 数据指针)
+int 解密(__int64 数据指针)
 {
-	// 结果数据 = 位异或(_ReadLong(数据指针), 0x1F2A025C);
-	// 结果数据 = 结果数据 - 4;
-	// 返回((整数)结果数据);
-	return 0;
+	int temp = _ReadInt(数据指针);
+	temp = temp ^ 0x1F2A025C;
+	temp -= 4;
+	return temp;
 }
 
-VOID GetGameData::加密(__int64 数据指针, int 修改数值)
+VOID 加密(__int64 数据指针, int 修改数值)
 {
-	// 运算数据 = 修改数值 + 4
-	// 运算数据 = 位异或 (0x1F2A025C, 运算数据)
-	// _WriteLong(数据指针, 运算数据)
+	数据指针 += 4;
+	数据指针 = 数据指针 ^ 0x1F2A025C;
+	_WriteLong(数据指针, 数据指针);
 }
 
-int GetGameData::取游戏状态()
+int 取游戏状态()
 {
 	return  _ReadInt(游戏状态);
 }
 
-bool GetGameData::取是否开门()
+bool 取是否城镇()
 {
-	if (解密(_ReadLong(_ReadLong(_ReadLong(人物基址) + 地图偏移) + 16) + 是否开门) == 0) {
+	return false;
+}
+
+bool 取是否开门()
+{
+	if (解密(_ReadLong(_ReadLong(_ReadLong(人物基址) + 地图偏移) + 16) + 是否开门) == 0) 
+	{
 		return true;
 	}
 	return false;
 }
 
-bool GetGameData::取是否通关()
+bool 取是否BOSS房()
 {
-	__int64 房间数据 = _ReadLong(_ReadLong(_ReadLong(房间编号) + 时间基址) + 门型偏移);
-	int 判断数值 = _ReadInt(房间数据 + 篝火判断);
-	if(判断数值 == 2 || 判断数值 == 0) {
+	坐标型 当前 = 取当前房间();
+	坐标型 BOSS = 取BOSS房间();
+	if (当前.x == BOSS.x && 当前.y == BOSS.y)
+	{
 		return true;
 	}
 	return false;
 }
-坐标型 GetGameData::取BOSS房间()
+
+bool 取是否通关()
+{
+	__int64 房间数据 = _ReadLong(_ReadLong(_ReadLong(房间编号) + 时间基址) + 门型偏移);
+	int 判断数值 = _ReadInt(房间数据 + 篝火判断);
+	if(判断数值 == 2 || 判断数值 == 0) 
+	{
+		return true;
+	}
+	return false;
+}
+坐标型 取BOSS房间()
 {
 	坐标型 返回数据;
 	__int64 房间数据 = _ReadLong(_ReadLong(_ReadLong(房间编号) + 时间基址) + 门型偏移);
@@ -48,7 +66,7 @@ bool GetGameData::取是否通关()
 	return 返回数据;
 }
 
-坐标型 GetGameData::取当前房间() 
+坐标型 取当前房间() 
 {
 	坐标型 返回数据;
 	__int64 房间数据 = _ReadLong(_ReadLong(_ReadLong(房间编号) + 时间基址) + 门型偏移);
@@ -57,16 +75,16 @@ bool GetGameData::取是否通关()
 	return 返回数据;
 }
 
-int GetGameData::取地图编号() 
+int 取地图编号() 
 {
 	return _ReadInt(副本编号);
 }
 
-int GetGameData::取角色疲劳() 
+__int64 取角色疲劳()
 {
 	return 解密(最大疲劳) - 解密(当前疲劳);
 }
 
-int GetGameData::取角色等级(){
+int 取角色等级(){
 	return _ReadInt(角色等级);
 }

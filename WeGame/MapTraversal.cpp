@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MapTraversal.h"
 
-int MapTraversal::遍历怪物()
+int 遍历怪物()
 {
 	return 0;
 }

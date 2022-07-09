@@ -5,9 +5,7 @@
 #include "Common.h"
 #include "GetGameData.h"
 
-GetGameData getGameData;
-
-VOID GameCall::技能Call(__int64 触发指针, int 技能代码, int 技能伤害, int x, int y, int z, int 大小) {
+VOID 技能Call(__int64 触发指针, int 技能代码, int 技能伤害, int x, int y, int z, int 大小) {
 	__int64 空白地址 = 全局空白 + 1200;
 	int 技能大小 = 1;
 	_WriteLong(空白地址, 触发指针);
@@ -33,7 +31,7 @@ VOID GameCall::技能Call(__int64 触发指针, int 技能代码, int 技能伤�
 	shellCode.clear();
 }
 
-VOID  GameCall::透明Call(__int64 对象指针)
+VOID  透明Call(__int64 对象指针)
 {
 	ByteArr shellCode = { 72, 129, 236, 0, 2, 0, 0 };
 	shellCode = _AppendToBytes(shellCode, ByteArr{ 65, 191, 255, 255, 255, 255 });
@@ -53,17 +51,17 @@ VOID  GameCall::透明Call(__int64 对象指针)
 	shellCode.clear();
 }
 
-VOID GameCall::评分Call(int Value)
+VOID 评分Call(int Value)
 {
-	getGameData.加密(_ReadLong(评分基址) + 272, Value);
+	加密(_ReadLong(评分基址) + 272, Value);
 }
 
-VOID GameCall::过图Call(int 方向)
+VOID 过图Call(int 方向)
 {
 
 }
 
-VOID GameCall::缓冲Call(__int64 缓冲参数)
+VOID 缓冲Call(__int64 缓冲参数)
 {
 	packData = _AppendToBytes(packData, ByteArr{ 72, 131, 236, 96 });
 
@@ -81,7 +79,7 @@ VOID GameCall::缓冲Call(__int64 缓冲参数)
 	packData = _AppendToBytes(packData, ByteArr(255, 208));
 }
 
-VOID GameCall::加密Call(__int64 加密参数, int  加密长度)
+VOID 加密Call(__int64 加密参数, int  加密长度)
 {
 	packData = _AppendToBytes(packData, ByteArr{ 73, 199, 192 });
 	packData = _AppendToBytes(packData, _IntToBytes(加密长度, 8));
@@ -103,7 +101,7 @@ VOID GameCall::加密Call(__int64 加密参数, int  加密长度)
 	packData = _AppendToBytes(packData, ByteArr{ 255, 208 });
 }
 
-VOID GameCall::发包Call(__int64 缓冲参数)
+VOID 发包Call(__int64 缓冲参数)
 {
 	packData = _AppendToBytes(packData, ByteArr{ 72, 184 });
 	packData = _AppendToBytes(packData, _IntToBytes(发包CALL, 8));

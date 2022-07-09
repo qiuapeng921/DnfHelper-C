@@ -2,9 +2,4 @@
 
 // 地图遍历
 
-class MapTraversal
-{
-public:
-	int 遍历怪物();
-};
-
+int 遍历怪物();

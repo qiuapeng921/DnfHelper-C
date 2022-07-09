@@ -37,6 +37,24 @@ public:
 	void 激活();
 	afx_msg void 卸载();
 	afx_msg void OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2);
+	// 自动模式
+	int 自动模式;
+	// 刷图功能
+	int 刷图功能;
+	// 过图方式
+	int 过图方式;
+	// 过图方式
+	int 技能代码;
+	// 跟随
+	BOOL 跟随;
+	// 打怪
+	BOOL 打怪;
+	// 角色数量
+	int 角色数量;
+	// 副本ID
+	int 副本ID;
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	void FuckWindowsManager();
 };
 
 extern CWeGameDlg app;
