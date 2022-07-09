@@ -78,6 +78,9 @@
     <ClInclude Include="DataType.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GamePackage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WeGame.cpp">
@@ -123,6 +126,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="GetGameData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GamePackage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

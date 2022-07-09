@@ -80,9 +80,13 @@ VOID 汇编执行(ByteArr 汇编代码)
 	__int64 汇编中转, 空白地址, Hook汇编, Hook跳回, 判断地址;
 
 	static bool 异步执行;
-
-	汇编中转 = 全局空白 + 300;
-	空白地址 = 全局空白 + 500;
+	static __int64 kb;
+	if (kb == 0)
+	{
+		kb = (__int64)_ApplyMemory(1000);
+	}
+	汇编中转 = kb + 300;
+	空白地址 = kb + 500;
 	判断地址 = 空白地址 - 100;
 	if (异步执行) {
 		return;

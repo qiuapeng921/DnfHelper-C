@@ -188,6 +188,7 @@
     <ClInclude Include="GameCall.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameMap.h" />
+    <ClInclude Include="GamePackage.h" />
     <ClInclude Include="GetGameData.h" />
     <ClInclude Include="Ioc.h" />
     <ClInclude Include="MapTraversal.h" />
@@ -208,6 +209,7 @@
   <ItemGroup>
     <ClCompile Include="GameCall.cpp" />
     <ClCompile Include="GameMap.cpp" />
+    <ClCompile Include="GamePackage.cpp" />
     <ClCompile Include="GetGameData.cpp" />
     <ClCompile Include="MapTraversal.cpp" />
     <ClCompile Include="pch.cpp">

@@ -5,17 +5,41 @@
 #include "ReadWrite.h"
 #include "GameCall.h"
 #include "GameBulletin.h"
+#include "MapTraversal.h"
 
-VOID 无形秒杀() 
+HANDLE 技能开关句柄;
+
+VOID 技能开关() {
+	static bool _switch;
+	_switch = !_switch;
+
+	if (_switch == true)
+	{
+		技能开关句柄 = _CreateThread(&全屏技能);
+		Message("技能全屏 - 开启", 2);
+	}
+	else
+	{
+		_DeleteThread(技能开关句柄);
+		Message("技能全屏 - 关闭", 2);
+	}
+}
+
+VOID 无形秒杀()
 {
-	技能Call(0, 39002, 0, 0, 0, 0,0);
-	Message("无形秒杀 - 完毕",2);
+	技能Call(0, 39002, 0, 0, 0, 0, 0);
+	Message("无形秒杀 - 完毕", 2);
 }
 
 VOID 武器冰冻() {
 	static bool _switch;
 
-	__int64 空白地址 = 全局空白 + 2600;
+	static __int64 空白地址;
+
+	if (空白地址 == 0)
+	{
+		空白地址 = (__int64)_ApplyMemory(200);
+	}
 	int 冰冻伤害 = 99999;
 
 	_switch = !_switch;
@@ -49,29 +73,6 @@ VOID 武器冰冻() {
 		Message("武器冰冻 - 关闭", 2);
 	}
 }
-
-VOID 技能开关() {
-	HWND hWnd = FindWindow(TEXT("地下城与勇士"), TEXT("地下城与勇士"));
-	static bool _switch;
-	_switch = !_switch;
-
-	if (_switch == true)
-	{
-		SetTimer(hWnd, 1, 300, (TIMERPROC)遍历全屏技能);
-		Message("技能全屏 - 开启",2);
-	}
-	else
-	{
-		KillTimer(hWnd, 1);
-		Message("技能全屏 - 关闭",2);
-	}
-	_switch = !_switch;
-}
-
-VOID 遍历全屏技能() {
-	Message("遍历全屏技能", 2);
-}
-
 
 VOID HOOK伤害() {
 	static bool _switch;

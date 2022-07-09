@@ -24,7 +24,7 @@ Driver drive;
 
 // CWeGameDlg 对话框
 CWeGameDlg::CWeGameDlg(CWnd* pParent /*=nullptr*/)
-: CDialogEx(IDD_WEGAME_DIALOG, pParent)
+	: CDialogEx(IDD_WEGAME_DIALOG, pParent)
 	, 自动模式(0)
 	, 刷图功能(0)
 	, 过图方式(0)
@@ -130,7 +130,7 @@ BOOL CWeGameDlg::无忧驱动() {
 		//MessageBoxW(L"Vu驱动文件打开异常");
 		return FALSE;
 	}
-	
+
 	Vu驱动* vuDrive = new Vu驱动();
 
 	vuDrive->设置驱动句柄(drive.hDriver);
@@ -201,7 +201,7 @@ void CWeGameDlg::激活()
 		//CDialogEx::OnCancel();
 		return;
 	}
-	
+
 	BOOL result = drive.LoadDriver(szDrvPath, L"Drivecontrol", L"Drivecontrol");
 	if (!result)
 	{
@@ -211,7 +211,7 @@ void CWeGameDlg::激活()
 	}
 
 	DWORD gameProcess = _GetProcessId(L"dnf.exe");
-	
+
 	HWND gameHandle = ::FindWindowW(L"地下城与勇士", L"地下城与勇士");
 
 	if (gameProcess == 0)
@@ -227,13 +227,14 @@ void CWeGameDlg::激活()
 	// 设置热键
 	RegisterHotKey(this->GetSafeHwnd(), 1000, 0, VK_F1);
 	RegisterHotKey(this->GetSafeHwnd(), 1001, 0, VK_F2);
+	RegisterHotKey(this->GetSafeHwnd(), 1002, 0, VK_F3);
 	RegisterHotKey(this->GetSafeHwnd(), 1010, 0, VK_END);
 
 	RegisterHotKey(this->GetSafeHwnd(), 192, 0, VK_OEM_3);
 
 
-	Message("激活成功-欢迎使用",1);
-	
+	Message("激活成功-欢迎使用", 1);
+
 	日志公告(L"F1 - 技能全屏");
 	日志公告(L"F2 - 武器冰冻");
 	日志公告(L"F3 - HOOK倍攻");
@@ -241,7 +242,7 @@ void CWeGameDlg::激活()
 	日志公告(L"End - 自动刷图");
 
 	// 全局获取人物地址
-	 _CreateThread(&取人物指针线程);
+	_CreateThread(&取人物指针线程);
 
 	_InitConfig();
 	// 禁用激活按钮
@@ -252,6 +253,7 @@ void CWeGameDlg::卸载()
 {
 	UnregisterHotKey(this->GetSafeHwnd(), 1000);
 	UnregisterHotKey(this->GetSafeHwnd(), 1001);
+	UnregisterHotKey(this->GetSafeHwnd(), 1002);
 	UnregisterHotKey(this->GetSafeHwnd(), 1010);
 	UnregisterHotKey(this->GetSafeHwnd(), 192);
 
@@ -271,9 +273,12 @@ void CWeGameDlg::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	switch (nHotKeyId) {
 	case 1000:
-		武器冰冻();
+		技能开关();
 		break;
 	case 1001:
+		武器冰冻();
+		break;
+	case 1002:
 		HOOK伤害();
 		break;
 	case 1010:

@@ -4,6 +4,7 @@
 #include "GameBulletin.h"
 #include "Common.h"
 #include "GetGameData.h"
+#include "GamePackage.h"
 
 VOID 技能Call(__int64 触发指针, int 技能代码, int 技能伤害, int x, int y, int z, int 大小) {
 	__int64 空白地址 = 全局空白 + 1200;
@@ -59,57 +60,6 @@ VOID 评分Call(int Value)
 VOID 过图Call(int 方向)
 {
 
-}
-
-VOID 缓冲Call(__int64 缓冲参数)
-{
-	packData = _AppendToBytes(packData, ByteArr{ 72, 131, 236, 96 });
-
-	packData = _AppendToBytes(packData, ByteArr{ 186 });
-	packData = _AppendToBytes(packData, _IntToBytes(缓冲参数, 8));
-
-	packData = _AppendToBytes(packData, ByteArr{ 72, 185 });
-	packData = _AppendToBytes(packData, _IntToBytes(发包基址, 8));
-
-	packData = _AppendToBytes(packData, ByteArr{ 72, 139, 9 });
-
-	packData = _AppendToBytes(packData, ByteArr{ 72, 184 });
-	packData = _AppendToBytes(packData, _IntToBytes(缓冲CALL, 8));
-
-	packData = _AppendToBytes(packData, ByteArr(255, 208));
-}
-
-VOID 加密Call(__int64 加密参数, int  加密长度)
-{
-	packData = _AppendToBytes(packData, ByteArr{ 73, 199, 192 });
-	packData = _AppendToBytes(packData, _IntToBytes(加密长度, 8));
-
-	packData = _AppendToBytes(packData, ByteArr(72, 184));
-	packData = _AppendToBytes(packData, _IntToBytes(加密参数, 8));
-
-	packData = _AppendToBytes(packData, ByteArr{ 72, 137, 68, 36, 32 });
-	packData = _AppendToBytes(packData, ByteArr{ 72, 141, 84, 36, 32 });
-
-	packData = _AppendToBytes(packData, ByteArr{ 72, 185 });
-	packData = _AppendToBytes(packData, _IntToBytes(发包基址, 8));
-
-	packData = _AppendToBytes(packData, ByteArr{ 72, 139, 9 });
-
-	packData = _AppendToBytes(packData, ByteArr({ 72, 184 }));
-	packData = _AppendToBytes(packData, _IntToBytes(加密CALL, 8));
-
-	packData = _AppendToBytes(packData, ByteArr{ 255, 208 });
-}
-
-VOID 发包Call(__int64 缓冲参数)
-{
-	packData = _AppendToBytes(packData, ByteArr{ 72, 184 });
-	packData = _AppendToBytes(packData, _IntToBytes(发包CALL, 8));
-
-	packData = _AppendToBytes(packData, ByteArr{ 255, 208 });
-	packData = _AppendToBytes(packData, ByteArr{ 72, 131, 196, 96 });
-	汇编执行(packData);
-	packData.clear();
 }
 
 __int64 取人物指针Call(__int64 globleRwAddr)
@@ -174,4 +124,35 @@ VOID 取人物指针线程()
 		}
 		Sleep(300);
 	}
+}
+
+VOID 区域Call(int 地图编号)
+{
+	__int64 局_区域基址 = _ReadLong(区域参数);
+	__int64 局_区域CALL = 区域CALL;
+
+	ByteArr shellCode = { 72, 131, 236, 48 };
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 65, 184 });
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(地图编号, 4));
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 186, 174, 12, 0, 0 });
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 184, 255, 255, 255, 255, 0, 0, 0, 0 });
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 185 });
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(区域参数, 8));
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 139, 9 });
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 184 });
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(局_区域CALL, 8));
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 255, 208, 72, 131, 196, 48 });
+	汇编执行(shellCode);
+	shellCode.clear();
+
+	int 大区域 = _ReadInt(局_区域基址 + 区域偏移 + 0);
+	int 小区域 = _ReadInt(局_区域基址 + 区域偏移 + 4);
+	int 城镇X = _ReadInt(局_区域基址 + 区域偏移 + 8);
+	int 城镇Y = _ReadInt(局_区域基址 + 区域偏移 + 12);
+	组包移动(大区域, 小区域, 城镇X, 城镇Y);
 }

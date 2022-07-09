@@ -24,6 +24,10 @@ int 取游戏状态()
 
 bool 取是否城镇()
 {
+	if (_ReadLong(_ReadLong( +人物基址) + 地图偏移) == 0)
+	{
+		return true;
+	}
 	return false;
 }
 

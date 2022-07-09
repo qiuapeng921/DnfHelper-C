@@ -239,10 +239,10 @@ void _HexToBytes(const string hex, unsigned char* bytes)
 ByteArr _AppendToBytes(ByteArr oldBytes, ByteArr newBytes)
 {
 	ByteArr bytes = oldBytes;
-	if (oldBytes.size() == 0)
-	{
-		return bytes;
-	}
+	//if (oldBytes.size() == 0)
+	//{
+	//	return bytes;
+	//}
 	if (newBytes.size() == 0)
 	{
 		return bytes;
