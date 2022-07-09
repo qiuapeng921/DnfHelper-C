@@ -44,7 +44,6 @@ BEGIN_MESSAGE_MAP(CWeGameDlg, CDialogEx)
 	ON_WM_HOTKEY()
 END_MESSAGE_MAP()
 
-
 // CWeGameDlg 消息处理程序
 BOOL CWeGameDlg::OnInitDialog()
 {
@@ -111,7 +110,6 @@ void CWeGameDlg::日志公告(CString msg)
 	data = data + "\r\n" + msg;
 	pEdit->ReplaceSel(data);
 }
-
 
 BOOL CWeGameDlg::无忧驱动() {
 
@@ -210,11 +208,9 @@ void CWeGameDlg::激活()
 		return;
 	}
 
-	_DebugStringW(L"gameProcess = %d gameHandle = %d  %s", gameProcess, NULL);
+	_DebugStringW(L"gameProcess = %d ", gameProcess);
 
 	_SetProcessId(gameProcess, NULL);
-
-
 
 	// 设置热键
 	RegisterHotKey(this->GetSafeHwnd(), 1000, 0, VK_F1);
@@ -227,7 +223,7 @@ void CWeGameDlg::激活()
 	日志公告(L"F2 - HOOK倍攻");
 
 	// 全局获取人物地址
-	// _CreateThread(&取人物指针线程);
+	 _CreateThread(&取人物指针线程);
 
 	_InitConfig();
 	// 禁用激活按钮

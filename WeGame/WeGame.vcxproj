@@ -184,9 +184,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Address.h" />
+    <ClInclude Include="DataType.h" />
     <ClInclude Include="GameCall.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GameMap.h" />
+    <ClInclude Include="GetGameData.h" />
     <ClInclude Include="Ioc.h" />
+    <ClInclude Include="MapTraversal.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
@@ -203,6 +207,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameCall.cpp" />
+    <ClCompile Include="GameMap.cpp" />
+    <ClCompile Include="GetGameData.cpp" />
+    <ClCompile Include="MapTraversal.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

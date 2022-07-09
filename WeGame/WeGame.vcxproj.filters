@@ -66,6 +66,18 @@
     <ClInclude Include="Address.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GameMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MapTraversal.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GetGameData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WeGame.cpp">
@@ -102,6 +114,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="VuDriver.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MapTraversal.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GetGameData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

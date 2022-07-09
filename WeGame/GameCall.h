@@ -1,27 +1,22 @@
 #pragma once
 #include "Common.h"
 
-class Call
+class GameCall
 {
+protected:
+	ByteArr packData;
+
 public:
-	VOID 技能CALL(INT64 触发指针, INT 技能代码, INT 技能伤害, INT x, INT y, INT z);
-
-	VOID 释放Call(INT64 触发指针, INT 技能代码, INT 技能伤害, INT x, INT y, INT z);
-
-	VOID 物品Call(INT64 物品代码);
-
-	VOID 特效Call(INT type);
-
-	VOID 透明Call(INT64 对象指针);
-
-	VOID 奔跑Call(INT x, INT y, INT Speed);
-
-	VOID 评分Call(INT Value);
-
-	VOID 过图Call(INT 方向);
+	VOID 技能Call(__int64 触发指针, int 技能代码, int 技能伤害, int x, int y, int z, int 大小);
+	VOID 透明Call(__int64 对象指针);
+	VOID 评分Call(int Value);
+	VOID 过图Call(int 方向);
+	VOID 缓冲Call(__int64 缓冲参数);
+	VOID 加密Call(__int64 加密参数, int 加密长度);
+	VOID 发包Call(__int64 缓冲参数);
 };
 
-VOID 汇编执行(ByteArr 汇编代码);
+extern GameCall call;
 
 __int64 取人物指针Call(__int64 globleRwAddr);
 

@@ -1,140 +1,135 @@
 ﻿#include "pch.h"
 #include "GameCall.h"
 #include "ReadWrite.h"
-#include "Address.h"
 #include "GameBulletin.h"
+#include "Common.h"
+#include "GetGameData.h"
 
-VOID Call::技能CALL(INT64 触发指针, INT 技能代码, INT 技能伤害, INT x, INT y, INT z) {
+GetGameData getGameData;
 
+VOID GameCall::技能Call(__int64 触发指针, int 技能代码, int 技能伤害, int x, int y, int z, int 大小) {
+	__int64 空白地址 = 全局空白 + 1200;
+	int 技能大小 = 1;
+	_WriteLong(空白地址, 触发指针);
+	_WriteInt(空白地址 + 16, 技能代码);
+	_WriteLong(空白地址 + 20, 技能伤害);
+	_WriteInt(空白地址 + 32, x);
+	_WriteInt(空白地址 + 36, y);
+	_WriteInt(空白地址 + 40, z);
+	_WriteInt(空白地址 + 140, 技能大小);
+	_WriteInt(空白地址 + 144, 65535);
+	_WriteInt(空白地址 + 148, 65535);
+
+	ByteArr shellCode = { 72, 129, 236, 0, 2, 0, 0 };
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 185 });
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(空白地址, 8));
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 184 });
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(技能CALL, 8));
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 255, 208, 72, 129, 196, 0, 2, 0, 0 });
+
+	汇编执行(shellCode);
+	shellCode.clear();
 }
 
-VOID Call::释放Call(INT64 触发指针, INT 技能代码, INT 技能伤害, INT x, INT y, INT z)
+VOID  GameCall::透明Call(__int64 对象指针)
+{
+	ByteArr shellCode = { 72, 129, 236, 0, 2, 0, 0 };
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 65, 191, 255, 255, 255, 255 });
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 199, 68, 36, 32, 255, 255, 0, 0 });
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 65, 185, 1, 0, 0, 0 });
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 73, 184, 1, 0, 0, 0, 0, 0, 0, 0 });
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 186, 1, 0, 0, 0 });
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 185 });
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(对象指针, 8));
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 184 });
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(透明CALL, 8));
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 255, 208, 72, 129, 196, 0, 2, 0, 0 });
+	汇编执行(shellCode);
+	shellCode.clear();
+}
+
+VOID GameCall::评分Call(int Value)
+{
+	getGameData.加密(_ReadLong(评分基址) + 272, Value);
+}
+
+VOID GameCall::过图Call(int 方向)
 {
 
 }
 
-VOID  Call::物品Call(INT64 物品代码)
+VOID GameCall::缓冲Call(__int64 缓冲参数)
 {
+	packData = _AppendToBytes(packData, ByteArr{ 72, 131, 236, 96 });
 
+	packData = _AppendToBytes(packData, ByteArr{ 186 });
+	packData = _AppendToBytes(packData, _IntToBytes(缓冲参数, 8));
+
+	packData = _AppendToBytes(packData, ByteArr{ 72, 185 });
+	packData = _AppendToBytes(packData, _IntToBytes(发包基址, 8));
+
+	packData = _AppendToBytes(packData, ByteArr{ 72, 139, 9 });
+
+	packData = _AppendToBytes(packData, ByteArr{ 72, 184 });
+	packData = _AppendToBytes(packData, _IntToBytes(缓冲CALL, 8));
+
+	packData = _AppendToBytes(packData, ByteArr(255, 208));
 }
 
-VOID  Call::特效Call(INT type)
+VOID GameCall::加密Call(__int64 加密参数, int  加密长度)
 {
+	packData = _AppendToBytes(packData, ByteArr{ 73, 199, 192 });
+	packData = _AppendToBytes(packData, _IntToBytes(加密长度, 8));
 
+	packData = _AppendToBytes(packData, ByteArr(72, 184));
+	packData = _AppendToBytes(packData, _IntToBytes(加密参数, 8));
+
+	packData = _AppendToBytes(packData, ByteArr{ 72, 137, 68, 36, 32 });
+	packData = _AppendToBytes(packData, ByteArr{ 72, 141, 84, 36, 32 });
+
+	packData = _AppendToBytes(packData, ByteArr{ 72, 185 });
+	packData = _AppendToBytes(packData, _IntToBytes(发包基址, 8));
+
+	packData = _AppendToBytes(packData, ByteArr{ 72, 139, 9 });
+
+	packData = _AppendToBytes(packData, ByteArr({ 72, 184 }));
+	packData = _AppendToBytes(packData, _IntToBytes(加密CALL, 8));
+
+	packData = _AppendToBytes(packData, ByteArr{ 255, 208 });
 }
 
-VOID  Call::透明Call(INT64 对象指针)
+VOID GameCall::发包Call(__int64 缓冲参数)
 {
+	packData = _AppendToBytes(packData, ByteArr{ 72, 184 });
+	packData = _AppendToBytes(packData, _IntToBytes(发包CALL, 8));
 
-}
-
-VOID Call::奔跑Call(INT x, INT y, INT Speed)
-{
-
-}
-
-VOID Call::评分Call(INT Value)
-{
-
-}
-
-VOID Call::过图Call(INT 方向)
-{
-
-}
-
-
-INT64 申请属性内存Call(INT 属性类型)
-{
-	return 0;
-}
-
-VOID 写入光环范围Call(INT64 光环指针, INT 范围数值, INT x, INT y)
-{
-
-}
-
-VOID 生效属性内存Call(INT64 人物指针, INT64 光环指针)
-{
-
-}
-
-VOID 汇编执行(ByteArr 汇编代码) {
-	__int64 汇编中转, 空白地址, Hook汇编, Hook跳回, 判断地址;
-
-	static bool 异步执行;
-
-	汇编中转 = 全局空白 + 300;
-	空白地址 = 全局空白 + 500;
-	判断地址 = 空白地址 - 100;
-	if (异步执行) {
-		return;
-	}
-
-	异步执行 = true;
-
-	Hook汇编 = 汇编CALL;
-	Hook汇编 = Hook汇编 + 144;
-	Hook跳回 = Hook汇编 + 19;
-	ByteArr Hook数据 = _ReadByteArr(Hook汇编, 19);
-	ByteArr Hook原数据 = Hook数据;
-
-	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 184 });
-	Hook数据 = _AppendToBytes(Hook数据,_IntToBytes(判断地址, 8));
-
-	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 131, 56, 1, 117, 42, 72, 129, 236, 0, 3, 0, 0 });
-
-	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 187 });
-	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(空白地址, 8));
-
-	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 255, 211 });
-
-	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 184 });
-	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(判断地址, 8));
-
-	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 199, 0, 3, 0, 0, 0 });
-	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 129, 196, 0, 3, 0, 0 });
-
-	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 255, 37, 0, 0, 0, 0 });
-	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(Hook跳回, 8));
-
-	if (_ReadLong(汇编中转) == 0) {
-		_WriteByteArr(汇编中转, Hook数据);
-	}
-
-	Hook数据.clear();
-	_WriteByteArr(空白地址, _AppendToBytes(汇编代码, ByteArr{ 195 }));
-	ByteArr tmp = { 255, 37, 0, 0, 0, 0 };
-	tmp = _AppendToBytes(tmp, _IntToBytes(汇编中转, 8));
-	tmp = _AppendToBytes(tmp, ByteArr{ 144, 144, 144, 144, 144 });
-	_WriteByteArr(Hook汇编, tmp);
-	_WriteLong(判断地址, 1);
-	while (_ReadLong(判断地址) == 1)
-	{
-		Sleep(10);
-	}
-	_WriteByteArr(Hook汇编, Hook原数据);
-	_WriteByteArr(空白地址, 取空白ByteArr(sizeof(汇编代码) + 16));
-
-	异步执行 = false;
+	packData = _AppendToBytes(packData, ByteArr{ 255, 208 });
+	packData = _AppendToBytes(packData, ByteArr{ 72, 131, 196, 96 });
+	汇编执行(packData);
+	packData.clear();
 }
 
 __int64 取人物指针Call(__int64 globleRwAddr)
 {
 	__int64 空白地址 = globleRwAddr;
 
-	ByteArr 汇编数据 = ByteArr{ 72, 129, 236, 0, 1, 0, 0 };  // sub rsp,100
+	ByteArr shellCode = ByteArr{ 72, 131, 236, 100 };  // sub rsp,100
 
-	汇编数据 = _AppendToBytes(汇编数据, ByteArr{ 72, 184 });  // mov rax  人物call
-	汇编数据 = _AppendToBytes(汇编数据, _IntToBytes(人物CALL, 8));
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 184 });  // mov rax  人物call
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(人物CALL, 8));
 
-	汇编数据 = _AppendToBytes(汇编数据, ByteArr{ 255, 208 });  // CALL rax
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 255, 208 });  // CALL rax
 
-	汇编数据 = _AppendToBytes(汇编数据, ByteArr{ 72, 163 });
-	汇编数据 = _AppendToBytes(汇编数据, _IntToBytes(空白地址, 8));
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 163 });
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(空白地址, 8));
 
-	汇编数据 = _AppendToBytes(汇编数据, ByteArr{ 72, 131, 196, 100 });  // add rsp,100
-	汇编执行(汇编数据);
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 131, 196, 100 });  // add rsp,100
+	汇编执行(shellCode);
 	__int64 返回地址 = _ReadLong(空白地址);
 
 	return 返回地址;
@@ -166,7 +161,7 @@ VOID 取人物指针线程()
 
 	while (_ReadInt(5368709120) == 9460301)
 	{
-		if (_ReadLong(游戏状态) >= 1 && 状态变化 == false) 
+		if (_ReadLong(游戏状态) >= 1 && 状态变化 == false)
 		{
 			空白地址 = 全局空白 + 4000;
 			__int64 人物指针 = 取人物指针Call(空白地址);
@@ -179,6 +174,6 @@ VOID 取人物指针线程()
 		{
 			状态变化 = false;
 		}
-		Sleep(500);
+		Sleep(300);
 	}
 }

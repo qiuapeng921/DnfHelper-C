@@ -3,27 +3,25 @@
 #include "Common.h"
 #include "GameFunction.h"
 #include "ReadWrite.h"
-#include "Address.h"
 #include "GameCall.h"
 #include "GameBulletin.h"
 
 VOID 武器冰冻() {
 	static bool _switch = false;
 
-	__int64 空白地址 = (__int64)_ApplyMemory(100);
-	__int64 冰冻伤害 = 99999;
-	__int64 kb = _ReadLong(空白地址);
+	__int64 空白地址 = 全局空白 + 2600;
+	int 冰冻伤害 = 99999;
 
 	if (!_switch)
 	{
-		_WriteLong(空白地址, 0);
-		_WriteLong(空白地址 + 4, 2000);
-		_WriteLong(空白地址 + 8, 2000);
-		_WriteLong(空白地址 + 12, 50);
-		_WriteLong(空白地址 + 16, 100);
-		_WriteLong(空白地址 + 20, 99);
-		_WriteLong(空白地址 + 24, 130);
-		_WriteLong(空白地址 + 28, 冰冻伤害 * 100000);
+		_WriteInt(空白地址, 0);
+		_WriteInt(空白地址 + 4, 2000);
+		_WriteInt(空白地址 + 8, 2000);
+		_WriteInt(空白地址 + 12, 50);
+		_WriteInt(空白地址 + 16, 100);
+		_WriteInt(空白地址 + 20, 99);
+		_WriteInt(空白地址 + 24, 130);
+		_WriteInt(空白地址 + 28, 冰冻伤害 * 100000);
 		__int64 武器 = _ReadLong(_ReadLong(GetPersonAddr()) + 武器偏移);
 		_WriteLong(武器 + 冰冻开始, 空白地址);
 		_WriteLong(武器 + 冰冻结束, 空白地址 + 32);

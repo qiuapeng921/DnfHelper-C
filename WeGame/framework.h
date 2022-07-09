@@ -14,8 +14,10 @@
 #include <afxwin.h>         // MFC 核心组件和标准组件
 #include <afxext.h>         // MFC 扩展
 
+// 自定义全局加载 start
 #include <string>
 
+// 自定义全局加载 end
 
 
 #ifndef _AFX_NO_OLE_SUPPORT

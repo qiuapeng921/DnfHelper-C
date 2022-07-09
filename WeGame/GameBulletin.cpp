@@ -2,7 +2,6 @@
 #include "GameBulletin.h"
 #include "ReadWrite.h"
 #include "Common.h"
-#include "Address.h"
 #include "GameCall.h"
 
 VOID SystemMessage(string message) {

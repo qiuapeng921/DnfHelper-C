@@ -1,5 +1,6 @@
 #pragma once
 #include "Common.h"
+#include "Address.h"
 
 #include <vector>
 using namespace std;
@@ -27,3 +28,5 @@ BOOL _WriteLong(DWORD64 address, DWORD64 val);
 ByteArr _ReadByteArr(DWORD64 address, INT32 length);
 
 BOOL _WriteByteArr(DWORD64 address, ByteArr val);
+
+VOID »ã±àÖ´ÐÐ(ByteArr »ã±à´úÂë);
