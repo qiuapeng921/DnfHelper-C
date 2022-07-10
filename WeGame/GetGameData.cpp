@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GetGameData.h"
 #include "ReadWrite.h"
+#include "GameCall.h"
 
 int 解密(__int64 数据指针)
 {
@@ -17,6 +18,7 @@ VOID 加密(__int64 数据指针, int 修改数值)
 	_WriteLong(数据指针, 数据指针);
 }
 
+// 0选角 1城镇 2选图 3图内 5选择频道
 int 取游戏状态()
 {
 	return  _ReadInt(游戏状态);
@@ -24,7 +26,7 @@ int 取游戏状态()
 
 bool 取是否城镇()
 {
-	if (_ReadLong(_ReadLong( +人物基址) + 地图偏移) == 0)
+	if (_ReadLong(_ReadLong(GetPersonAddr()) + 地图偏移) == 0)
 	{
 		return true;
 	}
@@ -33,7 +35,7 @@ bool 取是否城镇()
 
 bool 取是否开门()
 {
-	if (解密(_ReadLong(_ReadLong(_ReadLong(人物基址) + 地图偏移) + 16) + 是否开门) == 0) 
+	if (解密(_ReadLong(_ReadLong(_ReadLong(GetPersonAddr()) + 地图偏移) + 16) + 是否开门) == 0)
 	{
 		return true;
 	}
@@ -84,11 +86,17 @@ int 取地图编号()
 	return _ReadInt(副本编号);
 }
 
-__int64 取角色疲劳()
+int 取疲劳值()
 {
 	return 解密(最大疲劳) - 解密(当前疲劳);
 }
 
 int 取角色等级(){
 	return _ReadInt(角色等级);
+}
+
+CString 取地图名称()
+{
+	__int64 房间数据 = _ReadLong(_ReadLong(_ReadLong(房间编号) + 时间基址) + 门型偏移);
+	return _UnicodeToAnsi(_ReadByteArr(_ReadLong(房间数据 + 地图名称), 52));
 }

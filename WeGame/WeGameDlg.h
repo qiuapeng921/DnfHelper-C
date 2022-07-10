@@ -1,9 +1,6 @@
 ﻿
 // WeGameDlg.h: 头文件
-//
-
 #pragma once
-
 
 // CWeGameDlg 对话框
 class CWeGameDlg : public CDialogEx
@@ -20,16 +17,14 @@ public:
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
 
-
 // 实现
 protected:
 	HICON m_hIcon;
-
 	// 生成的消息映射函数
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
-	void 日志公告(CString msg);
+
 
 	DECLARE_MESSAGE_MAP()
 public:
@@ -54,7 +49,6 @@ public:
 	// 副本ID
 	int 副本ID;
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	void FuckWindowsManager();
 };
 
 extern CWeGameDlg app;

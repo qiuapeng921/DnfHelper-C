@@ -4,6 +4,25 @@
 #include "Common.h"
 #include "GameCall.h"
 
+static CEdit* windowPEdit;
+
+VOID SetWindowPEdit(CEdit* pEdit)
+{
+	windowPEdit = pEdit;
+}
+
+CEdit* GetWindowPEdit() 
+{
+	return windowPEdit;
+}
+
+VOID 监控(CString message)
+{
+	CString data;
+	data = data + "\r\n" + message;
+	GetWindowPEdit()->ReplaceSel(data);
+}
+
 VOID SystemMessage(string message) {
 	LPVOID static 空白地址;
 
@@ -39,7 +58,6 @@ VOID Message(string message,int type) {
 		公告类型 = 17;
 	}
 	_WriteLong(空白地址1 + 36, 公告类型); 
-
 
 	ByteArr 汇编数据 = ByteArr{ 72, 129, 236, 0, 1, 0, 0 };
 	汇编数据 = _AppendToBytes(汇编数据, ByteArr{ 72, 186 });

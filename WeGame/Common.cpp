@@ -126,7 +126,7 @@ CString _GetCurrentTime()
 {
 	CString str;
 	CTime tm(CTime::GetCurrentTime());
-	return tm.Format(L"情歌：%Y年%m月%d日 %X");
+	return tm.Format(L"%Y年%m月%d日 %X");
 }
 
 //使用示例：_DebugStringA("%d,%s",123,"hello");

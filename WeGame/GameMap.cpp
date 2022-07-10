@@ -3,18 +3,19 @@
 #include "Address.h"
 #include "ReadWrite.h"
 #include "GetGameData.h"
+#include "GameCall.h"
 
 µØÍ¼Êý¾Ý Ñ°Â·_µØÍ¼Êý¾Ý()
 {
 	µØÍ¼Êý¾Ý ¾Ö_µØÍ¼Êý¾Ý;
-	__int64 Êý¾Ý = _ReadLong(·¿¼ä±àºÅ);
-	__int64 ¾Ö_·¿¼äÊý¾Ý = _ReadLong(_ReadLong(Êý¾Ý + Ê±¼ä»ùÖ·) + ÃÅÐÍÆ«ÒÆ);
-	__int64 ¾Ö_·¿¼äË÷Òý = ½âÃÜ(¾Ö_·¿¼äÊý¾Ý + Ë÷ÒýÆ«ÒÆ);
+	ULONG64 ¾Ö_·¿¼äÊý¾Ý = _ReadLong(_ReadLong(_ReadLong(·¿¼ä±àºÅ) + Ê±¼ä»ùÖ·) + ÃÅÐÍÆ«ÒÆ);
+	ULONG64 ¾Ö_·¿¼äË÷Òý = ½âÃÜ(¾Ö_·¿¼äÊý¾Ý + Ë÷ÒýÆ«ÒÆ);
+
 	¾Ö_µØÍ¼Êý¾Ý.¿í = _ReadInt(_ReadLong(¾Ö_·¿¼äÊý¾Ý + ¿í¸ßÆ«ÒÆ) + ¾Ö_·¿¼äË÷Òý * 8 + 0);
 	¾Ö_µØÍ¼Êý¾Ý.¸ß = _ReadInt(_ReadLong(¾Ö_·¿¼äÊý¾Ý + ¿í¸ßÆ«ÒÆ) + ¾Ö_·¿¼äË÷Òý * 8 + 4);
 	¾Ö_µØÍ¼Êý¾Ý.ÁÙÊ±±äÁ¿ = _ReadLong(_ReadLong(¾Ö_·¿¼äÊý¾Ý + Êý×éÆ«ÒÆ) + 32 * ¾Ö_·¿¼äË÷Òý + 8);
 	¾Ö_µØÍ¼Êý¾Ý.Í¨µÀÊýÁ¿ = ¾Ö_µØÍ¼Êý¾Ý.¿í * ¾Ö_µØÍ¼Êý¾Ý.¸ß;
-	for (int i = 0; i < ¾Ö_µØÍ¼Êý¾Ý.Í¨µÀÊýÁ¿; i++)
+	for (size_t i = 0; i < ¾Ö_µØÍ¼Êý¾Ý.Í¨µÀÊýÁ¿; i++)
 	{
 		¾Ö_µØÍ¼Êý¾Ý.µØÍ¼Í¨µÀ.insert(¾Ö_µØÍ¼Êý¾Ý.µØÍ¼Í¨µÀ.begin() + i, _ReadInt(¾Ö_µØÍ¼Êý¾Ý.ÁÙÊ±±äÁ¿ + i * 4));
 	}
@@ -22,15 +23,14 @@
 	¾Ö_µØÍ¼Êý¾Ý.ÆðÊ¼×ø±ê.y = È¡µ±Ç°·¿¼ä().y + 1;
 	¾Ö_µØÍ¼Êý¾Ý.ÖÕµã×ø±ê.x = È¡BOSS·¿¼ä().x + 1;
 	¾Ö_µØÍ¼Êý¾Ý.ÖÕµã×ø±ê.y = È¡BOSS·¿¼ä().y + 1;
-	if ((¾Ö_µØÍ¼Êý¾Ý.ÆðÊ¼×ø±ê.x == ¾Ö_µØÍ¼Êý¾Ý.ÖÕµã×ø±ê.x && ¾Ö_µØÍ¼Êý¾Ý.ÆðÊ¼×ø±ê.y == ¾Ö_µØÍ¼Êý¾Ý.ÖÕµã×ø±ê.y) == true)
+	if (¾Ö_µØÍ¼Êý¾Ý.ÆðÊ¼×ø±ê.x == ¾Ö_µØÍ¼Êý¾Ý.ÖÕµã×ø±ê.x && ¾Ö_µØÍ¼Êý¾Ý.ÆðÊ¼×ø±ê.y == ¾Ö_µØÍ¼Êý¾Ý.ÖÕµã×ø±ê.y)
 	{
 		return ¾Ö_µØÍ¼Êý¾Ý;
 	}
 	¾Ö_µØÍ¼Êý¾Ý.ÏûºÄÆ£ÀÍ = Ñ°Â·_»ñÈ¡×ß·¨(¾Ö_µØÍ¼Êý¾Ý.µØÍ¼Í¨µÀ, ¾Ö_µØÍ¼Êý¾Ý.¿í, ¾Ö_µØÍ¼Êý¾Ý.¸ß, ¾Ö_µØÍ¼Êý¾Ý.ÆðÊ¼×ø±ê, ¾Ö_µØÍ¼Êý¾Ý.ÖÕµã×ø±ê, ¾Ö_µØÍ¼Êý¾Ý.µØÍ¼×ß·¨);
 	return ¾Ö_µØÍ¼Êý¾Ý;
 }
-
-int Ñ°Â·_»ñÈ¡×ß·¨(vector<int> ²Î_µØÍ¼Í¨µÀ, int ²Î_¿í¶È, int ²Î_¸ß¶È, ×ø±êÐÍ ²Î_µØÍ¼Æðµã, ×ø±êÐÍ ²Î_µØÍ¼ÖÕµã, vector<×ø±êÐÍ>& ²Î_ÕæÊµ×ß·¨)
+DWORD Ñ°Â·_»ñÈ¡×ß·¨(vector<DWORD> ²Î_µØÍ¼Í¨µÀ, DWORD ²Î_¿í¶È, DWORD ²Î_¸ß¶È, ×ø±êÐÍ ²Î_µØÍ¼Æðµã, ×ø±êÐÍ ²Î_µØÍ¼ÖÕµã, vector<×ø±êÐÍ>& ²Î_ÕæÊµ×ß·¨)
 {
 	×ø±êÐÍ start_coordinate;
 	×ø±êÐÍ end_coordinate;
@@ -52,20 +52,20 @@ int Ñ°Â·_»ñÈ¡×ß·¨(vector<int> ²Î_µØÍ¼Í¨µÀ, int ²Î_¿í¶È, int ²Î_¸ß¶È, ×ø±êÐÍ ²Î_µ
 	end_coordinate.y = ²Î_µØÍ¼ÖÕµã.y * 3 - 2;
 	Ñ°Â·_Â·¾¶Ëã·¨(map_flag, start_coordinate, end_coordinate, ²Î_¿í¶È * 3, ²Î_¸ß¶È * 3, cross_way);
 	return Ñ°Â·_ÕûÀí×ø±ê(cross_way, ²Î_ÕæÊµ×ß·¨);
-}
 
-void Ñ°Â·_Éú³ÉµØÍ¼(int ²Î_¿í¶È, int ²Î_¸ß¶È, vector<int> ²Î_µØÍ¼Í¨µÀ, vector<vector<ÓÎÏ·µØÍ¼>>& ²Î_ÓÎÏ·µØÍ¼)
+}
+VOID Ñ°Â·_Éú³ÉµØÍ¼(DWORD ²Î_¿í¶È, DWORD ²Î_¸ß¶È, vector<DWORD> ²Î_µØÍ¼Í¨µÀ, vector<vector<ÓÎÏ·µØÍ¼>>& ²Î_ÓÎÏ·µØÍ¼)
 {
 	²Î_ÓÎÏ·µØÍ¼.clear();
 	²Î_ÓÎÏ·µØÍ¼.resize(²Î_¿í¶È);
-	for (int x = 0; x < ²Î_¿í¶È; x++)
+	for (DWORD x = 0; x < ²Î_¿í¶È; x++)
 	{
 		²Î_ÓÎÏ·µØÍ¼[x].resize(²Î_¸ß¶È);
 	}
 	int i = 0;
-	for (int y = 0; y < ²Î_¸ß¶È; y++)
+	for (DWORD y = 0; y < ²Î_¸ß¶È; y++)
 	{
-		for (int x = 0; x < ²Î_¿í¶È; x++)
+		for (DWORD x = 0; x < ²Î_¿í¶È; x++)
 		{
 			²Î_ÓÎÏ·µØÍ¼[x][y].µØÍ¼×ø±ê.x = x;
 			²Î_ÓÎÏ·µØÍ¼[x][y].µØÍ¼×ø±ê.y = y;
@@ -81,18 +81,17 @@ void Ñ°Â·_Éú³ÉµØÍ¼(int ²Î_¿í¶È, int ²Î_¸ß¶È, vector<int> ²Î_µØÍ¼Í¨µÀ, vector<vec
 		}
 	}
 }
-
-void Ñ°Â·_ÏÔÊ¾µØÍ¼(vector<vector<ÓÎÏ·µØÍ¼>> ²Î_µØÍ¼Êý×é, int ²Î_¿í¶È, int ²Î_¸ß¶È, vector<vector<ÓÎÏ·µØÍ¼>>& ²Î_µØÍ¼±êÇ©)
+VOID Ñ°Â·_ÏÔÊ¾µØÍ¼(vector<vector<ÓÎÏ·µØÍ¼>> ²Î_µØÍ¼Êý×é, DWORD ²Î_¿í¶È, DWORD ²Î_¸ß¶È, vector<vector<ÓÎÏ·µØÍ¼>>& ²Î_µØÍ¼±êÇ©)
 {
 	²Î_µØÍ¼±êÇ©.clear();
 	²Î_µØÍ¼±êÇ©.resize(²Î_¿í¶È * 3);
-	for (int x = 0; x < ²Î_¿í¶È * 3; x++)
+	for (DWORD x = 0; x < ²Î_¿í¶È * 3; x++)
 	{
 		²Î_µØÍ¼±êÇ©[x].resize(²Î_¸ß¶È * 3);
 	}
-	for (int y = 0; y < ²Î_¸ß¶È; y++)
+	for (DWORD y = 0; y < ²Î_¸ß¶È; y++)
 	{
-		for (int x = 0; x < ²Î_¿í¶È; x++)
+		for (DWORD x = 0; x < ²Î_¿í¶È; x++)
 		{
 			²Î_µØÍ¼±êÇ©[(x + 1) * 3 - 2][(y + 1) * 3 - 2].±³¾°ÑÕÉ« = 0xFFFFFF;
 			if (²Î_µØÍ¼Êý×é[x][y].µØÍ¼×ó±ß)
@@ -106,16 +105,15 @@ void Ñ°Â·_ÏÔÊ¾µØÍ¼(vector<vector<ÓÎÏ·µØÍ¼>> ²Î_µØÍ¼Êý×é, int ²Î_¿í¶È, int ²Î_¸ß¶
 		}
 	}
 }
-
-void Ñ°Â·_Â·¾¶Ëã·¨(vector<vector<ÓÎÏ·µØÍ¼>> ²Î_µØÍ¼±êÇ©, ×ø±êÐÍ ²Î_µØÍ¼Æðµã, ×ø±êÐÍ ²Î_µØÍ¼ÖÕµã, int ²Î_¿í¶È, int ²Î_¸ß¶È, vector<×ø±êÐÍ>& ²Î_×ß·¨Êý×é)
+VOID Ñ°Â·_Â·¾¶Ëã·¨(vector<vector<ÓÎÏ·µØÍ¼>> ²Î_µØÍ¼±êÇ©, ×ø±êÐÍ ²Î_µØÍ¼Æðµã, ×ø±êÐÍ ²Î_µØÍ¼ÖÕµã, DWORD ²Î_¿í¶È, DWORD ²Î_¸ß¶È, vector<×ø±êÐÍ>& ²Î_×ß·¨Êý×é)
 {
-	bool ÒÑ´æÔÚ¿ª·ÅÁÐ±í, ÒÑ´æÔÚ¹Ø±ÕÁÐ±í;
+	BOOL ÒÑ´æÔÚ¿ª·ÅÁÐ±í, ÒÑ´æÔÚ¹Ø±ÕÁÐ±í;
 	×ø±êÐÍ ´ý¼ì²â×ø±ê;
 	µØÍ¼½Úµã ´ý¼ì²â½Úµã, ÁÙÊ±½Úµã;
 	vector<µØÍ¼½Úµã> ¿ª·ÅÁÐ±í, ¹Ø±ÕÁÐ±í;
-	int ×î¶Ì±àºÅ = 0;
-	int ×îÐ¡FÖµ, Ô¤²âGÖµ;
-	int x, y;
+	DWORD ×î¶Ì±àºÅ = 0;
+	DWORD ×îÐ¡FÖµ, Ô¤²âGÖµ;
+	DWORD x, y;
 	ÁÙÊ±½Úµã.µ±Ç°×ø±ê.x = ²Î_µØÍ¼Æðµã.x;
 	ÁÙÊ±½Úµã.µ±Ç°×ø±ê.y = ²Î_µØÍ¼Æðµã.y;
 	²Î_µØÍ¼±êÇ©[²Î_µØÍ¼Æðµã.x][²Î_µØÍ¼Æðµã.y].±³¾°ÑÕÉ« = 0x00FF00;
@@ -232,7 +230,7 @@ void Ñ°Â·_Â·¾¶Ëã·¨(vector<vector<ÓÎÏ·µØÍ¼>> ²Î_µØÍ¼±êÇ©, ×ø±êÐÍ ²Î_µØÍ¼Æðµã, ×ø±
 				else
 					Ô¤²âGÖµ = 14;
 				´ý¼ì²â½Úµã.µØÍ¼Gµã = ÁÙÊ±½Úµã.µØÍ¼Gµã + Ô¤²âGÖµ;
-				´ý¼ì²â½Úµã.µØÍ¼Hµã = abs(²Î_µØÍ¼ÖÕµã.x - ´ý¼ì²â×ø±ê.x) * 10 + abs(²Î_µØÍ¼ÖÕµã.y - ´ý¼ì²â×ø±ê.y) * 10;
+				´ý¼ì²â½Úµã.µØÍ¼Hµã = ²Î_µØÍ¼ÖÕµã.x - ´ý¼ì²â×ø±ê.x * 10 + ²Î_µØÍ¼ÖÕµã.y - ´ý¼ì²â×ø±ê.y * 10;
 				´ý¼ì²â½Úµã.µØÍ¼Fµã = ´ý¼ì²â½Úµã.µØÍ¼Gµã + ´ý¼ì²â½Úµã.µØÍ¼Hµã;
 				´ý¼ì²â½Úµã.µ±Ç°×ø±ê = ´ý¼ì²â×ø±ê;
 				´ý¼ì²â½Úµã.×îÖÕ×ø±ê = ÁÙÊ±½Úµã.µ±Ç°×ø±ê;
@@ -241,13 +239,12 @@ void Ñ°Â·_Â·¾¶Ëã·¨(vector<vector<ÓÎÏ·µØÍ¼>> ²Î_µØÍ¼±êÇ©, ×ø±êÐÍ ²Î_µØÍ¼Æðµã, ×ø±
 		}
 	} while (¿ª·ÅÁÐ±í.size() != 0);
 }
-
-int Ñ°Â·_ÕûÀí×ø±ê(vector<×ø±êÐÍ> ²Î_Ä£Äâ×ß·¨, vector<×ø±êÐÍ>& ²Î_ÕæÊµ×ß·¨)
+DWORD Ñ°Â·_ÕûÀí×ø±ê(vector<×ø±êÐÍ> ²Î_Ä£Äâ×ß·¨, vector<×ø±êÐÍ>& ²Î_ÕæÊµ×ß·¨)
 {
-	int x, y;
-	int k = 0;
+	DWORD x, y;
+	DWORD k = 0;
 	×ø±êÐÍ ¾Ö_ÁÙÊ±×ø±ê;
-	for (int i = 0; i < ²Î_Ä£Äâ×ß·¨.size(); i++)
+	for (DWORD i = 0; i < ²Î_Ä£Äâ×ß·¨.size(); i++)
 	{
 		x = (²Î_Ä£Äâ×ß·¨[i].x + 2) % 3;
 		y = (²Î_Ä£Äâ×ß·¨[i].y + 2) % 3;
@@ -261,8 +258,7 @@ int Ñ°Â·_ÕûÀí×ø±ê(vector<×ø±êÐÍ> ²Î_Ä£Äâ×ß·¨, vector<×ø±êÐÍ>& ²Î_ÕæÊµ×ß·¨)
 	}
 	return(k);
 }
-
-bool  Ñ°Â·_ÅÐ¶Ï·½Ïò(int ²Î_Í¨Ïò, int ²Î_·½Ïò)
+BOOL  Ñ°Â·_ÅÐ¶Ï·½Ïò(DWORD ²Î_Í¨Ïò, DWORD ²Î_·½Ïò)
 {
 	unsigned char ¾Ö_·½ÏòÊý×é[4];
 	unsigned char ¾Ö_·½Ïò¼¯ºÏ[16][4] = { { 0, 0, 0, 0 }, { 0, 1, 0, 0 }, { 0, 0, 1, 0 }, { 0, 1, 1, 0 }, { 1, 0, 0, 0 }, { 1, 1, 0, 0 }, { 1, 0, 1, 0 }, { 1, 1, 1, 0 },
@@ -279,15 +275,17 @@ bool  Ñ°Â·_ÅÐ¶Ï·½Ïò(int ²Î_Í¨Ïò, int ²Î_·½Ïò)
 		return FALSE;
 }
 
-int Ñ°Â·_¼ÆËã·½Ïò(×ø±êÐÍ ²Î_µ±Ç°·¿¼ä, ×ø±êÐÍ ²Î_ÏÂ¸ö·¿¼ä)
+DWORD Ñ°Â·_¼ÆËã·½Ïò(×ø±êÐÍ ²Î_µ±Ç°·¿¼ä, ×ø±êÐÍ ²Î_ÏÂ¸ö·¿¼ä)
 {
-	int ¾Ö_X, ¾Ö_Y, ¾Ö_·½Ïò;
+	DWORD ¾Ö_·½Ïò = 0;
+	DWORD ¾Ö_X, ¾Ö_Y;
 	¾Ö_X = ²Î_µ±Ç°·¿¼ä.x - ²Î_ÏÂ¸ö·¿¼ä.x;
 	¾Ö_Y = ²Î_µ±Ç°·¿¼ä.y - ²Î_ÏÂ¸ö·¿¼ä.y;
 	if (¾Ö_X == 0 && ¾Ö_Y == 0)
 	{
 		return 4;
 	}
+
 	if (¾Ö_X == 0)
 	{
 		if (¾Ö_Y == 1)
@@ -311,4 +309,46 @@ int Ñ°Â·_¼ÆËã·½Ïò(×ø±êÐÍ ²Î_µ±Ç°·¿¼ä, ×ø±êÐÍ ²Î_ÏÂ¸ö·¿¼ä)
 		}
 	}
 	return ¾Ö_·½Ïò;
+}
+
+VOID ×ø±ê¹ýÍ¼(int ·½ÏòID)
+{
+	__int64 Ë³Í¼Êý¾Ý = Ë³Í¼Call(·½ÏòID);
+	__int64 ×ø±ê½á¹¹ = Ë³Í¼Êý¾Ý;
+
+	int ÆðÊ¼X = _ReadInt(×ø±ê½á¹¹ + 0);
+	int ÆðÊ¼Y = _ReadInt(×ø±ê½á¹¹ + 4);
+	int ½áÊøX = _ReadInt(×ø±ê½á¹¹ + 8);
+	int ½áÊøY = _ReadInt(×ø±ê½á¹¹ + 12);
+
+	//  '0×ó
+	int X = 0;
+	int Y = 0;
+	if (·½ÏòID == 0)
+	{
+		X = ÆðÊ¼X + ½áÊøX + 20;
+		Y = ÆðÊ¼Y + ½áÊøY / 2;
+	}
+	// 1ÓÒ
+	if (·½ÏòID == 1)
+	{
+		X = ÆðÊ¼X - 20;
+		Y = ÆðÊ¼Y + ½áÊøY / 2;
+	}
+	// 2ÉÏ
+	if (·½ÏòID == 2)
+	{
+
+		X = ÆðÊ¼X + ½áÊøX / 2;
+		Y = ÆðÊ¼Y + ½áÊøY + 20;
+	}
+	// 2ÏÂ
+	if (·½ÏòID == 3)
+	{
+		X = ÆðÊ¼X + ½áÊøX / 2;
+		Y = ÆðÊ¼Y - 20;
+	}
+	×ø±êCall(X, Y, 0);
+	Sleep(100);
+	×ø±êCall(ÆðÊ¼X + ½áÊøX / 2, ÆðÊ¼Y, 0);
 }

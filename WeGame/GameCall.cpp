@@ -156,3 +156,45 @@ VOID 区域Call(int 地图编号)
 	int 城镇Y = _ReadInt(局_区域基址 + 区域偏移 + 12);
 	组包移动(大区域, 小区域, 城镇X, 城镇Y);
 }
+
+VOID 坐标Call(int 对象横轴, int 对象纵轴, int 对象竖轴)
+{
+	__int64 触发指针 = _ReadLong(GetPersonAddr());
+	if (触发指针 < 1) return;
+
+	ByteArr 汇编数据 = { 72, 129, 236, 0, 1, 0, 0 };
+	汇编数据 = _AppendToBytes(汇编数据, _AppendToBytes(ByteArr{ 65, 185 }, _IntToBytes(对象竖轴, 4)));
+	汇编数据 = _AppendToBytes(汇编数据, _AppendToBytes(ByteArr{ 65, 184 }, _IntToBytes(对象纵轴, 4)));
+	汇编数据 = _AppendToBytes(汇编数据, _AppendToBytes(ByteArr{ 186 }, _IntToBytes(对象横轴, 4)));
+	汇编数据 = _AppendToBytes(汇编数据, _AppendToBytes(ByteArr{ 72, 185 }, _IntToBytes(触发指针, 8)));
+	汇编数据 = _AppendToBytes(汇编数据, ByteArr{ 72, 139, 1 });
+	汇编数据 = _AppendToBytes(汇编数据, _AppendToBytes(ByteArr{ 255, 144 }, _IntToBytes(坐标CALL偏移, 8)));
+	汇编数据 = _AppendToBytes(汇编数据, ByteArr{ 72, 129, 196, 0, 1, 0, 0 });
+	汇编执行(汇编数据);
+	汇编数据.clear();
+}
+
+VOID 漂移Call(_int64 触发指针, int 对象横轴, int 对象纵轴, int 对象竖轴, int 速度)
+{
+
+}
+
+int 顺图Call(int 顺图方向)
+{
+	static __int64 空白地址;
+	if (空白地址 == 0)
+	{
+		空白地址 = (__int64)_ApplyMemory(200);
+	}
+	__int64 房间数据 = _ReadLong(_ReadLong(_ReadLong(房间编号) + 时间基址) + 顺图偏移);
+	ByteArr shellCode = ByteArr{ 72, 129, 236, 0, 1, 0, 0 };
+	shellCode = _AppendToBytes(shellCode, _AppendToBytes(ByteArr{ 72, 185 }, _IntToBytes(房间数据, 8)));
+	shellCode = _AppendToBytes(shellCode, _AppendToBytes(ByteArr{ 186 }, _IntToBytes(顺图方向, 4)));
+	shellCode = _AppendToBytes(shellCode, _AppendToBytes(ByteArr{ 72, 184 }, _IntToBytes(坐标顺图CALL, 8)));
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 255, 208 });
+	shellCode = _AppendToBytes(shellCode, _AppendToBytes(ByteArr{ 72, 163 }, _IntToBytes(空白地址, 8)));
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 129, 196, 0, 1, 0, 0 });
+	汇编执行(shellCode);
+	shellCode.clear();
+	return _ReadLong(空白地址);
+}

@@ -58,6 +58,22 @@ BEGIN_MESSAGE_MAP(CWeGameDlg, CDialogEx)
 	ON_WM_HOTKEY()
 END_MESSAGE_MAP()
 
+// 动态设置窗口标题动态设置窗口标题 start
+struct WindowTitle {
+	HWND hWnd;
+};
+DWORD WINAPI SetWindowTitle(PVOID pParam)
+{
+	WindowTitle* windowTitle = (WindowTitle*)pParam;
+	while (true)
+	{
+		SetWindowText(windowTitle->hWnd, L"By：情歌 ->当前时间："+_GetCurrentTime());
+		Sleep(100);
+	}
+}
+// 动态设置窗口标题 end
+
+
 // CWeGameDlg 消息处理程序
 BOOL CWeGameDlg::OnInitDialog()
 {
@@ -69,8 +85,20 @@ BOOL CWeGameDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	// 
 	// 设置窗口标题
-	SetWindowText(_GetCurrentTime());
+	// SetWindowText(windowTitle);
+
+	WindowTitle* windowTitle = new WindowTitle();
+	windowTitle->hWnd = this->GetSafeHwnd();
+	// 启动线程设置窗口标题，需要传递窗口句柄
+	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)&SetWindowTitle, windowTitle, 0, 0);
+
+	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_EDIT4);
+	int nLength = pEdit->GetWindowTextLength();
+	//选定当前文本的末端
+    pEdit->SetSel(nLength, nLength);
+	SetWindowPEdit(pEdit);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -111,18 +139,6 @@ HCURSOR CWeGameDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CWeGameDlg::日志公告(CString msg)
-{
-	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_EDIT4);
-	int nLength = pEdit->GetWindowTextLength();
-
-	//选定当前文本的末端
-	pEdit->SetSel(nLength, nLength);
-	//l追加文本
-	CString data;
-	data = data + "\r\n" + msg;
-	pEdit->ReplaceSel(data);
-}
 
 BOOL CWeGameDlg::无忧驱动() {
 
@@ -188,6 +204,7 @@ BOOL CWeGameDlg::无忧驱动() {
 	return TRUE;
 }
 
+
 void CWeGameDlg::激活()
 {
 	TCHAR szDrvPath[MAX_PATH];
@@ -216,7 +233,7 @@ void CWeGameDlg::激活()
 
 	if (gameProcess == 0)
 	{
-		日志公告(L"未启动游戏");
+		监控(L"未启动游戏");
 		return;
 	}
 
@@ -235,11 +252,11 @@ void CWeGameDlg::激活()
 
 	Message("激活成功-欢迎使用", 1);
 
-	日志公告(L"F1 - 技能全屏");
-	日志公告(L"F2 - 武器冰冻");
-	日志公告(L"F3 - HOOK倍攻");
-	日志公告(L"波浪 - 无形秒杀");
-	日志公告(L"End - 自动刷图");
+	监控(L"F1 - 技能全屏");
+	监控(L"F2 - 武器冰冻");
+	监控(L"F3 - 自身倍攻");
+	监控(L"~  - 无形秒杀");
+	监控(L"End - 自动刷图");
 
 	// 全局获取人物地址
 	_CreateThread(&取人物指针线程);

@@ -1,6 +1,5 @@
 #pragma once
 
-constexpr auto 人物基址 = 0x1496FC808; //7度_获取
 constexpr auto 人物CALL = 0x143DAD2B0; //7度_获取
 constexpr auto 角色等级 = 0x149434E50; //7度_获取
 constexpr auto 鼠标基址 = 0x149746D30; //7度_获取
