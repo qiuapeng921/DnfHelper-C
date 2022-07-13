@@ -28,7 +28,7 @@ CWeGameDlg::CWeGameDlg(CWnd* pParent /*=nullptr*/)
 	, 自动模式(0)
 	, 刷图功能(0)
 	, 过图方式(0)
-	, 技能代码(0)
+	, 技能代码(39002)
 	, 跟随(TRUE)
 	, 打怪(TRUE)
 	, 角色数量(10)
@@ -59,16 +59,19 @@ BEGIN_MESSAGE_MAP(CWeGameDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 // 动态设置窗口标题动态设置窗口标题 start
-struct WindowTitle {
-	HWND hWnd;
-};
 DWORD WINAPI SetWindowTitle(PVOID pParam)
 {
-	WindowTitle* windowTitle = (WindowTitle*)pParam;
+	CWeGameDlg* weGameDlg = (CWeGameDlg*)pParam;
 	while (true)
 	{
-		SetWindowText(windowTitle->hWnd, L"By：情歌 ->当前时间："+_GetCurrentTime());
-		Sleep(100);
+		Sleep(1000);
+		SetWindowText(weGameDlg->GetSafeHwnd(), L"By：情歌 ->当前时间：" + _GetCurrentTime());
+		//监控(L"自动模式->" + _IntToCString(weGameDlg->自动模式));
+		//监控(L"刷图功能->" + _IntToCString(weGameDlg->刷图功能));
+		//监控(L"过图方式->" + _IntToCString(weGameDlg->过图方式));
+		//监控(L"技能代码->" + _IntToCString(weGameDlg->技能代码));
+		//监控(L"角色数量->" + _IntToCString(weGameDlg->角色数量));
+		//监控(L"副本ID->" + _IntToCString(weGameDlg->副本ID));
 	}
 }
 // 动态设置窗口标题 end
@@ -85,19 +88,16 @@ BOOL CWeGameDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	// 
 	// 设置窗口标题
 	// SetWindowText(windowTitle);
 
-	WindowTitle* windowTitle = new WindowTitle();
-	windowTitle->hWnd = this->GetSafeHwnd();
 	// 启动线程设置窗口标题，需要传递窗口句柄
-	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)&SetWindowTitle, windowTitle, 0, 0);
+	CreateThread(0, 0, (LPTHREAD_START_ROUTINE)&SetWindowTitle, this, 0, 0);
 
 	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_EDIT4);
 	int nLength = pEdit->GetWindowTextLength();
 	//选定当前文本的末端
-    pEdit->SetSel(nLength, nLength);
+	pEdit->SetSel(nLength, nLength);
 	SetWindowPEdit(pEdit);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -246,7 +246,7 @@ void CWeGameDlg::激活()
 	RegisterHotKey(this->GetSafeHwnd(), 1001, 0, VK_F2);
 	RegisterHotKey(this->GetSafeHwnd(), 1002, 0, VK_F3);
 	RegisterHotKey(this->GetSafeHwnd(), 1010, 0, VK_END);
-
+	// 波浪
 	RegisterHotKey(this->GetSafeHwnd(), 192, 0, VK_OEM_3);
 
 

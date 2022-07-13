@@ -40,9 +40,9 @@ constexpr auto 游戏状态 = 0x14912D540; //7度_获取
 constexpr auto 代币基址 = 0x1496FC7B8; //7度_获取
 constexpr auto 点券基址 = 0x1496FC790; //7度_获取
 constexpr auto 全局空白 = 0x13FCA04C0; //7度_获取
-constexpr auto 全局空白2 = 0x140000400; //7度_获取
-constexpr auto 全局空白3 = 0x14C02C74F; //7度_获取
-constexpr auto 全局空白4 = 0x14000; //7度_获取
+// constexpr auto 全局空白2 = 0x140000400; //7度_获取
+// constexpr auto 全局空白3 = 0x14C02C74F; //7度_获取
+// constexpr auto 全局空白4 = 0x14000; //7度_获取
 
 constexpr auto 解密CALL_1 = 0x144D927B0; //7度_获取
 constexpr auto 解密CALL_2 = 0x144D927C0; //7度_获取

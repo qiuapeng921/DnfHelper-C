@@ -24,20 +24,22 @@ VOID 监控(CString message)
 }
 
 VOID SystemMessage(string message) {
-	LPVOID static 空白地址;
-
-	if (空白地址 == 0)
-	{
-		空白地址 = _ApplyMemory(400);
-	}
+	
 }
 
 VOID Message(string message,int type) {
-	__int64 公告基址, 公告CALL_1, 空白地址1, 空白地址2;
+	__int64 公告基址, 公告CALL_1;
 	公告基址 = 公告参数;
 	公告CALL_1 = 公告CALL;
-	空白地址1 = 全局空白 + 800;
-	空白地址2 = 全局空白 + 1000;
+	
+	static __int64 空白地址1;
+	__int64 空白地址2;
+
+	if (空白地址1 == 0)
+	{
+		空白地址1 = (__int64)_ApplyMemory(500);
+	}
+	空白地址2 = 空白地址1 + 500;
 
 	//ByteArr WeGame = { 87,101,71,97,109,101 }; // 公告标题
 	ByteArr msg = AnsiToUnicode("情歌 √  " + message);

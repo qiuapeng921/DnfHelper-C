@@ -124,7 +124,6 @@ INT _Rand(int min, int max)
 // 获取当前时间
 CString _GetCurrentTime() 
 {
-	CString str;
 	CTime tm(CTime::GetCurrentTime());
 	return tm.Format(L"%Y年%m月%d日 %X");
 }

@@ -34,7 +34,7 @@ VOID 自动线程() {
 
 	while (true)
 	{
-		Sleep(300);
+		Sleep(500);
 		if (取游戏状态() == 0)
 		{
 			Sleep(200);

@@ -7,7 +7,11 @@
 #include "GamePackage.h"
 
 VOID 技能Call(__int64 触发指针, int 技能代码, int 技能伤害, int x, int y, int z, int 大小) {
-	__int64 空白地址 = 全局空白 + 1200;
+	static __int64 空白地址;
+	if (空白地址 == 0)
+	{
+		空白地址 = (__int64)_ApplyMemory(500);
+	}
 	int 技能大小 = 1;
 	_WriteLong(空白地址, 触发指针);
 	_WriteInt(空白地址 + 16, 技能代码);
@@ -105,13 +109,15 @@ __int64 GetPersonPointer()
 VOID 取人物指针线程()
 {
 	static bool 状态变化;
-	static __int64 空白地址;
-
+	__int64 空白地址 = 全局空白  + 500;
+	/*if (空白地址 == 0)
+	{
+		空白地址 = (__int64)_ApplyMemory(100);
+	}*/
 	while (_ReadInt(5368709120) == 9460301)
 	{
 		if (_ReadLong(游戏状态) >= 1 && 状态变化 == false)
 		{
-			空白地址 = 全局空白 + 4000;
 			__int64 人物指针 = 取人物指针Call(空白地址);
 			SetPerson(空白地址, 人物指针);
 			// 固定人物指针到此地址,方便后面读人物基址时用
@@ -196,5 +202,5 @@ int 顺图Call(int 顺图方向)
 	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 129, 196, 0, 1, 0, 0 });
 	汇编执行(shellCode);
 	shellCode.clear();
-	return _ReadLong(空白地址);
+	return _ReadInt(空白地址);
 }

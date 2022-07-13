@@ -35,7 +35,6 @@ VOID 武器冰冻() {
 	static bool _switch;
 
 	static __int64 空白地址;
-
 	if (空白地址 == 0)
 	{
 		空白地址 = (__int64)_ApplyMemory(200);
