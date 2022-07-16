@@ -1,6 +1,71 @@
 ﻿#include "pch.h"
 #include "VuDriver.h"
 
+/*
+BOOL CWeGameDlg::无忧驱动() {
+
+	if (!drive.OpenDriver(L"\\\\.\\vuDrv")) {
+		//MessageBoxW(L"Vu驱动文件打开异常");
+		return FALSE;
+	}
+
+	Vu驱动* vuDrive = new Vu驱动();
+
+	vuDrive->设置驱动句柄(drive.hDriver);
+	CHAR* key = "";
+
+	//激活驱动->校验驱动有效性(激活驱动)
+	LONG64 结果 = vuDrive->效验有效性(key);
+
+	if (结果 <= 0)
+	{
+		CString resMsg;
+		switch (结果)
+		{
+		case 0:
+			resMsg = "参数错误";
+			break;
+		case -1:
+			resMsg = "激活码不存在";
+			break;
+		case -2:
+			resMsg = "账户余额不足";
+			break;
+		case -3:
+			resMsg = "扣费失败";
+			break;
+		case -4:
+			resMsg = "网络错误";
+			break;
+		case -5:
+			resMsg = "驱动安装失败";
+			break;
+		case -6:
+			resMsg = "有效性效验失败";
+			break;
+		default:
+			resMsg = "未知错误";
+		}
+		return FALSE;
+	}
+
+	// 获取自身句柄
+	//HANDLE hWnd = AfxGetMainWnd()->GetSafeHwnd();
+
+	// VU_保护_安装();
+	// VU_保护_进程_开始(GetCurrentProcessId(), true);
+	// VU_保护_窗口_开始((DWORD64)hWnd, GetCurrentProcessId());
+	// VU_保护_游戏_开始((DWORD64)窗口句柄, 进程ID);
+
+	vuDrive->VU_内存_置读写模式(2, 0);
+
+	// 停止驱动服务
+	//CloseHandle(drive.hDriver);
+	//drive.hDriver = INVALID_HANDLE_VALUE;
+
+	return TRUE;
+}*/
+
 static HANDLE g_hDrv = INVALID_HANDLE_VALUE;
 
 VOID Vu驱动::设置驱动句柄(HANDLE hDrv)

@@ -53,14 +53,14 @@ VOID 武器冰冻() {
 		_WriteInt(空白地址 + 20, 99);
 		_WriteInt(空白地址 + 24, 130);
 		_WriteInt(空白地址 + 28, 冰冻伤害 * 100000);
-		__int64 武器 = _ReadLong(_ReadLong(GetPersonAddr()) + 武器偏移);
+		__int64 武器 = _ReadLong(_ReadLong(GetPersonPointer()) + 武器偏移);
 		_WriteLong(武器 + 冰冻开始, 空白地址);
 		_WriteLong(武器 + 冰冻结束, 空白地址 + 32);
 		Message("武器冰冻 - 启动", 2);
 	}
 	else
 	{
-		__int64 武器 = _ReadLong(_ReadLong(GetPersonAddr()) + 武器偏移);
+		__int64 武器 = _ReadLong(_ReadLong(GetPersonPointer()) + 武器偏移);
 		_WriteLong(武器 + 冰冻开始, 0);
 		_WriteLong(武器 + 冰冻结束, 0);
 

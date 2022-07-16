@@ -12,7 +12,6 @@
 #include "GameFunction.h"
 #include "Automatic.h"
 #include "ReadWrite.h"
-#include "VuDriver.h"
 #include "GameBulletin.h"
 #include "GameCall.h"
 
@@ -20,35 +19,14 @@
 #define new DEBUG_NEW
 #endif
 
-Driver drive;
 
 // CWeGameDlg 对话框
 CWeGameDlg::CWeGameDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_WEGAME_DIALOG, pParent)
-	, 自动模式(0)
-	, 刷图功能(0)
-	, 过图方式(0)
-	, 技能代码(39002)
-	, 跟随(TRUE)
-	, 打怪(TRUE)
-	, 角色数量(10)
-	, 副本ID(192)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CWeGameDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogEx::DoDataExchange(pDX);
-	DDX_CBIndex(pDX, IDC_COMBO1, 自动模式);
-	DDX_CBIndex(pDX, IDC_COMBO2, 刷图功能);
-	DDX_CBIndex(pDX, IDC_COMBO3, 过图方式);
-	DDX_Text(pDX, IDC_EDIT2, 技能代码);
-	DDX_Check(pDX, IDC_CHECK1, 跟随);
-	DDX_Check(pDX, IDC_CHECK2, 打怪);
-	DDX_Text(pDX, IDC_EDIT3, 角色数量);
-	DDX_Text(pDX, IDC_EDIT1, 副本ID);
-}
 
 BEGIN_MESSAGE_MAP(CWeGameDlg, CDialogEx)
 	ON_WM_PAINT()
@@ -64,14 +42,8 @@ DWORD WINAPI SetWindowTitle(PVOID pParam)
 	CWeGameDlg* weGameDlg = (CWeGameDlg*)pParam;
 	while (true)
 	{
+		SetWindowText(weGameDlg->GetSafeHwnd(), L"情歌 √ 当前时间：" + _GetCurrentTime());
 		Sleep(1000);
-		SetWindowText(weGameDlg->GetSafeHwnd(), L"By：情歌 ->当前时间：" + _GetCurrentTime());
-		//监控(L"自动模式->" + _IntToCString(weGameDlg->自动模式));
-		//监控(L"刷图功能->" + _IntToCString(weGameDlg->刷图功能));
-		//监控(L"过图方式->" + _IntToCString(weGameDlg->过图方式));
-		//监控(L"技能代码->" + _IntToCString(weGameDlg->技能代码));
-		//监控(L"角色数量->" + _IntToCString(weGameDlg->角色数量));
-		//监控(L"副本ID->" + _IntToCString(weGameDlg->副本ID));
 	}
 }
 // 动态设置窗口标题 end
@@ -88,7 +60,7 @@ BOOL CWeGameDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	// 设置窗口标题
+	// 
 	// SetWindowText(windowTitle);
 
 	// 启动线程设置窗口标题，需要传递窗口句柄
@@ -140,70 +112,7 @@ HCURSOR CWeGameDlg::OnQueryDragIcon()
 }
 
 
-BOOL CWeGameDlg::无忧驱动() {
-
-	if (!drive.OpenDriver(L"\\\\.\\vuDrv")) {
-		//MessageBoxW(L"Vu驱动文件打开异常");
-		return FALSE;
-	}
-
-	Vu驱动* vuDrive = new Vu驱动();
-
-	vuDrive->设置驱动句柄(drive.hDriver);
-	CHAR* key = "";
-
-	//激活驱动->校验驱动有效性(激活驱动)
-	LONG64 结果 = vuDrive->效验有效性(key);
-
-	if (结果 <= 0)
-	{
-		CString resMsg;
-		switch (结果)
-		{
-		case 0:
-			resMsg = "参数错误";
-			break;
-		case -1:
-			resMsg = "激活码不存在";
-			break;
-		case -2:
-			resMsg = "账户余额不足";
-			break;
-		case -3:
-			resMsg = "扣费失败";
-			break;
-		case -4:
-			resMsg = "网络错误";
-			break;
-		case -5:
-			resMsg = "驱动安装失败";
-			break;
-		case -6:
-			resMsg = "有效性效验失败";
-			break;
-		default:
-			resMsg = "未知错误";
-		}
-		return FALSE;
-	}
-
-	// 获取自身句柄
-	//HANDLE hWnd = AfxGetMainWnd()->GetSafeHwnd();
-
-	// VU_保护_安装();
-	// VU_保护_进程_开始(GetCurrentProcessId(), true);
-	// VU_保护_窗口_开始((DWORD64)hWnd, GetCurrentProcessId());
-	// VU_保护_游戏_开始((DWORD64)窗口句柄, 进程ID);
-
-	vuDrive->VU_内存_置读写模式(2, 0);
-
-	// 停止驱动服务
-	//CloseHandle(drive.hDriver);
-	//drive.hDriver = INVALID_HANDLE_VALUE;
-
-	return TRUE;
-}
-
+Driver drive;
 
 void CWeGameDlg::激活()
 {
