@@ -19,4 +19,6 @@ BOOL  寻路_判断方向(DWORD 参_通向, DWORD 参_方向);
 
 DWORD 寻路_计算方向(坐标型 参_当前房间, 坐标型 参_下个房间);
 
-VOID 坐标过图(int 方向ID);
+VOID 坐标_顺图(int 方向ID);
+
+VOID 组包_顺图(int 方向ID);

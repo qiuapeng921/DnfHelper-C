@@ -40,11 +40,7 @@ VOID Message(string message,int type) {
 		空白地址1 = (__int64)_ApplyMemory(500);
 	}
 	空白地址2 = 空白地址1 + 500;
-
-	//ByteArr WeGame = { 87,101,71,97,109,101 }; // 公告标题
-	ByteArr msg = AnsiToUnicode("情歌 √  " + message);
-	msg = _AppendToBytes(msg, ByteArr{ 0, 0 });
-	_WriteByteArr(空白地址2, msg);
+	_WriteByteArr(空白地址2, _AppendToBytes(AnsiToUnicode("情歌 √  " + message), ByteArr{ 0, 0 }));
 	_WriteLong(空白地址1 + 8, 空白地址2);
 	_WriteLong(空白地址1 + 24, 0);
 	_WriteLong(空白地址1 + 32, RGB(0, 255, 255));

@@ -4,6 +4,7 @@
 #include "ReadWrite.h"
 #include "GetGameData.h"
 #include "GameCall.h"
+#include "GamePackage.h"
 
 地图数据 寻路_地图数据()
 {
@@ -84,7 +85,7 @@ VOID 寻路_生成地图(DWORD 参_宽度, DWORD 参_高度, vector<DWORD> 参_地图通道, vect
 VOID 寻路_显示地图(vector<vector<游戏地图>> 参_地图数组, DWORD 参_宽度, DWORD 参_高度, vector<vector<游戏地图>>& 参_地图标签)
 {
 	参_地图标签.clear();
-	参_地图标签.resize(参_宽度 * 3);
+	参_地图标签.resize(参_宽度 * (DWORD64)3);
 	for (DWORD x = 0; x < 参_宽度 * 3; x++)
 	{
 		参_地图标签[x].resize(参_高度 * 3);
@@ -93,15 +94,15 @@ VOID 寻路_显示地图(vector<vector<游戏地图>> 参_地图数组, DWORD 参_宽度, DWORD 参
 	{
 		for (DWORD x = 0; x < 参_宽度; x++)
 		{
-			参_地图标签[(x + 1) * 3 - 2][(y + 1) * 3 - 2].背景颜色 = 0xFFFFFF;
+			参_地图标签[(x + (DWORD64)1) * (DWORD64)3 - (DWORD64)2][(y + (DWORD64)1) * (DWORD64)3 - (DWORD64)2].背景颜色 = 0xFFFFFF;
 			if (参_地图数组[x][y].地图左边)
-				参_地图标签[(x + 1) * 3 - 3][(y + 1) * 3 - 2].背景颜色 = 0xFFFFFF;
+				参_地图标签[(x + (DWORD64)1) * (DWORD64)3 - (DWORD64)3][(y + (DWORD64)1) * (DWORD64)3 - (DWORD64)2].背景颜色 = 0xFFFFFF;
 			if (参_地图数组[x][y].地图右边)
-				参_地图标签[(x + 1) * 3 - 1][(y + 1) * 3 - 2].背景颜色 = 0xFFFFFF;
+				参_地图标签[(x + (DWORD64)1) * (DWORD64)3 - (DWORD64)1][(y + (DWORD64)1) * (DWORD64)3 - (DWORD64)2].背景颜色 = 0xFFFFFF;
 			if (参_地图数组[x][y].地图上边)
-				参_地图标签[(x + 1) * 3 - 2][(y + 1) * 3 - 3].背景颜色 = 0xFFFFFF;
+				参_地图标签[(x + (DWORD64)1) * (DWORD64)3 - (DWORD64)2][(y + (DWORD64)1) * (DWORD64)3 - (DWORD64)3].背景颜色 = 0xFFFFFF;
 			if (参_地图数组[x][y].地图下边)
-				参_地图标签[(x + 1) * 3 - 2][(y + 1) * 3 - 1].背景颜色 = 0xFFFFFF;
+				参_地图标签[(x + (DWORD64)1) * (DWORD64)3 - (DWORD64)2][(y + (DWORD64)1) * (DWORD64)3 - (DWORD64)1].背景颜色 = 0xFFFFFF;
 		}
 	}
 }
@@ -311,7 +312,7 @@ DWORD 寻路_计算方向(坐标型 参_当前房间, 坐标型 参_下个房间)
 	return 局_方向;
 }
 
-VOID 坐标过图(int 方向ID)
+VOID 坐标_顺图(int 方向ID)
 {
 	__int64 顺图数据 = 顺图Call(方向ID);
 	__int64 坐标结构 = 顺图数据;
@@ -321,7 +322,7 @@ VOID 坐标过图(int 方向ID)
 	int 结束X = _ReadInt(坐标结构 + 8);
 	int 结束Y = _ReadInt(坐标结构 + 12);
 
-	//  '0左
+	// 0左
 	int X = 0;
 	int Y = 0;
 	if (方向ID == 0)
@@ -342,7 +343,7 @@ VOID 坐标过图(int 方向ID)
 		X = 起始X + 结束X / 2;
 		Y = 起始Y + 结束Y + 20;
 	}
-	// 2下
+	// 3下
 	if (方向ID == 3)
 	{
 		X = 起始X + 结束X / 2;
@@ -351,4 +352,54 @@ VOID 坐标过图(int 方向ID)
 	坐标Call(X, Y, 0);
 	Sleep(100);
 	坐标Call(起始X + 结束X / 2, 起始Y, 0);
+}
+
+
+VOID 组包_顺图(int 方向ID)
+{
+
+	if (取是否城镇() == true) {
+		return;
+	}
+
+	if (取是否开门() == false){
+		return;
+	}
+
+	坐标型	当前房间 = 取当前房间();
+	if (方向ID == 0)
+	{
+		组包过图(当前房间.x - 1, 当前房间.y);
+	}
+	if (方向ID == 1)
+	{
+		组包过图(当前房间.x + 1, 当前房间.y);
+	}
+
+	if (方向ID == 2)
+	{
+		组包过图(当前房间.x, 当前房间.y - 1);
+	}
+	if (方向ID == 3)
+	{
+		组包过图(当前房间.x, 当前房间.y + 1);
+	}
+}
+
+VOID 组包_下() 
+{
+	坐标型 当前房间 = 取当前房间();
+	组包过图(当前房间.x, 当前房间.y + 1);
+}
+
+VOID 组包_左() 
+{
+	坐标型 当前房间 = 取当前房间();
+	组包过图(当前房间.x - 1, 当前房间.y);
+}
+
+VOID 组包_右() 
+{
+	坐标型 当前房间 = 取当前房间();
+	组包过图(当前房间.x + 1, 当前房间.y);
 }

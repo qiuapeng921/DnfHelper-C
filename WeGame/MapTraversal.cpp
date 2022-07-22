@@ -43,7 +43,7 @@ VOID 全屏技能() {
 	while (true)
 	{
 		// 遍历全屏();
-		Sleep(800);
+		Sleep(_ReadConfig(L"全屏配置",L"技能频率"));
 		技能Call(0, 39002, 0, 0, 0, 0, 0);
 	}
 }

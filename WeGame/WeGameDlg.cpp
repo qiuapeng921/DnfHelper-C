@@ -14,6 +14,7 @@
 #include "ReadWrite.h"
 #include "GameBulletin.h"
 #include "GameCall.h"
+#include "GameMap.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -159,6 +160,16 @@ void CWeGameDlg::激活()
 	RegisterHotKey(this->GetSafeHwnd(), 192, 0, VK_OEM_3);
 
 
+	RegisterHotKey(this->GetSafeHwnd(), 1000, MOD_CONTROL, VK_UP);//上
+	RegisterHotKey(this->GetSafeHwnd(), 1001, MOD_CONTROL, VK_DOWN);//下
+	RegisterHotKey(this->GetSafeHwnd(), 1002, MOD_CONTROL, VK_LEFT);//左
+	RegisterHotKey(this->GetSafeHwnd(), 1003, MOD_CONTROL, VK_RIGHT);//右
+	RegisterHotKey(this->GetSafeHwnd(), 1004, MOD_ALT, VK_UP);//上
+	RegisterHotKey(this->GetSafeHwnd(), 1005, MOD_ALT, VK_DOWN);//下
+	RegisterHotKey(this->GetSafeHwnd(), 1006, MOD_ALT, VK_LEFT);//左
+	RegisterHotKey(this->GetSafeHwnd(), 1007, MOD_ALT, VK_RIGHT);//右
+
+
 	Message("激活成功-欢迎使用", 1);
 
 	监控(L"F1 - 技能全屏");
@@ -182,6 +193,15 @@ void CWeGameDlg::卸载()
 	UnregisterHotKey(this->GetSafeHwnd(), 1002);
 	UnregisterHotKey(this->GetSafeHwnd(), 1010);
 	UnregisterHotKey(this->GetSafeHwnd(), 192);
+
+	UnregisterHotKey(this->GetSafeHwnd(), 10000);//上
+	UnregisterHotKey(this->GetSafeHwnd(), 10001);//下
+	UnregisterHotKey(this->GetSafeHwnd(), 10002);//左
+	UnregisterHotKey(this->GetSafeHwnd(), 10003);//右
+	UnregisterHotKey(this->GetSafeHwnd(), 10004);//上
+	UnregisterHotKey(this->GetSafeHwnd(), 10005);//下
+	UnregisterHotKey(this->GetSafeHwnd(), 10006);//左
+	UnregisterHotKey(this->GetSafeHwnd(), 10007);//右
 
 	if (drive.UnLoadDriver(L"Drivecontrol") == FALSE) {
 		_DebugStringW(L"驱动服务卸载失败");
@@ -209,6 +229,30 @@ void CWeGameDlg::OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2)
 		break;
 	case 1010:
 		自动开关();
+		break;
+	case 10000:
+		组包_顺图(2);
+		break;
+	case 10001:
+		组包_顺图(3);
+		break;
+	case 10002:
+		组包_顺图(0);
+		break;
+	case 10003:
+		组包_顺图(1);
+		break;
+	case 10004:
+		坐标_顺图(2);
+		break;
+	case 10005:
+		坐标_顺图(3);
+		break;
+	case 10006:
+		坐标_顺图(0);
+		break;
+	case 10007:
+		坐标_顺图(1);
 		break;
 	case 192:
 		无形秒杀();

@@ -54,13 +54,20 @@ __int64 取人物指针Call(__int64 globleRwAddr)
 {
 	__int64 空白地址 = globleRwAddr;
 
-	ByteArr shellCode = { 72, 131, 236, 100 };  // sub rsp,100
-	shellCode = _AppendToBytes(shellCode, _AppendToBytes({ 72, 184 }, _IntToBytes(人物CALL, 8)));  // mov rax  人物call
-	shellCode = _AppendToBytes(shellCode, { 255, 208 });  // CALL rax
-	shellCode = _AppendToBytes({ 255, 208 }, _AppendToBytes(shellCode, _IntToBytes(空白地址, 8)));
-	shellCode = _AppendToBytes(shellCode, { 72, 131, 196, 100 });  // add rsp,100
+	ByteArr shellCode = ByteArr{ 72, 131, 236, 100 };  // sub rsp,100
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 184 });  // mov rax  人物call
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(人物CALL, 8));
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 255, 208 });  // CALL rax
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 163 });
+	shellCode = _AppendToBytes(shellCode, _IntToBytes(空白地址, 8));
+
+	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 131, 196, 100 });  // add rsp,100
 	汇编执行(shellCode);
 	__int64 返回地址 = _ReadLong(空白地址);
+
 	return 返回地址;
 }
 
@@ -86,13 +93,8 @@ __int64 GetPersonPointer()
 VOID 取人物指针线程()
 {
 	static bool 状态变化;
-	static __int64 空白地址;
-	if (空白地址 == 0)
-	{
-		空白地址 = (__int64)_ApplyMemory(200);
-	}
-
-	while (_ReadInt(5368709120) == 9460301)
+	__int64 空白地址 = 全局空白 + 500;
+	while (_ReadInt(0x140000000) == 9460301)
 	{
 		if (取游戏状态() >= 1 && 状态变化 == false)
 		{
