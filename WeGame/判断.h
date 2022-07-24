@@ -1,5 +1,5 @@
 #pragma once
-#include "DataType.h"
+#include "结构.h"
 
 // 取游戏数据
 int 解密(__int64 数据指针);

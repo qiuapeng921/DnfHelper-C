@@ -184,34 +184,34 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Address.h" />
-    <ClInclude Include="DataType.h" />
-    <ClInclude Include="GameCall.h" />
+    <ClInclude Include="结构.h" />
+    <ClInclude Include="游戏Call.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="GameMap.h" />
-    <ClInclude Include="GamePackage.h" />
-    <ClInclude Include="GetGameData.h" />
+    <ClInclude Include="寻路.h" />
+    <ClInclude Include="组包.h" />
+    <ClInclude Include="判断.h" />
     <ClInclude Include="Ioc.h" />
-    <ClInclude Include="MapTraversal.h" />
+    <ClInclude Include="遍历.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="WeGame.h" />
     <ClInclude Include="WeGameDlg.h" />
-    <ClInclude Include="GameBulletin.h" />
+    <ClInclude Include="公告.h" />
     <ClInclude Include="Common.h" />
-    <ClInclude Include="GameFunction.h" />
+    <ClInclude Include="功能.h" />
     <ClInclude Include="VuDriver.h" />
-    <ClInclude Include="Automatic.h" />
-    <ClInclude Include="ReadWrite.h" />
-    <ClInclude Include="ApiReadWrite.h" />
+    <ClInclude Include="自动.h" />
+    <ClInclude Include="读写.h" />
+    <ClInclude Include="Api读写.h" />
     <ClInclude Include="Driver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameCall.cpp" />
-    <ClCompile Include="GameMap.cpp" />
-    <ClCompile Include="GamePackage.cpp" />
-    <ClCompile Include="GetGameData.cpp" />
-    <ClCompile Include="MapTraversal.cpp" />
+    <ClCompile Include="游戏Call.cpp" />
+    <ClCompile Include="寻路.cpp" />
+    <ClCompile Include="组包.cpp" />
+    <ClCompile Include="判断.cpp" />
+    <ClCompile Include="遍历.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -220,13 +220,13 @@
     </ClCompile>
     <ClCompile Include="WeGame.cpp" />
     <ClCompile Include="WeGameDlg.cpp" />
-    <ClCompile Include="GameBulletin.cpp" />
-    <ClCompile Include="Common.cpp" />
-    <ClCompile Include="GameFunction.cpp" />
+    <ClCompile Include="公告.cpp" />
+    <ClCompile Include="公用.cpp" />
+    <ClCompile Include="功能.cpp" />
     <ClCompile Include="VuDriver.cpp" />
-    <ClCompile Include="Automatic.cpp" />
-    <ClCompile Include="ReadWrite.cpp" />
-    <ClCompile Include="ApiReadWrite.cpp" />
+    <ClCompile Include="自动.cpp" />
+    <ClCompile Include="读写.cpp" />
+    <ClCompile Include="Api读写.cpp" />
     <ClCompile Include="Driver.cpp" />
   </ItemGroup>
   <ItemGroup>

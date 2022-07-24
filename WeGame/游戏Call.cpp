@@ -1,17 +1,18 @@
 ﻿#include "pch.h"
-#include "GameCall.h"
+#include "游戏Call.h"
 
-#include "ReadWrite.h"
+#include "读写.h"
 #include "Common.h"
-#include "GetGameData.h"
-#include "GamePackage.h"
+#include "判断.h"
+#include "组包.h"
 
 VOID 技能Call(__int64 触发指针, int 技能代码, int 技能伤害, int x, int y, int z, int 大小) {
-	static __int64 空白地址;
-	if (空白地址 == 0)
+	__int64 static 局_空白地址;
+	if (局_空白地址 == 0)
 	{
-		空白地址 = (__int64)_ApplyMemory(500);
+		局_空白地址 = (__int64)_ApplyMemory(1024);
 	}
+	__int64 空白地址 = 局_空白地址;
 	int 技能大小 = 1;
 	_WriteLong(空白地址, 触发指针);
 	_WriteInt(空白地址 + 16, 技能代码);
@@ -50,65 +51,33 @@ VOID 评分Call(int Value)
 	加密(_ReadLong(评分基址) + 加密评分, Value);
 }
 
-__int64 取人物指针Call(__int64 globleRwAddr)
+__int64 取人物指针Call(__int64 空白地址)
 {
-	__int64 空白地址 = globleRwAddr;
+	ByteArr shellCode = { 72, 131, 236, 100 };  // sub rsp,100
 
-	ByteArr shellCode = ByteArr{ 72, 131, 236, 100 };  // sub rsp,100
-
-	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 184 });  // mov rax  人物call
+	shellCode = _AppendToBytes(shellCode, { 72, 184 });  // mov rax  人物call
 	shellCode = _AppendToBytes(shellCode, _IntToBytes(人物CALL, 8));
 
-	shellCode = _AppendToBytes(shellCode, ByteArr{ 255, 208 });  // CALL rax
+	shellCode = _AppendToBytes(shellCode, { 255, 208 });  // CALL rax
 
-	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 163 });
+	shellCode = _AppendToBytes(shellCode, { 72, 163 });
 	shellCode = _AppendToBytes(shellCode, _IntToBytes(空白地址, 8));
 
-	shellCode = _AppendToBytes(shellCode, ByteArr{ 72, 131, 196, 100 });  // add rsp,100
+	shellCode = _AppendToBytes(shellCode, { 72, 131, 196, 100 });  // add rsp,100
 	汇编执行(shellCode);
 	__int64 返回地址 = _ReadLong(空白地址);
-
 	return 返回地址;
 }
 
-static __int64 personAddr;
-static __int64 personPointer;
-
-VOID SetPerson(__int64 pAddr, __int64 pPointer)
-{
-	personAddr = pAddr;
-	personPointer = pPointer;
-}
-
-__int64 GetPersonAddr()
-{
-	return personAddr;
-}
-
-__int64 GetPersonPointer()
-{
-	return personPointer;
-}
-
-VOID 取人物指针线程()
-{
-	static bool 状态变化;
-	__int64 空白地址 = 全局空白 + 500;
-	while (_ReadInt(0x140000000) == 9460301)
+__int64 取人物基质() {
+	__int64 static 局_空白地址;
+	if (局_空白地址 == 0)
 	{
-		if (取游戏状态() >= 1 && 状态变化 == false)
-		{
-			__int64 人物指针 = 取人物指针Call(空白地址);
-			SetPerson(空白地址, 人物指针);
-			_WriteLong(空白地址, 人物指针);
-			状态变化 = true;
-		}
-		if (取游戏状态() == 0)
-		{
-			状态变化 = false;
-		}
-		Sleep(500);
+		局_空白地址 = (__int64)_ApplyMemory(1024);
 	}
+	__int64 空白地址 = 局_空白地址;
+	__int64 人物指针 = 取人物指针Call(空白地址);
+	return 空白地址;
 }
 
 VOID 区域Call(int 地图编号)
@@ -136,7 +105,7 @@ VOID 区域Call(int 地图编号)
 
 VOID 坐标Call(int 对象横轴, int 对象纵轴, int 对象竖轴)
 {
-	__int64 触发指针 = _ReadLong(GetPersonAddr());
+	__int64 触发指针 = _ReadLong(取人物基质());
 	if (触发指针 < 1) return;
 
 	ByteArr 汇编数据 = { 72, 129, 236, 0, 1, 0, 0 };
@@ -158,11 +127,12 @@ VOID 漂移Call(_int64 触发指针, int 对象横轴, int 对象纵轴, int 对
 
 int 顺图Call(int 顺图方向)
 {
-	static __int64 空白地址;
-	if (空白地址 == 0)
+	__int64 static 局_空白地址;
+	if (局_空白地址 == 0)
 	{
-		空白地址 = (__int64)_ApplyMemory(500);
+		局_空白地址 = (__int64)_ApplyMemory(1024);
 	}
+	__int64 空白地址 = 局_空白地址;
 	__int64 房间数据 = _ReadLong(_ReadLong(_ReadLong(房间编号) + 时间基址) + 顺图偏移);
 	ByteArr shellCode = { 72, 129, 236, 0, 1, 0, 0 };
 	shellCode = _AppendToBytes(shellCode, _AppendToBytes({ 72, 185 }, _IntToBytes(房间数据, 8)));

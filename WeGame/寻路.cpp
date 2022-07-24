@@ -1,10 +1,11 @@
 #include "pch.h"
-#include "GameMap.h"
+#include "寻路.h"
+
 #include "Address.h"
-#include "ReadWrite.h"
-#include "GetGameData.h"
-#include "GameCall.h"
-#include "GamePackage.h"
+#include "读写.h"
+#include "判断.h"
+#include "游戏Call.h"
+#include "组包.h"
 
 地图数据 寻路_地图数据()
 {
@@ -312,46 +313,51 @@ DWORD 寻路_计算方向(坐标型 参_当前房间, 坐标型 参_下个房间)
 	return 局_方向;
 }
 
-VOID 坐标_顺图(int 方向ID)
+VOID 坐标_顺图(int 顺图方向)
 {
-	__int64 顺图数据 = 顺图Call(方向ID);
+	__int64 顺图数据 = 顺图Call(顺图方向);
 	__int64 坐标结构 = 顺图数据;
 
-	int 起始X = _ReadInt(坐标结构 + 0);
-	int 起始Y = _ReadInt(坐标结构 + 4);
-	int 结束X = _ReadInt(坐标结构 + 8);
-	int 结束Y = _ReadInt(坐标结构 + 12);
+	int 起始横轴 = _ReadInt(坐标结构 + 0);
+	int 起始纵轴 = _ReadInt(坐标结构 + 4);
+	int 结束横轴 = _ReadInt(坐标结构 + 8);
+	int 结束纵轴 = _ReadInt(坐标结构 + 12);
 
+	int 计算横轴 = 0;
+	int 计算纵轴 = 0;
 	// 0左
-	int X = 0;
-	int Y = 0;
-	if (方向ID == 0)
+	if (顺图方向 == 0)
 	{
-		X = 起始X + 结束X + 20;
-		Y = 起始Y + 结束Y / 2;
+		计算横轴 = 起始横轴 + 结束横轴 + 20;
+		计算纵轴 = 起始纵轴 + 结束纵轴 / 2;
 	}
 	// 1右
-	if (方向ID == 1)
+	if (顺图方向 == 1)
 	{
-		X = 起始X - 20;
-		Y = 起始Y + 结束Y / 2;
+		计算横轴 = 起始横轴 - 20;
+		计算纵轴 = 起始纵轴 + 结束纵轴 / 2;
 	}
 	// 2上
-	if (方向ID == 2)
+	if (顺图方向 == 2)
 	{
 
-		X = 起始X + 结束X / 2;
-		Y = 起始Y + 结束Y + 20;
+		计算横轴 = 起始横轴 + 结束横轴 / 2;
+		计算纵轴 = 起始纵轴 + 结束纵轴 + 20;
 	}
 	// 3下
-	if (方向ID == 3)
+	if (顺图方向 == 3)
 	{
-		X = 起始X + 结束X / 2;
-		Y = 起始Y - 20;
+		计算横轴 = 起始横轴 + 结束横轴 / 2;
+		计算纵轴 = 起始纵轴 - 20;
 	}
-	坐标Call(X, Y, 0);
-	Sleep(100);
-	坐标Call(起始X + 结束X / 2, 起始Y, 0);
+	if (计算横轴 <= 0 || 计算纵轴 <= 0)
+	{
+		return;
+	}
+
+	坐标Call(计算横轴, 计算纵轴, 0);
+	Sleep(20);
+	坐标Call(起始横轴 + 结束横轴 / 2, 起始纵轴, 0);
 }
 
 

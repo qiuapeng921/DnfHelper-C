@@ -9,9 +9,5 @@ VOID 区域Call(int 地图编号);
 VOID 坐标Call(int 对象横轴, int 对象纵轴, int 对象竖轴);
 int 顺图Call(int 顺图方向);
 
-VOID SetPerson(__int64 pAddr, __int64 pPointer);
-__int64 GetPersonAddr();
-__int64 GetPersonPointer();
 __int64 取人物指针Call(__int64 globleRwAddr);
-VOID 取人物指针线程();
-
+__int64 取人物基质();

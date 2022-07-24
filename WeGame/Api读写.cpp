@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include <winsvc.h>
 #include "tlhelp32.h"
-#include "ApiReadWrite.h"
+#include "Api读写.h"
 
 LPVOID ApiReadWrite::申请内存64(DWORD 进程ID, DWORD 申请长度) {
 	HANDLE 进程句柄 = ::OpenProcess(PROCESS_ALL_ACCESS, 0, 进程ID);

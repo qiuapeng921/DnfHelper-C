@@ -6,5 +6,5 @@ VOID SetWindowPEdit(CEdit* pEdit);
 CEdit* GetWindowPEdit();
 
 VOID 监控(CString message);
-VOID SystemMessage(string message);
-VOID Message(string message, int type);
+VOID 神话公告(string message, int type);
+VOID 游戏公告(string message, int type);

@@ -33,25 +33,25 @@
     <ClInclude Include="pch.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ApiReadWrite.h">
+    <ClInclude Include="Api读写.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Common.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameBulletin.h">
+    <ClInclude Include="公告.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameFunction.h">
+    <ClInclude Include="功能.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Automatic.h">
+    <ClInclude Include="自动.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ReadWrite.h">
+    <ClInclude Include="读写.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameCall.h">
+    <ClInclude Include="游戏Call.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Driver.h">
@@ -66,19 +66,19 @@
     <ClInclude Include="Address.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameMap.h">
+    <ClInclude Include="寻路.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MapTraversal.h">
+    <ClInclude Include="遍历.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GetGameData.h">
+    <ClInclude Include="判断.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DataType.h">
+    <ClInclude Include="结构.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GamePackage.h">
+    <ClInclude Include="组包.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -92,25 +92,25 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ApiReadWrite.cpp">
+    <ClCompile Include="Api读写.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Common.cpp">
+    <ClCompile Include="公用.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameBulletin.cpp">
+    <ClCompile Include="公告.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameFunction.cpp">
+    <ClCompile Include="功能.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Automatic.cpp">
+    <ClCompile Include="自动.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ReadWrite.cpp">
+    <ClCompile Include="读写.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameCall.cpp">
+    <ClCompile Include="游戏Call.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Driver.cpp">
@@ -119,16 +119,16 @@
     <ClCompile Include="VuDriver.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GameMap.cpp">
+    <ClCompile Include="寻路.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MapTraversal.cpp">
+    <ClCompile Include="遍历.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GetGameData.cpp">
+    <ClCompile Include="判断.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="GamePackage.cpp">
+    <ClCompile Include="组包.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

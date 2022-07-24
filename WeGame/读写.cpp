@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
-#include "ReadWrite.h"
-#include "ApiReadWrite.h"
+#include "读写.h"
+
+#include "Api读写.h"
 #include "Common.h"
 
 ApiReadWrite apiRw;
@@ -77,26 +78,23 @@ BOOL _WriteByteArr(DWORD64 address, ByteArr val)
 
 VOID 汇编执行(ByteArr 汇编代码)
 {
-	__int64 汇编中转, 空白地址, Hook汇编, Hook跳回, 判断地址;
-
-	static bool 异步执行;
-	static __int64 kb;
-	if (kb == 0)
+	__int64 static 局_空白地址;
+	if (局_空白地址 == 0)
 	{
-		kb = (__int64)_ApplyMemory(1000);
+		局_空白地址 = (__int64)_ApplyMemory(1024);
 	}
-	汇编中转 = kb + 300;
-	空白地址 = kb + 500;
-	判断地址 = 空白地址 - 100;
+	__int64 汇编中转 = 局_空白地址 + 300;
+	__int64 空白地址 = 局_空白地址 + 500;
+	__int64 判断地址 = 空白地址 - 100;
+	static bool 异步执行;
 	if (异步执行) {
 		return;
 	}
-
 	异步执行 = true;
 
-	Hook汇编 = 汇编CALL;
+	__int64 Hook汇编 = 汇编CALL;
 	Hook汇编 = Hook汇编 + 144;
-	Hook跳回 = Hook汇编 + 19;
+	__int64 Hook跳回 = Hook汇编 + 19;
 	ByteArr Hook数据 = _ReadByteArr(Hook汇编, 19);
 	ByteArr Hook原数据 = Hook数据;
 
@@ -122,8 +120,8 @@ VOID 汇编执行(ByteArr 汇编代码)
 	if (_ReadLong(汇编中转) == 0) {
 		_WriteByteArr(汇编中转, Hook数据);
 	}
-
 	Hook数据.clear();
+
 	_WriteByteArr(空白地址, _AppendToBytes(汇编代码, ByteArr{ 195 }));
 	ByteArr tmp = { 255, 37, 0, 0, 0, 0 };
 	tmp = _AppendToBytes(tmp, _IntToBytes(汇编中转, 8));

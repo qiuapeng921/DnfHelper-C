@@ -1,10 +1,11 @@
 #include "pch.h"
-#include "MapTraversal.h"
+#include "遍历.h"
+
 #include "Common.h"
-#include "ReadWrite.h"
-#include "GetGameData.h"
-#include "GameBulletin.h"
-#include "GameCall.h"
+#include "读写.h"
+#include "判断.h"
+#include "公告.h"
+#include "游戏Call.h"
 
 vector<__int64> 遍历怪物()
 {
@@ -14,8 +15,8 @@ vector<__int64> 遍历怪物()
 	{
 		return 全_怪物;
 	}
-	__int64 首地址_ = _ReadLong(_ReadLong(_ReadLong(_ReadLong(GetPersonAddr()) + 地图偏移) + 16) + 地图开始2);
-	__int64 尾地址_ = _ReadLong(_ReadLong(_ReadLong(_ReadLong(GetPersonAddr()) + 地图偏移) + 16) + 地图结束2);
+	__int64 首地址_ = _ReadLong(_ReadLong(_ReadLong(_ReadLong(取人物基质()) + 地图偏移) + 16) + 地图开始2);
+	__int64 尾地址_ = _ReadLong(_ReadLong(_ReadLong(_ReadLong(取人物基质()) + 地图偏移) + 16) + 地图结束2);
 	int 怪物数量 = (int)(尾地址_ - 首地址_) / 16;
 	for (int i = 1; i <= 怪物数量; i++)
 	{
@@ -26,7 +27,7 @@ vector<__int64> 遍历怪物()
 		int 怪物血量_ = _ReadInt(怪物地址 + 怪物血量);
 		if (怪物类型 == 529 || 怪物类型 == 273)
 		{
-			if (怪物地址 == _ReadLong(GetPersonAddr()))
+			if (怪物地址 == _ReadLong(取人物基质()))
 			{
 				continue;
 			}

@@ -1,12 +1,13 @@
 ﻿#include "pch.h"
-#include "Automatic.h"
+#include "自动.h"
+
 #include "Common.h"
-#include "ReadWrite.h"
-#include "GameBulletin.h"
-#include "GetGameData.h"
-#include "GameCall.h"
-#include "GamePackage.h"
-#include "GameMap.h"
+#include "读写.h"
+#include "公告.h"
+#include "判断.h"
+#include "游戏Call.h"
+#include "组包.h"
+#include "寻路.h"
 
 // 自动开关
 static bool automaticSwitch;
@@ -18,14 +19,14 @@ VOID 自动开关() {
 	if (automaticSwitch == true)
 	{
 		threadHandle = ::_CreateThread(&自动线程);
-		Message("自动刷图 - 启动", 2);
+		游戏公告("自动刷图 - 启动", 2);
 		return;
 	}
 
 	if (automaticSwitch == false && threadHandle != NULL)
 	{
 		_DeleteThread(threadHandle);
-		Message("自动刷图 - 关闭", 2);
+		游戏公告("自动刷图 - 关闭", 2);
 	}
 }
 
@@ -57,7 +58,7 @@ VOID 自动线程() {
 		{
 			if (首次进图 == false)
 			{
-				透明Call(_ReadInt(GetPersonAddr()));
+				透明Call(_ReadInt(取人物基质()));
 				首次进图 = true;
 			}
 
@@ -81,11 +82,11 @@ VOID 自动线程() {
 }
 
 VOID 进入城镇() {
-	static int 全_已刷角色 = 0;
+	static int 全_已刷角色;
 	if (全_已刷角色 + 1 > 32) {
 		监控(L"指定角色完成所有角色");
 		_DeleteThread(threadHandle);
-		Message("自动线程 - 关闭", 1);
+		游戏公告("自动线程 - 关闭", 1);
 		return;
 	}
 
@@ -121,7 +122,9 @@ VOID 进入选图()
 		for (int i = 1; i <= 10; i++)
 		{
 			Sleep(500);
-			if (取游戏状态() == 2) return;
+			if (取游戏状态() == 2) {
+				return;
+			}
 		}
 	} while (取游戏状态() == 1);
 }
@@ -133,7 +136,9 @@ VOID 返回角色() {
 	Sleep(500);
 	do
 	{
-		if (取游戏状态() == 0) break;
+		if (取游戏状态() == 0) {
+			break;
+		}
 		Sleep(500);
 	} while (取游戏状态() == 1);
 }
@@ -179,7 +184,14 @@ VOID 模拟顺图()
 	if (sizeof(局_地图数据.地图走法) >= 2)
 	{
 		int 过图方向 = 寻路_计算方向(局_地图数据.地图走法[0], 局_地图数据.地图走法[1]);
-		组包_顺图(过图方向);
+		int 顺图方式 = _ReadConfig(L"自动配置", L"顺图方式");
+		if (顺图方式 == 1)
+		{
+			组包_顺图(过图方向);
+		}
+		if (顺图方式 == 2) {
+			坐标_顺图(过图方向);
+		}
 	}
 }
 

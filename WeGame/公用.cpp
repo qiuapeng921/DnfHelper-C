@@ -80,7 +80,6 @@ VOID _InitConfig()
 	_WriteConfig(L"自动配置", L"副本等级", L"4");
 	_WriteConfig(L"自动配置", L"顺图方式", L"1");
 
-
 	_WriteConfig(L"全屏配置", L"技能代码", L"70231");
 	_WriteConfig(L"全屏配置", L"技能伤害", L"5201314");
 	_WriteConfig(L"全屏配置", L"技能频率", L"500");

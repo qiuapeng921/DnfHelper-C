@@ -9,12 +9,12 @@
 
 #include "Driver.h"
 #include "Common.h"
-#include "GameFunction.h"
-#include "Automatic.h"
-#include "ReadWrite.h"
-#include "GameBulletin.h"
-#include "GameCall.h"
-#include "GameMap.h"
+#include "功能.h"
+#include "自动.h"
+#include "读写.h"
+#include "公告.h"
+#include "游戏Call.h"
+#include "寻路.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -170,16 +170,13 @@ void CWeGameDlg::激活()
 	RegisterHotKey(this->GetSafeHwnd(), 1007, MOD_ALT, VK_RIGHT);//右
 
 
-	Message("激活成功-欢迎使用", 1);
+	游戏公告("激活成功-欢迎使用", 1);
 
 	监控(L"F1 - 技能全屏");
 	监控(L"F2 - 武器冰冻");
 	监控(L"F3 - 自身倍攻");
 	监控(L"~  - 无形秒杀");
 	监控(L"End - 自动刷图");
-
-	// 全局获取人物地址
-	_CreateThread(&取人物指针线程);
 
 	_InitConfig();
 	// 禁用激活按钮

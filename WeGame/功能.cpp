@@ -1,11 +1,11 @@
 ﻿#include "pch.h"
-#include "framework.h"
+#include "公告.h"
+
 #include "Common.h"
-#include "GameFunction.h"
-#include "ReadWrite.h"
-#include "GameCall.h"
-#include "GameBulletin.h"
-#include "MapTraversal.h"
+#include "读写.h"
+#include "游戏Call.h"
+#include "公告.h"
+#include "遍历.h"
 
 HANDLE 技能开关句柄;
 
@@ -16,33 +16,31 @@ VOID 技能开关() {
 	if (_switch == true)
 	{
 		技能开关句柄 = _CreateThread(&全屏技能);
-		Message("技能全屏 - 开启", 2);
+		游戏公告("技能全屏 - 开启", 2);
 	}
 	else
 	{
 		_DeleteThread(技能开关句柄);
-		Message("技能全屏 - 关闭", 2);
+		游戏公告("技能全屏 - 关闭", 2);
 	}
 }
 
 VOID 无形秒杀()
 {
 	技能Call(0, 39002, 0, 0, 0, 0, 0);
-	Message("无形秒杀 - 完毕", 2);
+	游戏公告("无形秒杀 - 完毕", 2);
 }
 
 VOID 武器冰冻() {
 	static bool _switch;
-
-	static __int64 空白地址;
-	if (空白地址 == 0)
+	__int64 static 局_空白地址;
+	if (局_空白地址 == 0)
 	{
-		空白地址 = (__int64)_ApplyMemory(200);
+		局_空白地址 = (__int64)_ApplyMemory(1024);
 	}
+	__int64 空白地址 = 局_空白地址;
 	int 冰冻伤害 = 99999;
-
 	_switch = !_switch;
-
 	if (_switch == true)
 	{
 		_WriteInt(空白地址, 0);
@@ -53,14 +51,14 @@ VOID 武器冰冻() {
 		_WriteInt(空白地址 + 20, 99);
 		_WriteInt(空白地址 + 24, 130);
 		_WriteInt(空白地址 + 28, 冰冻伤害 * 100000);
-		__int64 武器 = _ReadLong(_ReadLong(GetPersonPointer()) + 武器偏移);
+		__int64 武器 = _ReadLong(_ReadLong(取人物基质()) + 武器偏移);
 		_WriteLong(武器 + 冰冻开始, 空白地址);
 		_WriteLong(武器 + 冰冻结束, 空白地址 + 32);
-		Message("武器冰冻 - 启动", 2);
+		游戏公告("武器冰冻 - 启动", 2);
 	}
 	else
 	{
-		__int64 武器 = _ReadLong(_ReadLong(GetPersonPointer()) + 武器偏移);
+		__int64 武器 = _ReadLong(_ReadLong(取人物基质()) + 武器偏移);
 		_WriteLong(武器 + 冰冻开始, 0);
 		_WriteLong(武器 + 冰冻结束, 0);
 
@@ -69,7 +67,7 @@ VOID 武器冰冻() {
 			_WriteLong(空白地址, 0);
 			空白地址 = 空白地址 + 4;
 		}
-		Message("武器冰冻 - 关闭", 2);
+		游戏公告("武器冰冻 - 关闭", 2);
 	}
 }
 
@@ -83,11 +81,11 @@ VOID HOOK伤害() {
 		地址原数据 = _ReadByteArr(全局基址, 10);
 		ByteArr data = _AppendToBytes(ByteArr{ 72, 190 }, _IntToBytes(倍攻伤害, 8));
 		_WriteByteArr(全局基址, data);
-		Message("HOOK伤害 - 启动", 2);
+		游戏公告("HOOK伤害 - 启动", 2);
 	}
 	else
 	{
 		_WriteByteArr(全局基址, 地址原数据);
-		Message("HOOK伤害 - 关闭", 2);
+		游戏公告("HOOK伤害 - 关闭", 2);
 	}
 }

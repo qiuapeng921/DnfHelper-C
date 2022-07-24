@@ -1,14 +1,15 @@
 #include "pch.h"
-#include "GetGameData.h"
-#include "ReadWrite.h"
-#include "GameCall.h"
+#include "判断.h"
+
+#include "读写.h"
+#include "游戏Call.h"
 
 int 解密(__int64 数据指针)
 {
-	int temp = _ReadInt(数据指针);
+	__int64 temp = _ReadLong(数据指针);
 	temp = temp ^ 0x1F2A025C;
 	temp -= 4;
-	return temp;
+	return (int)temp;
 }
 
 VOID 加密(__int64 数据指针, int 修改数值)
@@ -26,7 +27,7 @@ int 取游戏状态()
 
 bool 取是否城镇()
 {
-	if (_ReadLong(_ReadLong(GetPersonAddr()) + 地图偏移) == 0)
+	if (_ReadLong(_ReadLong(取人物基质()) + 地图偏移) == 0)
 	{
 		return true;
 	}
@@ -35,7 +36,7 @@ bool 取是否城镇()
 
 bool 取是否开门()
 {
-	if (解密(_ReadLong(_ReadLong(_ReadLong(GetPersonAddr()) + 地图偏移) + 16) + 是否开门) == 0)
+	if (解密(_ReadLong(_ReadLong(_ReadLong(取人物基质()) + 地图偏移) + 16) + 是否开门) == 0)
 	{
 		return true;
 	}
