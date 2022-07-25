@@ -2,9 +2,72 @@
 #include "游戏Call.h"
 
 #include "读写.h"
-#include "Common.h"
+#include "公用.h"
 #include "判断.h"
 #include "组包.h"
+
+VOID 汇编执行(ByteArr 汇编代码)
+{
+	__int64 static 局_空白地址;
+	if (局_空白地址 == 0)
+	{
+		局_空白地址 = (__int64)_ApplyMemory(1024);
+	}
+	__int64 汇编中转 = 局_空白地址 + 300;
+	__int64 空白地址 = 局_空白地址 + 500;
+	__int64 判断地址 = 空白地址 - 100;
+	static bool 异步执行;
+	if (异步执行) {
+		return;
+	}
+	异步执行 = true;
+
+	__int64 Hook汇编 = 汇编CALL;
+	Hook汇编 = Hook汇编 + 144;
+	__int64 Hook跳回 = Hook汇编 + 19;
+	ByteArr Hook数据 = _ReadByteArr(Hook汇编, 19);
+	ByteArr Hook原数据 = Hook数据;
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 184 });
+	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(判断地址, 8));
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 131, 56, 1, 117, 42, 72, 129, 236, 0, 3, 0, 0 });
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 187 });
+	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(空白地址, 8));
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 255, 211 });
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 184 });
+	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(判断地址, 8));
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 199, 0, 3, 0, 0, 0 });
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 72, 129, 196, 0, 3, 0, 0 });
+
+	Hook数据 = _AppendToBytes(Hook数据, ByteArr{ 255, 37, 0, 0, 0, 0 });
+	Hook数据 = _AppendToBytes(Hook数据, _IntToBytes(Hook跳回, 8));
+
+	if (_ReadLong(汇编中转) == 0) {
+		_WriteByteArr(汇编中转, Hook数据);
+	}
+	Hook数据.clear();
+
+	_WriteByteArr(空白地址, _AppendToBytes(汇编代码, ByteArr{ 195 }));
+	ByteArr tmp = { 255, 37, 0, 0, 0, 0 };
+	tmp = _AppendToBytes(tmp, _IntToBytes(汇编中转, 8));
+	tmp = _AppendToBytes(tmp, ByteArr{ 144, 144, 144, 144, 144 });
+	_WriteByteArr(Hook汇编, tmp);
+	_WriteLong(判断地址, 1);
+	while (_ReadLong(判断地址) == 1)
+	{
+		Sleep(10);
+	}
+	_WriteByteArr(Hook汇编, Hook原数据);
+	_WriteByteArr(空白地址, 取空白ByteArr(sizeof(汇编代码) + 16));
+
+	异步执行 = false;
+}
+
 
 VOID 技能Call(__int64 触发指针, int 技能代码, int 技能伤害, int x, int y, int z, int 大小) {
 	__int64 static 局_空白地址;

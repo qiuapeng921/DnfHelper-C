@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "自动.h"
 
-#include "Common.h"
+#include "公用.h"
 #include "读写.h"
 #include "公告.h"
 #include "判断.h"
@@ -74,7 +74,6 @@ VOID 自动线程() {
 				{
 					退出副本();
 					首次进图 = false;
-					continue;
 				}
 			}
 		}
@@ -97,7 +96,9 @@ VOID 进入城镇() {
 	Sleep(200);
 	do
 	{
-		if (取游戏状态() == 1) break;
+		if (取游戏状态() == 1) {
+			break;
+		}
 		Sleep(500);
 	} while (取游戏状态() == 0);
 }

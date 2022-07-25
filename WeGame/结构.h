@@ -1,5 +1,5 @@
 #pragma once
-#include "Common.h"
+#include "公用.h"
 
 struct 坐标型 {
 	DWORD x;

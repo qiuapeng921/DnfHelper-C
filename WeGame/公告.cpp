@@ -2,7 +2,7 @@
 #include "公告.h"
 
 #include "读写.h"
-#include "Common.h"
+#include "公用.h"
 #include "游戏Call.h"
 
 static CEdit* windowPEdit;

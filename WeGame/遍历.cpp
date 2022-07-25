@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "遍历.h"
 
-#include "Common.h"
+#include "公用.h"
 #include "读写.h"
 #include "判断.h"
 #include "公告.h"
