@@ -1,5 +1,7 @@
 #pragma once
-#include "Common.h"
+#include "公用.h"
+
+VOID 汇编执行(ByteArr 汇编代码);
 
 VOID 技能Call(__int64 触发指针, int 技能代码, int 技能伤害, int x, int y, int z, int 大小);
 VOID 透明Call(__int64 对象指针);

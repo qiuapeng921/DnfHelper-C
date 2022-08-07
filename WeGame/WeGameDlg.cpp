@@ -8,7 +8,7 @@
 #include "afxdialogex.h"
 
 #include "Driver.h"
-#include "Common.h"
+#include "公用.h"
 #include "功能.h"
 #include "自动.h"
 #include "读写.h"

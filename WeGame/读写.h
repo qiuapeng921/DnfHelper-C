@@ -1,5 +1,5 @@
 #pragma once
-#include "Common.h"
+#include "公用.h"
 #include "Address.h"
 
 #include <vector>
@@ -28,5 +28,3 @@ BOOL _WriteLong(DWORD64 address, DWORD64 val);
 ByteArr _ReadByteArr(DWORD64 address, INT32 length);
 
 BOOL _WriteByteArr(DWORD64 address, ByteArr val);
-
-VOID 汇编执行(ByteArr 汇编代码);

@@ -198,7 +198,7 @@
     <ClInclude Include="WeGame.h" />
     <ClInclude Include="WeGameDlg.h" />
     <ClInclude Include="公告.h" />
-    <ClInclude Include="Common.h" />
+    <ClInclude Include="公用.h" />
     <ClInclude Include="功能.h" />
     <ClInclude Include="VuDriver.h" />
     <ClInclude Include="自动.h" />

@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "Common.h"
+#include "公用.h"
 
 DWORD _GetProcessId(LPCWSTR 进程) {
 	PROCESSENTRY32 pe;
