@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CWeGameDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CWeGameDlg::激活)
 	ON_BN_CLICKED(IDC_BUTTON1, &CWeGameDlg::卸载)
 	ON_WM_HOTKEY()
+	ON_WM_NCHITTEST()
 END_MESSAGE_MAP()
 
 // 动态设置窗口标题动态设置窗口标题 start
@@ -278,4 +279,16 @@ BOOL CWeGameDlg::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+LRESULT CWeGameDlg::OnNcHitTest(CPoint point)
+{
+	LRESULT ret = CDialog::OnNcHitTest(point);
+
+	if (HTTOP == ret || HTBOTTOM == ret || HTLEFT == ret || HTRIGHT == ret || HTBOTTOMLEFT == ret || HTBOTTOMRIGHT == ret || HTTOPLEFT == ret || HTTOPRIGHT == ret || HTCAPTION == ret) {
+		return HTCLIENT;
+	}
+
+	return ret;
 }

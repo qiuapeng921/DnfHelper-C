@@ -29,6 +29,7 @@ public:
 	afx_msg void 卸载();
 	afx_msg void OnHotKey(UINT nHotKeyId, UINT nKey1, UINT nKey2);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg LRESULT OnNcHitTest(CPoint point);
 };
 
 extern CWeGameDlg app;
