@@ -5,5 +5,5 @@
 C++ 编写的dnf助手
 
 
-###### 交流群
+### 交流群
 <img src="https://ghproxy.com/https://raw.githubusercontent.com/qiuapeng921/DnfHelper-Python/master/resource/qq.png" alt="alt text" width="500" height="800">
