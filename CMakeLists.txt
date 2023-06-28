@@ -3,6 +3,7 @@ project(DnfHelper_C)
 
 set(CMAKE_CXX_STANDARD 14)
 
+# 指定源文件和生成的库文件名称
 add_library(DnfHelper_C SHARED
         main.cpp
         src/common/headers.h
@@ -10,6 +11,9 @@ add_library(DnfHelper_C SHARED
         src/game/address.h
         src/common/config.cpp src/common/config.h
         src/common/read_write.cpp src/common/read_write.h
+        src/helpers/string.cpp src/helpers/string.h
+        src/helpers/time.cpp src/helpers/time.h
+        src/helpers/logger.cpp src/helpers/logger.h
         src/game/activation.cpp src/game/activation.h
         src/game/call.cpp src/game/call.h
         src/game/notice.cpp src/game/notice.h
@@ -18,6 +22,10 @@ add_library(DnfHelper_C SHARED
         src/game/send.cpp src/game/send.h
         src/game/task.cpp src/game/task.h
         src/game/func.cpp src/game/func.h
-        src/helpers/string.cpp src/helpers/string.h
-        src/helpers/time.cpp src/helpers/time.h
-        src/helpers/logger.cpp src/helpers/logger.h)
+        src/game/find_route.cpp src/game/find_route.h
+        src/game/map_data.cpp src/game/map_data.h)
+
+# 移除库文件名称的前缀 "lib"
+set_target_properties(DnfHelper_C PROPERTIES PREFIX "")
+# 设置库文件的输出名称为"version"
+set_target_properties(DnfHelper_C PROPERTIES OUTPUT_NAME "cscapi")
