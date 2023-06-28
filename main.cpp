@@ -1,7 +1,8 @@
-#include "src/common/headers.h"
 #include "src/game/activation.h"
+#include "src/helpers/logger.h"
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
+    WriteLog("1111111111");
     switch (ul_reason_for_call) {
         case DLL_PROCESS_ATTACH: {
             DisableThreadLibraryCalls(hModule);
@@ -14,8 +15,8 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
         case DLL_PROCESS_DETACH:
             break;
         default: {
-            const char *message = "Hello, kernel log!"; // 要输出的消息
-            OutputDebugStringA(message); // 将消息输出到内核日志
+            // 将消息输出到内核日志
+            OutputDebug("Hello, kernel log!");
         }
     }
     return TRUE;

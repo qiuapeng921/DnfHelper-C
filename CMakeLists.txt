@@ -31,11 +31,16 @@ add_library(DnfHelper_C SHARED
 # 移除库文件名称的前缀 "lib"
 set_target_properties(DnfHelper_C PROPERTIES PREFIX "")
 # 设置库文件的输出名称为"version"
-set_target_properties(DnfHelper_C PROPERTIES OUTPUT_NAME "cscapi")
-
+set_target_properties(DnfHelper_C PROPERTIES OUTPUT_NAME "TPHelperBase")
 
 configure_file(
         versioninfo.rc.in
         ${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc
         COPYONLY
 )
+
+# 设置构建类型 Debug Release
+set(CMAKE_BUILD_TYPE Release)
+
+# 设置目标平台 Win32 x64
+set(CMAKE_GENERATOR_PLATFORM Win32)
