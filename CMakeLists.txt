@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.25)
 project(DnfHelper_C)
 
+project(DnfHelper_C VERSION 1.0.0)
+
 set(CMAKE_CXX_STANDARD 14)
 
 # 指定源文件和生成的库文件名称
@@ -23,9 +25,17 @@ add_library(DnfHelper_C SHARED
         src/game/task.cpp src/game/task.h
         src/game/func.cpp src/game/func.h
         src/game/find_route.cpp src/game/find_route.h
-        src/game/map_data.cpp src/game/map_data.h)
+        src/game/map_data.cpp src/game/map_data.h
+        versioninfo.rc)
 
 # 移除库文件名称的前缀 "lib"
 set_target_properties(DnfHelper_C PROPERTIES PREFIX "")
 # 设置库文件的输出名称为"version"
 set_target_properties(DnfHelper_C PROPERTIES OUTPUT_NAME "cscapi")
+
+
+configure_file(
+        versioninfo.rc.in
+        ${CMAKE_CURRENT_BINARY_DIR}/versioninfo.rc
+        COPYONLY
+)
