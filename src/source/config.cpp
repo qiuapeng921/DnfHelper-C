@@ -5,7 +5,7 @@
 #include "config.h"
 #include "helper.h"
 
-static wstring HelperName = L"DnfHelper";
+wstring HelperName = L"DnfHelper";
 
 
 void WriteConfigData(const wstring &itemName, const wstring &data) {
