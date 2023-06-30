@@ -3,7 +3,6 @@
 #include "logger.h"
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
-    WriteLog("1111111111");
     switch (ul_reason_for_call) {
         case DLL_PROCESS_ATTACH: {
             DisableThreadLibraryCalls(hModule);
@@ -16,8 +15,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
         case DLL_PROCESS_DETACH:
             break;
         default: {
-            // 将消息输出到内核日志
-            OutputDebug("Hello, kernel log!");
+            OutputDebug("error unknown");
         }
     }
     return TRUE;

@@ -21,7 +21,6 @@ void MainThread() {
     }
 }
 
-
 void InitHelper() {
     LoadConfigIni();
     if (!ConfigIniExist()) {
