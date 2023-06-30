@@ -6,6 +6,9 @@
 #include "activation.h"
 #include "config.h"
 #include "notice.h"
+#include "struct.h"
+
+GlobalData global;
 
 void MainThread() {
     RegisterHotKey(nullptr, 0, 0, VK_HOME);
@@ -29,12 +32,12 @@ void InitHelper() {
 
     ColorfulNotice(L"呼出成功,欢迎使用情歌", 1);
 
-    // 全局.游戏句柄 = GetForegroundWindow();
-    // 全局.窗口消息 = (WNDPROC)SetWindowLongPtr(全局.游戏句柄, GWLP_WNDPROC, (ULONG64)窗口进程);
+    // global.GameHandle = GetForegroundWindow();
+    global.GameHandle = FindWindowA("地下城与勇士", "地下城与勇士");
+    global.WinMessage = (WNDPROC)SetWindowLongPtr(global.GameHandle, GWLP_WNDPROC, (LONG_PTR)WinMessage);
 
-    CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)MessageLoopOfAB, nullptr, 0, nullptr);
+    // CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)MessageLoopOfAB, nullptr, 0, nullptr);
 }
-
 
 LRESULT CALLBACK WinMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     if (uMsg == WM_KEYUP) {
@@ -43,15 +46,16 @@ LRESULT CALLBACK WinMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         if (wParam == VK_F2) {}
         if (wParam == VK_OEM_3) {}
     }
-    if (uMsg == WM_SYSKEYDOWN)//按下ALT
-    {
+    if (uMsg == WM_SYSKEYDOWN) {
         if (wParam == VK_F1) {}
         if (wParam == VK_F2) {}
         if (wParam == VK_F3) {}
         if (wParam == VK_F4) {
-            keybd_event(88, MapVirtualKey(88, 0), 0, 0);//按下
+            // 按下
+            keybd_event(88, MapVirtualKey(88, 0), 0, 0);
             Sleep(50);
-            keybd_event(88, MapVirtualKey(88, 0), KEYEVENTF_KEYUP, 0);//松开
+            // 松开
+            keybd_event(88, MapVirtualKey(88, 0), KEYEVENTF_KEYUP, 0);
         }
         if (wParam == VK_UP) {}
         if (wParam == VK_DOWN) {}

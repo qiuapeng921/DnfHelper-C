@@ -2,6 +2,13 @@
 
 #include "headers.h"
 
+
+struct GlobalData {
+    HWND GameHandle;
+    WNDPROC WinMessage;
+};
+extern GlobalData global;
+
 // CoordinateType 坐标型
 struct CoordinateType {
     uint32_t X;
