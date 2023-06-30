@@ -4,42 +4,42 @@
 
 #include "auto.h"
 
-void Auto::SwitchFunc() {
+void SwitchFunc() {
 
 }
 
-void Auto::StartFunc() {
+void StartFunc() {
 
 }
 
-void Auto::AutoThread() {
+void AutoThread() {
 
 }
 
-void Auto::EnterTown() {
+void EnterTown() {
 
 }
 
-void Auto::TownHandle() {
+void TownHandle() {
 
 }
 
-void Auto::EnterSelectMap() {
+void EnterSelectMap() {
 
 }
 
-void Auto::BackToRole() {
+void BackToRole() {
 
 }
 
-void Auto::EnterMap() {
+void EnterMap() {
 
 }
 
-void Auto::PassMap() {
+void PassMap() {
 
 }
 
-void Auto::QuitMap() {
+void QuitMap() {
 
 }
