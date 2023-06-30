@@ -3,7 +3,7 @@
 //
 
 // 七彩公告
-void ColorfulNotice(const wchar_t *message);
+void ColorfulNotice(const wchar_t*message, int msgType);
 
 // 普通公告
-void OrdinaryNotice(const wchar_t *message);
+void OrdinaryNotice(const wchar_t*message, int msgType);

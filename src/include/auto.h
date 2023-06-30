@@ -1,4 +1,7 @@
-﻿
+﻿//
+// Created by Administrator on 2023/06/28.
+//
+
 class Auto {
 public:
     // 自动开关

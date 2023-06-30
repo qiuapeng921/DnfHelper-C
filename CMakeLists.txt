@@ -12,7 +12,7 @@ file(GLOB SOURCE_FILES ${PROJECT_SOURCE_DIR}/src/source/*.cpp)
 include_directories(DnfHelper PRIVATE ${PROJECT_SOURCE_DIR}/src/include)
 
 # 指定源文件和生成的库文件名称
-add_library(DnfHelper SHARED main.cpp ${HEADER_FILES} ${SOURCE_FILES})
+add_library(DnfHelper SHARED main.cpp ${HEADER_FILES} ${SOURCE_FILES} src/source/helper.cpp src/include/helper.h)
 
 
 # 移除库文件名称的前缀 "lib"

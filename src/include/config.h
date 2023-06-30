@@ -2,8 +2,10 @@
 
 #include "headers.h"
 
+// 写配置数据
 void WriteConfigData(string item, string data);
 
+// 读配置数据
 int ReadConfigData(string item);
 
 // 加载配置文件

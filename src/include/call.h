@@ -1,20 +1,22 @@
-﻿#pragma once
+﻿//
+// Created by Administrator on 2023/06/28.
+//
 
-#include <minwindef.h>
+#pragma once
 
 typedef ULONG64(_fastcall *_Func_Call)(
-        ULONGLONG RCX_,
-        ULONGLONG RDX_,
-        ULONGLONG R8_,
-        ULONGLONG R9_,
-        ULONGLONG R10_,
-        ULONGLONG R11_,
-        ULONGLONG R12_,
-        ULONGLONG R13_,
-        ULONGLONG R14_,
-        ULONGLONG R15_
+        ULONG64 RCX_,
+        ULONG64 RDX_,
+        ULONG64 R8_,
+        ULONG64 R9_,
+        ULONG64 R10_,
+        ULONG64 R11_,
+        ULONG64 R12_,
+        ULONG64 R13_,
+        ULONG64 R14_,
+        ULONG64 R15_
 );
 
-ULONG64 Func_CALL(ULONGLONG ADDR_, ULONGLONG RCX_ = 0, ULONGLONG RDX_ = 0, ULONGLONG R8_ = 0, ULONGLONG R9_ = 0,
-                  ULONGLONG R10_ = 0, ULONGLONG R11_ = 0, ULONGLONG R12_ = 0, ULONGLONG R13_ = 0,
-                  ULONGLONG R14_ = 0, ULONGLONG R15_ = 0);
+ULONG64 Func_CALL(ULONG64 ADDR_, ULONG64 RCX_ = 0, ULONG64 RDX_ = 0, ULONG64 R8_ = 0, ULONG64 R9_ = 0,
+                  ULONG64 R10_ = 0, ULONG64 R11_ = 0, ULONG64 R12_ = 0, ULONG64 R13_ = 0,
+                  ULONG64 R14_ = 0, ULONG64 R15_ = 0);

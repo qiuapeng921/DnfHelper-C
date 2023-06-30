@@ -39,6 +39,16 @@ BYTE ReadByte(ULONG64 address) {
     return *(BYTE*)address;
 }
 
+vector<BYTE> ReadByteArr(ULONG64 address, DWORD len) {
+    vector<BYTE> result;
+    if (IsBadReadPtr((VOID*)address, len)) {
+        return {};
+    }
+    for (size_t i = 0; i < len; i++) {
+        result.insert(result.end(), *(BYTE*)address++);
+    }
+    return result;
+}
 
 void WriteShort(ULONG64 address, WORD data) {
     if (IsBadReadPtr((VOID*)address, 4)) {
@@ -88,4 +98,26 @@ void WriteByte(ULONG64 address, BYTE data) {
     VirtualProtect((LPVOID)address, 1, 64, &old_protect);
     *(BYTE*)address = data;
     VirtualProtect((LPVOID)address, 1, old_protect, &old_protect);
+}
+
+void WriteByteArr(ULONG64 address, const vector<BYTE> &byteData) {
+    if (IsBadReadPtr((VOID*)address, 1)) {
+        return;
+    }
+    DWORD old_protect;
+    // 修改内存属性
+    VirtualProtect((LPVOID)address, byteData.size(), 64, &old_protect);
+    for (unsigned char i: byteData) {
+        *(BYTE*)address++ = i;
+    }
+    // 还原内存属性
+    VirtualProtect((LPVOID)address, byteData.size(), old_protect, &old_protect);
+}
+
+ULONG_PTR AllocMem(SIZE_T size) {
+    return (ULONG_PTR)VirtualAlloc(nullptr, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+}
+
+bool FreeMem(ULONG addr) {
+    return (bool)VirtualFree(nullptr, addr, NULL);
 }
