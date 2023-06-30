@@ -1,19 +1,20 @@
-double 读小数型(ULONG64 address);
+﻿BYTE ReadShort(ULONG64 address);
 
-INT 读整数型(ULONG64 address);
+INT ReadInt(ULONG64 address);
 
-ULONG64 读长整数(ULONG64 address);
+ULONG64 ReadLong(ULONG64 address);
 
-BYTE 读字节型(ULONG64 address);
+double ReadFloat(ULONG64 address);
 
-BYTE 读短整数(ULONG64 address);
+BYTE ReadByte(ULONG64 address);
 
-void 写长整数(ULONG64 address, ULONG64 data);
 
-void 写字节型(ULONG64 address, byte data);
+void WriteShort(ULONG64 address, WORD data);
 
-void 写整数型(ULONG64 address, u_int data);
+void WriteInt(ULONG64 address, long data);
 
-void 写小数型(ULONG64 address, float data);
+void WriteLong(ULONG64 address, ULONG64 data);
 
-void 写短整数(ULONG64 address, short data);
+void WriteFloat(ULONG64 address, float data);
+
+void WriteByte(ULONG64 address, BYTE data);

@@ -1,4 +1,4 @@
-
+﻿
 class Auto {
 public:
     // 自动开关

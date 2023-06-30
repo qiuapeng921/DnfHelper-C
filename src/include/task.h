@@ -1,4 +1,4 @@
-class Task {
+﻿class Task {
 
 public:
     // 处理主线
