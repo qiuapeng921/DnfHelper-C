@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../common/headers.h"
+#include "headers.h"
 
 // CoordinateType 坐标型
 struct CoordinateType {

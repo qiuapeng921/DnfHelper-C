@@ -1,5 +1,3 @@
-#include <windows.h>
-
 void MainThread();
 
 void InitHelper();

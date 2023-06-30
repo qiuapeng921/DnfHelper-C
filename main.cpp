@@ -1,5 +1,6 @@
-#include "src/game/activation.h"
-#include "src/helpers/logger.h"
+#include "headers.h"
+#include "activation.h"
+#include "logger.h"
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
     WriteLog("1111111111");

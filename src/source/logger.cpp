@@ -1,9 +1,9 @@
-#include "../common/headers.h"
-#include "logger.h"
-#include <iostream>
+//
+// Created by Administrator on 2023/06/28.
+//
 
-#include <fstream>
-#include <cstdlib>
+#include "headers.h"
+#include "logger.h"
 
 void OutputDebug(const char *msg) {
     string content = "LoveSong";
@@ -13,18 +13,21 @@ void OutputDebug(const char *msg) {
 
 
 void WriteLog(const char *msg) {
-    // 获取桌面目录的路径
-    const char *desktopPath = std::getenv("USERPROFILE");
+    // 获取用户目录的路径
+    const char *userProfilePath = getenv("USERPROFILE");
 
-    if (desktopPath != nullptr) {
+    if (userProfilePath != nullptr) {
+        // 构建桌面路径
+        string desktopPath = string(userProfilePath) + "\\Desktop";
+
         // 构建日志文件路径
-        string logFilePath = string(desktopPath) + "\\dll-debug.log";
+        string logFilePath = desktopPath + "\\dll-debug.log";
 
         // 打开日志文件，以追加模式写入
         ofstream logfile(logFilePath, ios::app);
 
         if (logfile.is_open()) { // 检查文件是否成功打开
-            logfile << msg << std::endl; // 写入日志文件
+            logfile << msg << endl; // 写入日志文件
             logfile.close(); // 关闭文件
         } else {
             OutputDebug("无法打开日志文件");

@@ -1,4 +1,8 @@
-#include "../common/headers.h"
+//
+// Created by Administrator on 2023/06/28.
+//
+
+#include "headers.h"
 #include "send.h"
 
 void Send::BufferCall(uint32_t param) {

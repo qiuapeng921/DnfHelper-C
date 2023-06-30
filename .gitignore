@@ -2,5 +2,5 @@
 x64/
 src/x64/
 .git/
-cmake-build-debug
+cmake-build-*
 .idea
