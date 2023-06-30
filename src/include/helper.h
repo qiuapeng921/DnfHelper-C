@@ -3,3 +3,5 @@
 //
 
 std::vector<BYTE> AnsiToUnicode(const string &str);
+
+wstring GetDesktopPath();

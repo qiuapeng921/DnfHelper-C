@@ -3,10 +3,10 @@
 #include "headers.h"
 
 // 写配置数据
-void WriteConfigData(string item, string data);
+void WriteConfigData(const wstring &itemName, const wstring &data);
 
 // 读配置数据
-int ReadConfigData(string item);
+UINT ReadConfigData(const wstring &itemName);
 
 // 加载配置文件
 void LoadConfigIni();
