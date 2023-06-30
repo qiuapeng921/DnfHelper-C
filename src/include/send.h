@@ -3,11 +3,11 @@ class Send {
 private:
 public:
     // HcCall 缓冲call
-    void BufferCall(uint32_t param);
+    static void BufferCall(ULONG64 param);
 
     // JmCall 加密call
-    void EncryptCall(uint32_t param, uint32_t len);
+    static void EncryptCall(ULONG64 param, int len);
 
     // FbCall 发包call
-    void SendCall();
+    static void SendCall();
 };
