@@ -4,6 +4,6 @@
 
 #include "task.h"
 
-void Task::HandleMainLine() {
+void task::HandleMainLine() {
 
 }

@@ -7,10 +7,11 @@
 #include "config.h"
 #include "notice.h"
 #include "struct.h"
+#include "automatic.h"
 
 GlobalData global;
 
-void MainThread() {
+void activation::MainThread() {
     RegisterHotKey(nullptr, 0, 0, VK_HOME);
     MSG lpMsg;
     while (GetMessage(&lpMsg, nullptr, 0, 0)) {
@@ -24,7 +25,7 @@ void MainThread() {
     }
 }
 
-void InitHelper() {
+void activation::InitHelper() {
     LoadConfigIni();
     if (!ConfigIniExist()) {
         WriteConfigIni();
@@ -32,14 +33,14 @@ void InitHelper() {
 
     ColorfulNotice(L"呼出成功,欢迎使用情歌", 1);
 
-    // global.GameHandle = GetForegroundWindow();
-    global.GameHandle = FindWindowA("地下城与勇士", "地下城与勇士");
+    global.GameHandle = GetForegroundWindow();
+    // global.GameHandle = FindWindowA("地下城与勇士", "地下城与勇士");
     global.WinMessage = (WNDPROC)SetWindowLongPtr(global.GameHandle, GWLP_WNDPROC, (LONG_PTR)WinMessage);
 
     // CreateThread(nullptr, 0, (LPTHREAD_START_ROUTINE)MessageLoopOfAB, nullptr, 0, nullptr);
 }
 
-LRESULT CALLBACK WinMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK activation::WinMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     if (uMsg == WM_KEYUP) {
         if (wParam == VK_END) {}
         if (wParam == VK_F1) {}
@@ -67,7 +68,7 @@ LRESULT CALLBACK WinMessage(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 }
 
 
-void MessageLoopOfAB() {
+void activation::MessageLoopOfAB() {
     RegisterHotKey(nullptr, 0, 0, VK_F1);
     RegisterHotKey(nullptr, 0, 0, VK_END);
     RegisterHotKey(nullptr, 0, 0, VK_OEM_3);
@@ -86,6 +87,7 @@ void MessageLoopOfAB() {
             if (HIWORD(lpMsg.lParam) == VK_END) {}
             if (HIWORD(lpMsg.lParam) == VK_OEM_3) {
                 // 技能Call(0, 54141, 0, 0, 0, 0, 0);
+                automatic::SwitchFunc();
             }
         }
         Sleep(10);
