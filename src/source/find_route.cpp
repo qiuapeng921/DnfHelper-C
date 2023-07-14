@@ -10,10 +10,10 @@
 
 #include "find_route.h"
 
-MapDataType 寻路_地图数据() {
+MapDataType MapData() {
     MapDataType localMapData;
     ULONG64 localRoomData = ReadLong(ReadLong(ReadLong(房间编号) + 时间基址) + 门型偏移);
-    ULONG64 localRoomIndex = 解密(localRoomData + 索引偏移);
+    ULONG64 localRoomIndex = mapData::Decode(localRoomData + 索引偏移);
 
     localMapData.Width = ReadInt(ReadLong(localRoomData + 宽高偏移) + localRoomIndex * 8 + 0);
     localMapData.Height = ReadInt(ReadLong(localRoomData + 宽高偏移) + localRoomIndex * 8 + 4);
@@ -29,15 +29,15 @@ MapDataType 寻路_地图数据() {
     if (localMapData.StartZb.X == localMapData.EndZb.X && localMapData.StartZb.Y == localMapData.EndZb.Y) {
         return localMapData;
     }
-    localMapData.ConsumeFatigue = 寻路_获取走法(localMapData.MapChannel, localMapData.Width, localMapData.Height,
-                                                localMapData.StartZb,
-                                                localMapData.EndZb, localMapData.MapRoute);
+    localMapData.ConsumeFatigue = getRoute(localMapData.MapChannel, localMapData.Width, localMapData.Height,
+                                           localMapData.StartZb,
+                                           localMapData.EndZb, localMapData.MapRoute);
     return localMapData;
 }
 
-DWORD 寻路_获取走法(vector<DWORD> paramMapChannel, DWORD paramWidth, DWORD paramHeight, CoordinateType paramMapStart,
-                    CoordinateType paramMapEnd,
-                    vector<CoordinateType> &paramRealRoute) {
+DWORD getRoute(vector<DWORD> paramMapChannel, DWORD paramWidth, DWORD paramHeight, CoordinateType paramMapStart,
+               CoordinateType paramMapEnd,
+               vector<CoordinateType> &paramRealRoute) {
     CoordinateType start_coordinate = {};
     CoordinateType end_coordinate = {};
     vector<vector<GameMapType>> map_flag;
@@ -49,19 +49,19 @@ DWORD 寻路_获取走法(vector<DWORD> paramMapChannel, DWORD paramWidth, DWORD
         paramRealRoute.resize(0);
         return 0;
     }
-    寻路_生成地图(paramWidth, paramHeight, paramMapChannel, map_array);
-    寻路_显示地图(map_array, paramWidth, paramHeight, map_flag);
+    genMap(paramWidth, paramHeight, paramMapChannel, map_array);
+    displayMap(map_array, paramWidth, paramHeight, map_flag);
     start_coordinate.X = paramMapStart.X * 3 - 2;
     start_coordinate.Y = paramMapStart.Y * 3 - 2;
     end_coordinate.X = paramMapEnd.X * 3 - 2;
     end_coordinate.Y = paramMapEnd.Y * 3 - 2;
-    寻路_路径算法(map_flag, start_coordinate, end_coordinate, paramWidth * 3, paramHeight * 3, cross_way);
-    return 寻路_整理坐标(cross_way, paramRealRoute);
+    routeCalculate(map_flag, start_coordinate, end_coordinate, paramWidth * 3, paramHeight * 3, cross_way);
+    return tidyCoordinate(cross_way, paramRealRoute);
 
 }
 
-VOID 寻路_生成地图(DWORD paramWidth, DWORD paramHeight, vector<DWORD> paramMapChannel,
-                   vector<vector<GameMapType>> &paramGameMap) {
+VOID genMap(DWORD paramWidth, DWORD paramHeight, vector<DWORD> paramMapChannel,
+            vector<vector<GameMapType>> &paramGameMap) {
     paramGameMap.clear();
     paramGameMap.resize(paramWidth);
     for (DWORD x = 0; x < paramWidth; x++) {
@@ -73,10 +73,10 @@ VOID 寻路_生成地图(DWORD paramWidth, DWORD paramHeight, vector<DWORD> para
             paramGameMap[x][y].MapCoordinates.X = x;
             paramGameMap[x][y].MapCoordinates.Y = y;
             paramGameMap[x][y].MapChannel = paramMapChannel[i];
-            paramGameMap[x][y].Left = 寻路_判断方向(paramMapChannel[i], 0);
-            paramGameMap[x][y].Right = 寻路_判断方向(paramMapChannel[i], 1);
-            paramGameMap[x][y].Up = 寻路_判断方向(paramMapChannel[i], 2);
-            paramGameMap[x][y].Down = 寻路_判断方向(paramMapChannel[i], 3);
+            paramGameMap[x][y].Left = judgeDirection(paramMapChannel[i], 0);
+            paramGameMap[x][y].Right = judgeDirection(paramMapChannel[i], 1);
+            paramGameMap[x][y].Up = judgeDirection(paramMapChannel[i], 2);
+            paramGameMap[x][y].Down = judgeDirection(paramMapChannel[i], 3);
             paramGameMap[x][y].BackgroundColor = 0xFFFFFF;
             i++;
             if (paramGameMap[x][y].MapChannel == 0)
@@ -85,8 +85,8 @@ VOID 寻路_生成地图(DWORD paramWidth, DWORD paramHeight, vector<DWORD> para
     }
 }
 
-VOID 寻路_显示地图(vector<vector<GameMapType>> paramMapArray, DWORD paramWidth, DWORD paramHeight,
-                   vector<vector<GameMapType>> &paramMapLabel) {
+VOID displayMap(vector<vector<GameMapType>> paramMapArray, DWORD paramWidth, DWORD paramHeight,
+                vector<vector<GameMapType>> &paramMapLabel) {
     paramMapLabel.clear();
     paramMapLabel.resize(paramWidth * (DWORD64)3);
     for (DWORD x = 0; x < paramWidth * 3; x++) {
@@ -112,135 +112,139 @@ VOID 寻路_显示地图(vector<vector<GameMapType>> paramMapArray, DWORD paramW
     }
 }
 
-VOID 寻路_路径算法(vector<vector<GameMapType>> paramMapLabel, CoordinateType paramMapStart, CoordinateType paramMapEnd,
-                   INT paramWidth, INT paramHeight,
-                   vector<CoordinateType> &paramRouteArray) {
-    BOOL 已存在开放列表, 已存在关闭列表;
-    CoordinateType 待检测坐标;
-    MapNodeType 待检测节点, 临时节点;
-    vector<MapNodeType> 开放列表, 关闭列表;
-    DWORD 最短编号 = 0;
-    DWORD 最小F值, 预测G值;
-    DWORD x, y;
+VOID routeCalculate(vector<vector<GameMapType>> paramMapLabel, CoordinateType paramMapStart, CoordinateType paramMapEnd,
+                    DWORD paramWidth, DWORD paramHeight,
+                    vector<CoordinateType> &paramRouteArray) {
+    BOOL existOpenList, existCloseList;
+    CoordinateType waitHandleCoordinate = {};
+    MapNodeType waitHandleNode = {};
+    MapNodeType tmpNode = {};
+    vector<MapNodeType> openList, closeList;
+    DWORD shortEstNum = 0;
+    DWORD minF, guessG;
 
-    临时节点.CurrentCoordinates.X = paramMapStart.X;
-    临时节点.CurrentCoordinates.Y = paramMapStart.Y;
+    tmpNode.CurrentCoordinates.X = paramMapStart.X;
+    tmpNode.CurrentCoordinates.Y = paramMapStart.Y;
     paramMapLabel[paramMapStart.X][paramMapStart.Y].BackgroundColor = 0x00FF00;
     paramMapLabel[paramMapEnd.X][paramMapEnd.Y].BackgroundColor = 0x0000FF;
-    开放列表.insert(开放列表.begin(), 临时节点);
+    openList.insert(openList.begin(), tmpNode);
     do {
-        最小F值 = 0;
-        for (y = 0; y < 开放列表.size(); y++) {
-            if (最小F值 == 0) {
-                最小F值 = 开放列表[0].F;
-                最短编号 = y;
+        minF = 0;
+        for (unsigned int y = 0; y < openList.size(); y++) {
+            if (minF == 0) {
+                minF = openList[0].F;
+                shortEstNum = y;
             }
-            if (开放列表[y].F < 最小F值) {
-                最小F值 = 开放列表[y].F;
-                最短编号 = y;
-            }
-        }
-        临时节点 = 开放列表[最短编号];
-        开放列表.erase(开放列表.begin() + 最短编号);
-        关闭列表.insert(关闭列表.begin(), 临时节点);
-        if (临时节点.CurrentCoordinates.X != paramMapStart.X || 临时节点.CurrentCoordinates.Y != paramMapStart.Y) {
-            if (临时节点.CurrentCoordinates.X != paramMapEnd.X || 临时节点.CurrentCoordinates.Y != paramMapEnd.Y) {
-                paramMapLabel[临时节点.CurrentCoordinates.X][临时节点.CurrentCoordinates.Y].BackgroundColor = 0x0080FF;
+            if (openList[y].F < minF) {
+                minF = openList[y].F;
+                shortEstNum = y;
             }
         }
-        for (y = 0; y < 关闭列表.size(); y++) {
-            if (关闭列表[y].CurrentCoordinates.X == paramMapEnd.X &&
-                关闭列表[y].CurrentCoordinates.Y == paramMapEnd.Y) {
-                待检测节点 = 关闭列表[y];
+        tmpNode = openList[shortEstNum];
+        openList.erase(openList.begin() + shortEstNum);
+        closeList.insert(closeList.begin(), tmpNode);
+        if (tmpNode.CurrentCoordinates.X != paramMapStart.X || tmpNode.CurrentCoordinates.Y != paramMapStart.Y) {
+            if (tmpNode.CurrentCoordinates.X != paramMapEnd.X || tmpNode.CurrentCoordinates.Y != paramMapEnd.Y) {
+                paramMapLabel[tmpNode.CurrentCoordinates.X][tmpNode.CurrentCoordinates.Y].BackgroundColor = 0x0080FF;
+            }
+        }
+        for (unsigned int y = 0; y < closeList.size(); y++) {
+            if (closeList[y].CurrentCoordinates.X == paramMapEnd.X &&
+                closeList[y].CurrentCoordinates.Y == paramMapEnd.Y) {
+                waitHandleNode = closeList[y];
                 do {
-                    for (unsigned int x = 0; x < 关闭列表.size(); x++) {
-                        if (关闭列表[x].CurrentCoordinates.X == 待检测节点.FinalCoordinates.X &&
-                            关闭列表[x].CurrentCoordinates.Y == 待检测节点.FinalCoordinates.Y) {
-                            待检测节点 = 关闭列表[x];
+                    for (auto &x: closeList) {
+                        if (x.CurrentCoordinates.X == waitHandleNode.FinalCoordinates.X &&
+                            x.CurrentCoordinates.Y == waitHandleNode.FinalCoordinates.Y) {
+                            waitHandleNode = x;
                             break;
                         }
                     }
-                    if (待检测节点.CurrentCoordinates.X != paramMapStart.X ||
-                        待检测节点.CurrentCoordinates.Y != paramMapStart.Y) {
-                        paramMapLabel[待检测节点.CurrentCoordinates.X][待检测节点.CurrentCoordinates.Y].BackgroundColor = 0x00D8D8;
-                        paramRouteArray.insert(paramRouteArray.begin(), 待检测节点.CurrentCoordinates);
+                    if (waitHandleNode.CurrentCoordinates.X != paramMapStart.X ||
+                        waitHandleNode.CurrentCoordinates.Y != paramMapStart.Y) {
+                        paramMapLabel[waitHandleNode.CurrentCoordinates.X][waitHandleNode.CurrentCoordinates.Y].BackgroundColor = 0x00D8D8;
+                        paramRouteArray.insert(paramRouteArray.begin(), waitHandleNode.CurrentCoordinates);
                     }
-                } while (待检测节点.CurrentCoordinates.X != paramMapStart.X ||
-                         待检测节点.CurrentCoordinates.Y != paramMapStart.Y);
+                } while (waitHandleNode.CurrentCoordinates.X != paramMapStart.X ||
+                         waitHandleNode.CurrentCoordinates.Y != paramMapStart.Y);
                 paramRouteArray.insert(paramRouteArray.begin(), paramMapStart);
                 paramRouteArray.insert(paramRouteArray.end(), paramMapEnd);
                 return;
             }
         }
-        for (y = 0; y < 4; y++) {
+        for (unsigned int y = 0; y < 4; y++) {
             if (y == 0) {
-                待检测坐标.X = 临时节点.CurrentCoordinates.X;
-                待检测坐标.Y = 临时节点.CurrentCoordinates.Y - 1;
+                waitHandleCoordinate.X = tmpNode.CurrentCoordinates.X;
+                waitHandleCoordinate.Y = tmpNode.CurrentCoordinates.Y - 1;
             } else if (y == 1) {
-                待检测坐标.X = 临时节点.CurrentCoordinates.X - 1;
-                待检测坐标.Y = 临时节点.CurrentCoordinates.Y;
+                waitHandleCoordinate.X = tmpNode.CurrentCoordinates.X - 1;
+                waitHandleCoordinate.Y = tmpNode.CurrentCoordinates.Y;
             } else if (y == 2) {
-                待检测坐标.X = 临时节点.CurrentCoordinates.X + 1;
-                待检测坐标.Y = 临时节点.CurrentCoordinates.Y;
+                waitHandleCoordinate.X = tmpNode.CurrentCoordinates.X + 1;
+                waitHandleCoordinate.Y = tmpNode.CurrentCoordinates.Y;
             } else {
-                待检测坐标.X = 临时节点.CurrentCoordinates.X;
-                待检测坐标.Y = 临时节点.CurrentCoordinates.Y + 1;
+                waitHandleCoordinate.X = tmpNode.CurrentCoordinates.X;
+                waitHandleCoordinate.Y = tmpNode.CurrentCoordinates.Y + 1;
             }
-            if (待检测坐标.X<0 || 待检测坐标.X>(paramWidth - 1) || 待检测坐标.Y<0 || 待检测坐标.Y>(paramHeight - 1))
+            if (waitHandleCoordinate.X<0 || waitHandleCoordinate.X>(paramWidth - 1) ||
+                waitHandleCoordinate.Y<0 || waitHandleCoordinate.Y>(paramHeight - 1))
                 continue;
-            if (paramMapLabel[待检测坐标.X][待检测坐标.Y].BackgroundColor == 0x000000)
+            if (paramMapLabel[waitHandleCoordinate.X][waitHandleCoordinate.Y].BackgroundColor == 0x000000)
                 continue;
-            已存在关闭列表 = false;
-            for (x = 0; x < 关闭列表.size(); x++) {
-                if (关闭列表[x].CurrentCoordinates.X == 待检测坐标.X &&
-                    关闭列表[x].CurrentCoordinates.Y == 待检测坐标.Y) {
-                    已存在关闭列表 = true;
+            existCloseList = false;
+            for (auto &x: closeList) {
+                if (x.CurrentCoordinates.X == waitHandleCoordinate.X &&
+                    x.CurrentCoordinates.Y == waitHandleCoordinate.Y) {
+                    existCloseList = true;
                     break;
                 }
             }
-            if (已存在关闭列表)
+            if (existCloseList)
                 continue;
-            已存在开放列表 = false;
-            for (x = 0; x < 开放列表.size(); x++) {
-                if (开放列表[x].CurrentCoordinates.X == 待检测坐标.X &&
-                    开放列表[x].CurrentCoordinates.Y == 待检测坐标.Y) {
-                    if (待检测坐标.X != 临时节点.CurrentCoordinates.X || 待检测坐标.Y != 临时节点.CurrentCoordinates.Y)
-                        预测G值 = 14;
+            existOpenList = false;
+            for (auto &x: openList) {
+                if (x.CurrentCoordinates.X == waitHandleCoordinate.X &&
+                    x.CurrentCoordinates.Y == waitHandleCoordinate.Y) {
+                    if (waitHandleCoordinate.X != tmpNode.CurrentCoordinates.X ||
+                        waitHandleCoordinate.Y != tmpNode.CurrentCoordinates.Y)
+                        guessG = 14;
                     else
-                        预测G值 = 10;
-                    if (临时节点.G + 预测G值 < 开放列表[x].G)
-                        开放列表[x].FinalCoordinates = 临时节点.CurrentCoordinates;
-                    已存在开放列表 = true;
+                        guessG = 10;
+                    if (tmpNode.G + guessG < x.G)
+                        x.FinalCoordinates = tmpNode.CurrentCoordinates;
+                    existOpenList = true;
                     break;
                 }
             }
-            if (已存在开放列表 == false) {
-                if (待检测坐标.X == 临时节点.CurrentCoordinates.X || 待检测坐标.Y == 临时节点.CurrentCoordinates.Y)
-                    预测G值 = 10;
+            if (existOpenList == false) {
+                if (waitHandleCoordinate.X == tmpNode.CurrentCoordinates.X ||
+                    waitHandleCoordinate.Y == tmpNode.CurrentCoordinates.Y)
+                    guessG = 10;
                 else
-                    预测G值 = 14;
-                待检测节点.G = 临时节点.G + 预测G值;
-                待检测节点.H = (paramMapEnd.X - 待检测坐标.X) * 10 + (paramMapEnd.Y - 待检测坐标.Y) * 10;
-                待检测节点.F = 待检测节点.G + 待检测节点.H;
-                待检测节点.CurrentCoordinates = 待检测坐标;
-                待检测节点.FinalCoordinates = 临时节点.CurrentCoordinates;
-                开放列表.insert(开放列表.begin(), 待检测节点);
+                    guessG = 14;
+                waitHandleNode.G = tmpNode.G + guessG;
+                waitHandleNode.H =
+                        (paramMapEnd.X - waitHandleCoordinate.X) * 10 + (paramMapEnd.Y - waitHandleCoordinate.Y) * 10;
+                waitHandleNode.F = waitHandleNode.G + waitHandleNode.H;
+                waitHandleNode.CurrentCoordinates = waitHandleCoordinate;
+                waitHandleNode.FinalCoordinates = tmpNode.CurrentCoordinates;
+                openList.insert(openList.begin(), waitHandleNode);
             }
         }
-    } while (开放列表.size() != 0);
+    } while (!openList.empty());
 }
 
 
-DWORD 寻路_整理坐标(vector<CoordinateType> paramSimulatedMoves, vector<CoordinateType> &paramRealRoute) {
+DWORD tidyCoordinate(const vector<CoordinateType> &paramSimulatedMoves, vector<CoordinateType> &paramRealRoute) {
     DWORD x, y;
     DWORD k = 0;
     CoordinateType tmpCoordinateType = {};
-    for (size_t i = 0; i < paramSimulatedMoves.size(); i++) {
-        x = (paramSimulatedMoves[i].X + 2) % 3;
-        y = (paramSimulatedMoves[i].Y + 2) % 3;
+    for (auto &paramSimulatedMove: paramSimulatedMoves) {
+        x = (paramSimulatedMove.X + 2) % 3;
+        y = (paramSimulatedMove.Y + 2) % 3;
         if (x == 0 && y == 0) {
-            tmpCoordinateType.X = (paramSimulatedMoves[i].X + 2) / 3 - 1;
-            tmpCoordinateType.Y = (paramSimulatedMoves[i].Y + 2) / 3 - 1;
+            tmpCoordinateType.X = (paramSimulatedMove.X + 2) / 3 - 1;
+            tmpCoordinateType.Y = (paramSimulatedMove.Y + 2) / 3 - 1;
             paramRealRoute.insert(paramRealRoute.begin() + k, tmpCoordinateType);
             k++;
         }
@@ -248,7 +252,7 @@ DWORD 寻路_整理坐标(vector<CoordinateType> paramSimulatedMoves, vector<Coo
     return (k);
 }
 
-BOOL 寻路_判断方向(DWORD paramChannelDirection, DWORD paramDirection) {
+BOOL judgeDirection(DWORD paramChannelDirection, DWORD paramDirection) {
     unsigned char localDirectionArray[4];
     unsigned char localDirectionCollection[16][4] = {{0, 0, 0, 0},
                                                      {0, 1, 0, 0},
@@ -271,8 +275,8 @@ BOOL 寻路_判断方向(DWORD paramChannelDirection, DWORD paramDirection) {
             localDirectionArray[i] = localDirectionCollection[paramChannelDirection][i];
         }
     else
-        for (int i = 0; i < 4; i++) {
-            localDirectionArray[i] = 0;
+        for (unsigned char &i: localDirectionArray) {
+            i = 0;
         }
     if (localDirectionArray[paramDirection] == 1)
         return TRUE;
@@ -280,7 +284,7 @@ BOOL 寻路_判断方向(DWORD paramChannelDirection, DWORD paramDirection) {
         return FALSE;
 }
 
-DWORD 寻路_计算方向(CoordinateType paramCurrentRoom, CoordinateType paramNextRoom) {
+DWORD GetDirection(CoordinateType paramCurrentRoom, CoordinateType paramNextRoom) {
     DWORD direction = 0;
     DWORD x, y;
     x = paramCurrentRoom.X - paramNextRoom.X;
