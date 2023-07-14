@@ -2,7 +2,7 @@
 BYTE ReadShort(ULONG64 address);
 
 // 读整数
-INT ReadInt(ULONG64 address);
+ULONG ReadInt(ULONG64 address);
 
 // 读长整数
 ULONG64 ReadLong(ULONG64 address);

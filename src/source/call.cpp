@@ -7,10 +7,18 @@
 #include "address.h"
 #include "read_write.h"
 
-ULONG64
-Func_CALL(ULONG64 ADDR_, ULONG64 RCX_, ULONG64 RDX_, ULONG64 R8_, ULONG64 R9_, ULONG64 R10_, ULONG64 R11_, ULONG64 R12_,
-          ULONG64 R13_, ULONG64 R14_, ULONG64 R15_) {
-    _Func_Call MyFastCall = (_Func_Call)ADDR_;
+ULONG64 Func_CALL(ULONG64 ADDR_,
+                  ULONG64 RCX_,
+                  ULONG64 RDX_,
+                  ULONG64 R8_,
+                  ULONG64 R9_,
+                  ULONG64 R10_,
+                  ULONG64 R11_,
+                  ULONG64 R12_,
+                  ULONG64 R13_,
+                  ULONG64 R14_,
+                  ULONG64 R15_) {
+    auto MyFastCall = (_Func_Call)ADDR_;
 
     return MyFastCall(RCX_,
                       RDX_,
@@ -24,15 +32,42 @@ Func_CALL(ULONG64 ADDR_, ULONG64 RCX_, ULONG64 RDX_, ULONG64 R8_, ULONG64 R9_, U
                       R15_);
 }
 
+// 取人物指针Call
+ULONG64 GetPerPtrCall() {
+    return Func_CALL(人物CALL);
+}
+
+void BufferCall(ULONG64 packHeader) {
+    Func_CALL(缓冲CALL, 发包基址, packHeader);
+}
+
+void EncryptCall(ULONG64 packHeader, int len) {
+    ULONG64 packParam = 0;
+    if (len == 1) { packParam = 加密CALL_1; }
+    if (len == 2) { packParam = 加密CALL_2; }
+    if (len == 4) { packParam = 加密CALL_3; }
+    if (len == 8) { packParam = 加密CALL_4; }
+    Func_CALL(packParam, 发包基址, packHeader);
+}
+
+void SendCall() {
+    Func_CALL(发包CALL);
+}
+
+
+VOID RefreshCall(ULONG64 addr) {
+    Func_CALL(刷新CALL, addr, 0);
+}
+
 
 // 地图CALL
-uint64_t MapCall(int mapId) {
+ULONG64 MapCall(int mapId) {
     return Func_CALL(地图CALL, mapId);
 }
 
 // 标识Call
-int MarkCall() {
-    return (int)Func_CALL(标识CALL);
+ULONG64 MarkCall() {
+    return Func_CALL(标识CALL);
 }
 
 // 技能CALL

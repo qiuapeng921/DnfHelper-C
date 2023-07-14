@@ -39,4 +39,13 @@ namespace helper {
 
     // 分割文本
     void SplitStr(const wstring &str, vector<wstring> &tokens, const wstring &delimiters);
+
+    // 获取当前时间
+    wstring GetCurrentTimeString();
+
+    // 整数转字节数组
+    vector<byte> IntToByteArr(DWORD64 num, int length);
+
+    // 格式化字符串
+    const wchar_t *FormatString(const wchar_t *format, ...);
 }

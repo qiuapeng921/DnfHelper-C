@@ -11,9 +11,9 @@ extern GlobalData global;
 
 // CoordinateType 坐标型
 struct CoordinateType {
-    INT X;
-    INT Y;
-    INT Z;
+    ULONG X;
+    ULONG Y;
+    ULONG Z;
 };
 
 // MapDataType 地图数据

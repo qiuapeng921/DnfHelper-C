@@ -4,6 +4,7 @@
 
 #include "headers.h"
 #include "helper.h"
+#include <chrono>
 
 // 获取桌面路径
 wstring helper::GetDesktopPath() {
@@ -130,4 +131,55 @@ void helper::SplitStr(const wstring &str, vector<wstring> &tokens, const wstring
         lastPos = str.find_first_not_of(delimiters, pos);
         pos = str.find_first_of(delimiters, lastPos);
     }
+}
+
+wstring helper::GetCurrentTimeString() {
+    // 获取当前系统时间
+    auto now = chrono::system_clock::now();
+
+    // 将时间转换为本地时间
+    time_t t = chrono::system_clock::to_time_t(now);
+    struct tm tm{};
+    localtime_s(&tm, &t);
+
+    // 格式化时间为字符串
+    char buffer[80];
+    strftime(buffer, 80, "%Y-%m-%d %H:%M:%S", &tm);
+
+    // 转换为宽字符类型的字符串
+    const size_t output_size = strlen(buffer) + 1;
+    auto *output = new wchar_t[output_size];
+    mbstowcs_s(nullptr, output, output_size, buffer, _TRUNCATE);
+
+    wstring result(output);
+    delete[] output;
+
+    return result;
+}
+
+
+// 整数转字节数组
+vector<byte> helper::IntToByteArr(DWORD64 num, int length) {
+    vector<byte> &bytes = *(new vector<byte>);
+
+    const int BITS_PER_BYTE = 8;
+    for (int i = 0; i < length; ++i) {
+        int offset = i * BITS_PER_BYTE;
+        byte byte_tmp = (num >> offset) & 0xFF;
+        bytes.push_back(byte_tmp);
+    }
+
+    return bytes;
+}
+
+const wchar_t *helper::FormatString(const wchar_t *format, ...) {
+    const size_t message_size = 256;
+    auto *message = new wchar_t[message_size];
+
+    va_list args;
+            va_start(args, format);
+    vswprintf(message, message_size, format, args);
+            va_end(args);
+
+    return message;
 }
