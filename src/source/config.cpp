@@ -9,12 +9,12 @@ wstring HelperName = L"DnfHelper";
 
 
 void WriteConfigData(const wstring &itemName, const wstring &data) {
-    wstring filePath = GetDesktopPath() + L"\\" + HelperName + L".ini";
+    wstring filePath = helper::GetDesktopPath() + L"\\" + HelperName + L".ini";
     WritePrivateProfileStringW(L"配置", itemName.c_str(), data.c_str(), filePath.c_str());
 }
 
 UINT ReadConfigData(const wstring &itemName) {
-    wstring filePath = GetDesktopPath() + L"\\" + HelperName + L".ini";
+    wstring filePath = helper::GetDesktopPath() + L"\\" + HelperName + L".ini";
     return GetPrivateProfileIntW(L"配置", itemName.c_str(), 0, filePath.c_str());
 }
 
@@ -26,7 +26,7 @@ void LoadConfigIni() {
 // 配置文件是否存在
 bool ConfigIniExist() {
     // 获取桌面路径
-    wstring desktopPath = GetDesktopPath();
+    wstring desktopPath = helper::GetDesktopPath();
 
     if (!desktopPath.empty()) {
         // 构建 ini 文件路径

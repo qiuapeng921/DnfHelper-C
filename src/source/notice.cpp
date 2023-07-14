@@ -14,12 +14,12 @@ static ULONG64 emptyAddrOne = AllocMem(4096);
 static ULONG64 emptyAddrTwo = AllocMem(4096);
 
 // 七彩公告
-void ColorfulNotice(const wchar_t*message, int msgType) {
+void ColorfulNotice(const wchar_t *message, int msgType) {
     std::wstring content = L"DnfHelper √ " + std::wstring(message);
     LPCWSTR TempStr = content.c_str();
 
     WriteLong(emptyAddrOne + 8, (ULONG64)TempStr);
-    WriteByteArr(emptyAddrTwo, AnsiToUnicode("Interface/newstyle/windows/Chatting/raid_partyicon.img"));
+    WriteByteArr(emptyAddrTwo, helper::AnsiToUnicode("Interface/newstyle/windows/Chatting/raid_partyicon.img"));
     WriteLong(emptyAddrOne + 24, 0);
     WriteLong(emptyAddrOne + 28, -1);
 
@@ -40,6 +40,6 @@ void ColorfulNotice(const wchar_t*message, int msgType) {
     Func_CALL(神话CALL, emptyAddrOne);
 }
 
-void OrdinaryNotice(const wchar_t*message, int msgType) {
+void OrdinaryNotice(const wchar_t *message, int msgType) {
 
 }

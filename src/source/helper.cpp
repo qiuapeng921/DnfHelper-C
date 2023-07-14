@@ -6,7 +6,7 @@
 #include "helper.h"
 
 // 获取桌面路径
-wstring GetDesktopPath() {
+wstring helper::GetDesktopPath() {
     // 获取用户目录的路径
     const wchar_t *userProfilePath = _wgetenv(L"USERPROFILE");
 
@@ -20,7 +20,7 @@ wstring GetDesktopPath() {
 }
 
 
-vector<BYTE> AnsiToUnicode(const string &str) {
+vector<BYTE> helper::AnsiToUnicode(const string &str) {
     vector<BYTE> Ret;
     DWORD dwNum = MultiByteToWideChar(936, 0, str.c_str(), -1, nullptr, 0);
     BYTE *pwText;
@@ -35,7 +35,7 @@ vector<BYTE> AnsiToUnicode(const string &str) {
     return Ret;
 }
 
-string UnicodeToAnsi(const vector<BYTE> &byteArr) {
+string helper::UnicodeToAnsi(const vector<BYTE> &byteArr) {
     const size_t byteLen = byteArr.size();
     const unique_ptr<wchar_t[]> unicode(new wchar_t[byteLen]);
     for (size_t i = 0; i < byteLen; i++) {
@@ -50,7 +50,7 @@ string UnicodeToAnsi(const vector<BYTE> &byteArr) {
 }
 
 // 字节相加
-vector<BYTE> AddByte(vector<BYTE> oldData, vector<BYTE> newData) {
+vector<BYTE> helper::AddByte(vector<BYTE> oldData, vector<BYTE> newData) {
     vector<BYTE> addr(oldData.size() + newData.size());
     for (size_t i = 0; i < oldData.size(); i++) {
         addr[i] = oldData[i];
@@ -62,7 +62,7 @@ vector<BYTE> AddByte(vector<BYTE> oldData, vector<BYTE> newData) {
 }
 
 // 整数转字节数组
-vector<BYTE> IntToByte(ULONG64 data) {
+vector<BYTE> helper::IntToByte(ULONG64 data) {
     size_t size = sizeof(data);
     vector<BYTE> ret(size);
     memcpy(ret.data(), &data, size);
@@ -70,28 +70,28 @@ vector<BYTE> IntToByte(ULONG64 data) {
 }
 
 // 取文本长度
-size_t GetTextLength(const string &text) {
+size_t helper::GetTextLength(const string &text) {
     return text.length();
 }
 
 // 取模块地址
-ULONG64 GetModuleAddr(const char moduleName[]) {
+ULONG64 helper::GetModuleAddr(const char moduleName[]) {
     return (UINT64)GetModuleHandleA(moduleName);
 }
 
 // 取随机数
-ULONG64 GetRandNum(ULONG64 mix, ULONG64 max) {
+ULONG64 helper::GetRandNum(ULONG64 mix, ULONG64 max) {
     srand((int)time(nullptr));
     return rand() % (max - mix) + mix;
 }
 
 // 整数到文本
-wstring IntToString(int number) {
+wstring helper::IntToString(int number) {
     return to_wstring(number);
 }
 
 // 取空白字节集
-vector<BYTE> GetEmptyByte(int num) {
+vector<BYTE> helper::GetEmptyByte(int num) {
     vector<BYTE> res;
     for (size_t i = 0; i < num; i++) {
         res.push_back(0);
@@ -100,7 +100,7 @@ vector<BYTE> GetEmptyByte(int num) {
 }
 
 // 取文本右边
-wstring GetStrRight(const wstring &str, size_t len) {
+wstring helper::GetStrRight(const wstring &str, size_t len) {
     wstring result;
     if (len > str.size()) {
         len = 0;
@@ -112,7 +112,7 @@ wstring GetStrRight(const wstring &str, size_t len) {
 }
 
 // 取文本左边
-wstring GetStrLeft(const wstring &str, size_t len) {
+wstring helper::GetStrLeft(const wstring &str, size_t len) {
     wstring result;
     if (len > str.size()) {
         len = str.size();
@@ -122,7 +122,7 @@ wstring GetStrLeft(const wstring &str, size_t len) {
 }
 
 // 分割文本
-void SplitStr(const wstring &str, vector<wstring> &tokens, const wstring &delimiters) {
+void helper::SplitStr(const wstring &str, vector<wstring> &tokens, const wstring &delimiters) {
     wstring::size_type lastPos = str.find_first_not_of(delimiters, 0);
     wstring::size_type pos = str.find_first_of(delimiters, lastPos);
     while (wstring::npos != pos || wstring::npos != lastPos) {
