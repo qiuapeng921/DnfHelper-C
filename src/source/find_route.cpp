@@ -13,11 +13,11 @@
 MapDataType MapData() {
     MapDataType localMapData;
     ULONG64 localRoomData = ReadLong(ReadLong(ReadLong(房间编号) + 时间基址) + 门型偏移);
-    ULONG64 localRoomIndex = mapData::Decode(localRoomData + 索引偏移);
+    ULONG64 localRoomIndex = mapData::Decode(localRoomData + 1); // 索引偏移
 
     localMapData.Width = ReadInt(ReadLong(localRoomData + 宽高偏移) + localRoomIndex * 8 + 0);
     localMapData.Height = ReadInt(ReadLong(localRoomData + 宽高偏移) + localRoomIndex * 8 + 4);
-    localMapData.Tmp = ReadLong(ReadLong(localRoomData + 数组偏移) + 32 * localRoomIndex + 8);
+    localMapData.Tmp = ReadLong(ReadLong(localRoomData + 1) + 32 * localRoomIndex + 8);// 数组偏移
     localMapData.ChannelNum = localMapData.Width * localMapData.Height;
     for (ULONG i = 0; i < localMapData.ChannelNum; i++) {
         localMapData.MapChannel.insert(localMapData.MapChannel.begin() + i, ReadInt(localMapData.Tmp + i * 4));
