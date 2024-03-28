@@ -5,3 +5,5 @@
 ### 交流群: star后带上github用户名加群
 
 ### 点击链接加入群聊【毒奶粉研究院】：https://qm.qq.com/q/hedws1v2cS
+
+### 点击链接加入群聊【毒奶粉研究院】：https://t.me/+D3V4dfGWE_JjYzU1
